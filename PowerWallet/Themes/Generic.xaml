@@ -1,0 +1,98 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:PowerWallet.Controls">
+
+    <Style x:Key="NoStyleButton" TargetType="{x:Type Button}">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Foreground" Value="LightGray"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="true">
+                <Setter Property="Foreground" Value="Black"></Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <ControlTemplate x:Key="WindowTemplateKey" TargetType="{x:Type Window}">
+        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+            <Grid x:Name="PART_Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <StackPanel Margin="10,0,0,0">
+                        <TextBlock TextWrapping="Wrap" Foreground="{TemplateBinding Foreground}" Text="Power Wallet" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="35"/>
+                    </StackPanel>
+                    <StackPanel VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,0">
+                        <Button x:Name="PART_Min" IsTabStop="False" Width="34" Height="34" Style="{StaticResource NoStyleButton}">
+                            <Path Data="F1M0,6L0,9 9,9 9,6 0,6z" SnapsToDevicePixels="True" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                        </Button>
+                        <Button x:Name="PART_Max" IsTabStop="False" Width="34" Height="34" Style="{StaticResource NoStyleButton}">
+                            <Grid>
+                                <Path x:Name="MaximisePath" SnapsToDevicePixels="True" Data="F1M0,0L0,9 9,9 9,0 0,0 0,3 8,3 8,8 1,8 1,3z" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                                <Path x:Name="RestorePath" SnapsToDevicePixels="True" Data="F1M0,10L0,3 3,3 3,0 10,0 10,2 4,2 4,3 7,3 7,6 6,6 6,5 1,5 1,10z M1,10L7,10 7,7 10,7 10,2 9,2 9,6 6,6 6,9 1,9z" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                            </Grid>
+                        </Button>
+                        <Button x:Name="PART_Close" IsTabStop="False" Width="34" Height="34" Style="{StaticResource NoStyleButton}" >
+                            <Path Data="F1M0,0L2,0 5,3 8,0 10,0 6,4 10,8 8,8 5,5 2,8 0,8 4,4 0,0z" SnapsToDevicePixels="True" Fill="{Binding Foreground, RelativeSource={RelativeSource AncestorType={x:Type Button}}}" />
+                        </Button>
+                    </StackPanel>
+                    <Rectangle Height="1" Fill="LightGray" VerticalAlignment="Bottom" HorizontalAlignment="Stretch"></Rectangle>
+                </Grid>
+                <AdornerDecorator Grid.Row="1">
+                    <ContentPresenter/>
+                </AdornerDecorator>
+                <ResizeGrip x:Name="WindowResizeGrip" HorizontalAlignment="Right" IsTabStop="false" Visibility="Collapsed" VerticalAlignment="Bottom" Grid.Row="1"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ResizeMode" Value="CanResizeWithGrip"/>
+                    <Condition Property="WindowState" Value="Normal"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Visibility" TargetName="WindowResizeGrip" Value="Visible"/>
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style TargetType="{x:Type controls:NiceWindow}">
+        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+        <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Window}">
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                        <AdornerDecorator>
+                            <ContentPresenter/>
+                        </AdornerDecorator>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="WindowStyle" Value="None"/>
+        <Setter Property="Height" Value="760"/>
+        <Setter Property="Width" Value="1124"/>
+        <Setter Property="Foreground" Value="#FF494949"></Setter>
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="BorderBrush" Value="LightGray"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Template" Value="{StaticResource WindowTemplateKey}"></Setter>
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+    </Style>
+</ResourceDictionary>
