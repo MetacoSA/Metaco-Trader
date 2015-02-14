@@ -29,14 +29,14 @@
 
     <ControlTemplate x:Key="WindowTemplateKey" TargetType="{x:Type Window}">
         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
-            <Grid x:Name="PART_Top">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Grid>
+                <Grid x:Name="PART_Top">
                     <StackPanel Margin="10,0,0,0">
-                        <TextBlock TextWrapping="Wrap" Foreground="{TemplateBinding Foreground}" Text="Power Wallet" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="35"/>
+                        <TextBlock TextWrapping="Wrap" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Title}" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="35"/>
                     </StackPanel>
                     <StackPanel VerticalAlignment="Top" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,0">
                         <Button x:Name="PART_Min" IsTabStop="False" Width="34" Height="34" Style="{StaticResource NoStyleButton}">

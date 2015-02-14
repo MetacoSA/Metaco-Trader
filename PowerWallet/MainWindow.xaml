@@ -2,8 +2,18 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:PowerWallet.Controls"
-        Title="MainWindow">
+        xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        Title="Power Wallet">
     <Grid>
-        
+        <ad:DockingManager x:Name="dockManager">
+            <ad:LayoutRoot>
+                <ad:LayoutPanel Orientation="Horizontal">
+                    <ad:LayoutAnchorablePane DockWidth="100">
+                        <ad:LayoutAnchorable x:Name="WinFormsWindow"  ContentId="WinFormsWindow" Title="WinForms Window" ToolTip="My WinForms Tool">
+                        </ad:LayoutAnchorable>
+                    </ad:LayoutAnchorablePane>
+                </ad:LayoutPanel>
+            </ad:LayoutRoot>
+        </ad:DockingManager>
     </Grid>
 </controls:NiceWindow>
