@@ -1,4 +1,5 @@
-﻿using ICSharpCode.AvalonEdit;
+﻿using GalaSoft.MvvmLight.Messaging;
+using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Editing;
 using PowerWallet.Controls;
 using PowerWallet.ViewModel;
@@ -27,12 +28,22 @@ namespace PowerWallet
     /// </summary>
     public partial class MainWindow : NiceWindow
     {
+        ViewModelLocator locator;
         public MainWindow()
         {
             InitializeComponent();
-
-            coins.DataContext = App.Locator.Coins;
+            locator = new ViewModelLocator();
+            root.DataContext = locator.Resolve<MainViewModel>();
+            coins.DataContext = locator.Resolve<CoinsViewModel>();
             grid.SelectionChanged += grid_SelectionChanged;
+        }
+
+        public MainViewModel ViewModel
+        {
+            get
+            {
+                return root.DataContext as MainViewModel;
+            }
         }
 
         void grid_SelectionChanged(object sender, Xceed.Wpf.DataGrid.DataGridSelectionChangedEventArgs e)
@@ -52,7 +63,8 @@ namespace PowerWallet
             var txt = GetText(e.OriginalSource);
             if (txt != null)
             {
-                var client = App.Locator.RapidBaseClientFactory.CreateClient();
+
+                var client = locator.Resolve<RapidBaseClientFactory>().CreateClient();
                 var result = await client.Get<string>("whatisit/" + txt);
 
                 var doc = new LayoutDocument();

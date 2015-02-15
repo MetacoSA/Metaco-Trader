@@ -14,12 +14,5 @@ namespace PowerWallet
     /// </summary>
     public partial class App : Application
     {
-        public static ViewModelLocator Locator
-        {
-            get
-            {
-                return (ViewModelLocator)(((App)App.Current).Resources["Locator"]);
-            }
-        }
     }
 }

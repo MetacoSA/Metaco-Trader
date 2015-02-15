@@ -31,7 +31,6 @@ namespace PowerWallet.ViewModel
                         BalanceModel balance = null;
                         try
                         {
-
                             balance = await client.GetBalance(BitcoinAddress.Create(SearchedCoins), true);
                         }
                         catch (FormatException)
@@ -40,7 +39,9 @@ namespace PowerWallet.ViewModel
                         if (balance == null)
                             balance = await client.GetBalance(SearchedCoins, true);
                         PopulateCoins(balance);
-                    }).Execute();
+                    })
+                    .Notify(this.MessengerInstance)
+                    .Execute();
                 });
             SearchedCoins = "15sYbVpRh6dyWycZMwPdxJWD4xbfxReeHe";
         }

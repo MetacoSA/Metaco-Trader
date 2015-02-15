@@ -1,34 +1,46 @@
 using GalaSoft.MvvmLight;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Reactive.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace PowerWallet.ViewModel
 {
-    /// <summary>
-    /// This class contains properties that the main View can data bind to.
-    /// <para>
-    /// Use the <strong>mvvminpc</strong> snippet to add bindable properties to this ViewModel.
-    /// </para>
-    /// <para>
-    /// You can also use Blend to data bind with the tool's support.
-    /// </para>
-    /// <para>
-    /// See http://www.galasoft.ch/mvvm
-    /// </para>
-    /// </summary>
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : PWViewModelBase
     {
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel()
+        public MainViewModel(CoinsViewModel coins, StatusMainViewModel status)
         {
-            ////if (IsInDesignMode)
-            ////{
-            ////    // Code runs in Blend --> create design time data.
-            ////}
-            ////else
-            ////{
-            ////    // Code runs "for real"
-            ////}
+            if (coins == null)
+                throw new ArgumentNullException("coins");
+            if (status == null)
+                throw new ArgumentNullException("status");
+            _Coins = coins;
+            _Status = status;
+        }
+
+        private readonly CoinsViewModel _Coins;
+        public CoinsViewModel Coins
+        {
+            get
+            {
+                return _Coins;
+            }
+        }
+
+        private readonly StatusMainViewModel _Status;
+        public StatusMainViewModel Status
+        {
+            get
+            {
+                return _Status;
+            }
         }
     }
 }

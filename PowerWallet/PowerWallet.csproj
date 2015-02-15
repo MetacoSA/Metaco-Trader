@@ -140,9 +140,10 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="PowerCommands.cs" />
     <Compile Include="RapidBaseClientFactory.cs" />
+    <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModel\PWViewModelBase.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="ViewModel\StatusMainViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

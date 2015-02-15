@@ -10,8 +10,12 @@
     <controls:NiceWindow.CommandBindings>
         <CommandBinding Command="{x:Static NavigationCommands.Search}" Executed="Search_Executed"></CommandBinding>
     </controls:NiceWindow.CommandBindings>
-    <Grid>
-        <ad:DockingManager x:Name="dockManager">
+    <DockPanel LastChildFill="True" x:Name="root">
+        <StatusBar Height="20"  DataContext="{Binding Status}"  DockPanel.Dock="Bottom">
+            <StatusBarItem Content="{Binding State}"></StatusBarItem>
+            <StatusBarItem Content="{Binding Message}"></StatusBarItem>
+        </StatusBar>
+        <ad:DockingManager x:Name="dockManager" Grid.Row="1" DockPanel.Dock="Top">
             <ad:LayoutRoot>
                 <ad:LayoutPanel Orientation="Horizontal">
                     <ad:LayoutAnchorablePane DockWidth="250">
@@ -52,5 +56,5 @@
                 </ad:LayoutPanel>
             </ad:LayoutRoot>
         </ad:DockingManager>
-    </Grid>
+    </DockPanel>
 </controls:NiceWindow>

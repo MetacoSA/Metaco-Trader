@@ -1,4 +1,5 @@
-﻿using PowerWallet.ViewModel;
+﻿using GalaSoft.MvvmLight.Messaging;
+using PowerWallet.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace PowerWallet
             _Exec = exec;
         }
         Task _Task;
-        Task Task
+        internal Task Task
         {
             get
             {
@@ -95,5 +96,11 @@ namespace PowerWallet
         }
 
         #endregion
+
+        public AsyncCommand Notify(IMessenger messenger)
+        {
+            messenger.Send(this);
+            return this;
+        }
     }
 }
