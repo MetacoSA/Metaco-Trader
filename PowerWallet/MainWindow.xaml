@@ -3,13 +3,50 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:PowerWallet.Controls"
         xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:edit="http://icsharpcode.net/sharpdevelop/avalonedit"
+        xmlns:grid="http://schemas.xceed.com/wpf/xaml/datagrid"
         Title="Power Wallet">
+    <controls:NiceWindow.CommandBindings>
+        <CommandBinding Command="{x:Static NavigationCommands.Search}" Executed="Search_Executed"></CommandBinding>
+    </controls:NiceWindow.CommandBindings>
     <Grid>
         <ad:DockingManager x:Name="dockManager">
             <ad:LayoutRoot>
                 <ad:LayoutPanel Orientation="Horizontal">
-                    <ad:LayoutAnchorablePane DockWidth="100">
-                        <ad:LayoutAnchorable x:Name="WinFormsWindow"  ContentId="WinFormsWindow" Title="WinForms Window" ToolTip="My WinForms Tool">
+                    <ad:LayoutAnchorablePane DockWidth="250">
+                        <ad:LayoutAnchorable Title="Coins">
+                            <DockPanel x:Name="coins">
+                                <toolkit:WatermarkTextBox 
+                                    Watermark="Search here for wallet or address"
+                                    Text="{Binding SearchedCoins, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                                    DockPanel.Dock="Top"
+                                    ></toolkit:WatermarkTextBox>
+                                <grid:DataGridControl x:Name="grid" ItemsSource="{Binding Coins}" ReadOnly="True" AutoCreateColumns="False">
+                                    <grid:DataGridControl.View>
+                                        <grid:TableView  UseDefaultHeadersFooters="True">
+                                        </grid:TableView>
+                                    </grid:DataGridControl.View>
+                                    <grid:DataGridControl.Columns>
+                                        <grid:Column Title="Owner" FieldName="Owner">
+                                        </grid:Column>
+                                        <grid:Column Title="Value" FieldName="Value">
+                                        </grid:Column>
+                                        <grid:Column Title="Confirmations" FieldName="Confirmations">
+                                        </grid:Column>
+                                    </grid:DataGridControl.Columns>
+                                </grid:DataGridControl>
+                            </DockPanel>
+                        </ad:LayoutAnchorable>
+                    </ad:LayoutAnchorablePane>
+                    <ad:LayoutDocumentPane x:Name="documents">
+                        <ad:LayoutDocument  Title="Test">
+                            <edit:TextEditor></edit:TextEditor>
+                        </ad:LayoutDocument>
+                    </ad:LayoutDocumentPane>
+                    <ad:LayoutAnchorablePane DockWidth="250">
+                        <ad:LayoutAnchorable Title="Properties">
+                            <toolkit:PropertyGrid x:Name="propertyGrid" NameColumnWidth="100"></toolkit:PropertyGrid>
                         </ad:LayoutAnchorable>
                     </ad:LayoutAnchorablePane>
                 </ad:LayoutPanel>

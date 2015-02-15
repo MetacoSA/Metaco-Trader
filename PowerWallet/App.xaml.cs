@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerWallet.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,12 @@ namespace PowerWallet
     /// </summary>
     public partial class App : Application
     {
+        public static ViewModelLocator Locator
+        {
+            get
+            {
+                return (ViewModelLocator)(((App)App.Current).Resources["Locator"]);
+            }
+        }
     }
 }
