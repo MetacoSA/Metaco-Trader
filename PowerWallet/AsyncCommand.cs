@@ -80,6 +80,8 @@ namespace PowerWallet
             {
                 _Cancel = new CancellationTokenSource();
                 Task = CreateTask(_Cancel.Token);
+                if (messenger != null)
+                    messenger.Send<AsyncCommand>(this);
             }
         }
 
@@ -97,9 +99,10 @@ namespace PowerWallet
 
         #endregion
 
+        IMessenger messenger;
         public AsyncCommand Notify(IMessenger messenger)
         {
-            messenger.Send(this);
+            this.messenger = messenger;
             return this;
         }
     }

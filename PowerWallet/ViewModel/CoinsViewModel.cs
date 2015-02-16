@@ -13,22 +13,36 @@ using System.Threading;
 using System.ComponentModel;
 using PowerWallet.Controls;
 using PowerWallet.Messages;
+using System.Windows.Input;
 
 namespace PowerWallet.ViewModel
 {
     public class CoinsViewModel : PWViewModelBase
     {
+        RapidBaseClientFactory _Factory;
         public CoinsViewModel(RapidBaseClientFactory factory)
         {
+            _Factory = factory;
             this
                 .ObservablePropertyChanged
                 .Throttle(TimeSpan.FromMilliseconds(300))
                 .ObserveHere()
                 .Subscribe((_) =>
                 {
-                    new AsyncCommand(async c =>
+                    Search.Execute(null);
+                });
+            SearchedCoins = "15sYbVpRh6dyWycZMwPdxJWD4xbfxReeHe";
+        }
+
+        ICommand _Search;
+        public ICommand Search
+        {
+            get
+            {
+                if (_Search == null)
+                    _Search = new AsyncCommand(async c =>
                     {
-                        var client = factory.CreateClient();
+                        var client = _Factory.CreateClient();
                         BalanceModel balance = null;
                         try
                         {
@@ -41,11 +55,12 @@ namespace PowerWallet.ViewModel
                             balance = await client.GetBalance(SearchedCoins, true);
                         PopulateCoins(balance);
                     })
-                    .Notify(this.MessengerInstance)
-                    .Execute();
-                });
-            SearchedCoins = "15sYbVpRh6dyWycZMwPdxJWD4xbfxReeHe";
+                    .Notify(MessengerInstance);
+                return _Search;
+            }
         }
+
+
 
         private string _SearchedCoins;
         public string SearchedCoins
@@ -93,7 +108,7 @@ namespace PowerWallet.ViewModel
             Coin = coin;
             Op = op;
             var address = coin.TxOut.ScriptPubKey.GetDestinationAddress(Network.Main);
-            if(address != null)
+            if (address != null)
                 Owner = address.ToString();
             else
                 Owner = coin.TxOut.ScriptPubKey.ToString();

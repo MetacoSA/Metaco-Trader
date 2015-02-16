@@ -78,7 +78,9 @@ namespace PowerWallet
                     };
                     doc.IsActive = true;
                     documents.Children.Add(doc);
-                }).Notify(App.Locator.Resolve<IMessenger>());
+                })
+                .Notify(App.Locator.Resolve<IMessenger>())
+                .Execute();
             }
         }
 

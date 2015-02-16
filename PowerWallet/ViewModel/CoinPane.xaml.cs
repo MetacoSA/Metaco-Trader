@@ -1,6 +1,7 @@
 ﻿using PowerWallet.Messages;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,8 +25,9 @@ namespace PowerWallet.ViewModel
         public CoinPane()
         {
             InitializeComponent();
-            coins.DataContext = App.Locator.Resolve<CoinsViewModel>();
+            ViewModel = App.Locator.Resolve<CoinsViewModel>();
             grid.SelectionChanged += grid_SelectionChanged;
+            coins.CreateCommandBinding(NavigationCommands.Refresh, new Binding("Search"));
         }
 
 
@@ -34,6 +36,10 @@ namespace PowerWallet.ViewModel
             get
             {
                 return coins.DataContext as CoinsViewModel;
+            }
+            set
+            {
+                coins.DataContext = value;
             }
         }
 

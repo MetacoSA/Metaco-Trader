@@ -13,20 +13,24 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel x:Name="coins">
-        <DockPanel.CommandBindings>
-            <CommandBinding Command="NavigationCommands.Refresh" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
-        </DockPanel.CommandBindings>
         <DockPanel DockPanel.Dock="Top" LastChildFill="True">
-            <Button DockPanel.Dock="Right" Command="NavigationCommands.Refresh">Refresh</Button>
+            <Button DockPanel.Dock="Right" 
+                    Command="NavigationCommands.Refresh" 
+                    Style="{DynamicResource IconButton}">
+                <Image Source="/PowerWallet;component/Images/112_RefreshArrow_Green_32x32_72.png"></Image>
+            </Button>
             <toolkit:WatermarkTextBox 
                                     Watermark="Search here for wallet or address"
                                     Text="{Binding SearchedCoins, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     ></toolkit:WatermarkTextBox>
         </DockPanel>
         <grid:DataGridControl x:Name="grid" 
-                                                      ItemsSource="{Binding Coins}" 
-                                                      DockPanel.Dock="Bottom"
-                                                      ReadOnly="True" AutoCreateColumns="False">
+                            ItemsSource="{Binding Coins}" 
+                            DockPanel.Dock="Bottom"
+                            ReadOnly="True" AutoCreateColumns="False">
+            <grid:DataGridControl.InputBindings>
+                <KeyBinding Command="NavigationCommands.Refresh" Gesture="F5"></KeyBinding>
+            </grid:DataGridControl.InputBindings>
             <grid:DataGridControl.View>
                 <grid:TableView  UseDefaultHeadersFooters="True">
                 </grid:TableView>
