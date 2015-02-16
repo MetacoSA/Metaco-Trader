@@ -14,6 +14,7 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
 
 namespace PowerWallet.ViewModel
@@ -30,6 +31,7 @@ namespace PowerWallet.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<RapidBaseClientFactory>();
             SimpleIoc.Default.Register<StatusMainViewModel>();
+            SimpleIoc.Default.Register<IMessenger>(() => Messenger.Default);
         }
         public static void Cleanup()
         {

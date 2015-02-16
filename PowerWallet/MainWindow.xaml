@@ -6,16 +6,38 @@
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:edit="http://icsharpcode.net/sharpdevelop/avalonedit"
         xmlns:grid="http://schemas.xceed.com/wpf/xaml/datagrid"
+        xmlns:gif="http://wpfanimatedgif.codeplex.com"
         Title="Power Wallet">
     <controls:NiceWindow.CommandBindings>
         <CommandBinding Command="{x:Static NavigationCommands.Search}" Executed="Search_Executed"></CommandBinding>
     </controls:NiceWindow.CommandBindings>
     <DockPanel LastChildFill="True" x:Name="root">
-        <StatusBar Height="20"  DataContext="{Binding Status}"  DockPanel.Dock="Bottom">
-            <StatusBarItem Content="{Binding State}"></StatusBarItem>
+        <StatusBar Height="25"  DataContext="{Binding Status}"  DockPanel.Dock="Bottom">
+            <StatusBarItem>
+                <Grid>
+                    <Image 
+                                Visibility="{Binding State, Converter={StaticResource EqualsToVisibility}, ConverterParameter=Success}"
+                                Source="/PowerWallet;component/Images/112_Tick_Green_32x32_72.png" Height="18" Width="18" Stretch="UniformToFill"/>
+                    <Image 
+                        Visibility="{Binding State, Converter={StaticResource EqualsToVisibility}, ConverterParameter=Error}"
+                        Source="/PowerWallet;component/Images/Remove.png" Height="18" Width="18" Stretch="UniformToFill"></Image>
+                    <Image 
+                        Visibility="{Binding State, Converter={StaticResource EqualsToVisibility}, ConverterParameter=Loading}"
+                        gif:ImageBehavior.AnimatedSource="pack://application:,,,/PowerWallet;component/Images/Loader.gif" Width="18" Height="18" Stretch="UniformToFill"></Image>
+                </Grid>
+            </StatusBarItem>
             <StatusBarItem Content="{Binding Message}"></StatusBarItem>
         </StatusBar>
-        <ad:DockingManager x:Name="dockManager" Grid.Row="1" DockPanel.Dock="Top">
+        <Menu x:Name="menu" DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New">
+                    <MenuItem Header="_Wallet">
+                    </MenuItem>
+                    <MenuItem Header="_Transaction"></MenuItem>
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <ad:DockingManager x:Name="dockManager" DockPanel.Dock="Top">
             <ad:LayoutRoot>
                 <ad:LayoutPanel Orientation="Horizontal">
                     <ad:LayoutAnchorablePane DockWidth="250">

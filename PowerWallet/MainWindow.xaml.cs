@@ -58,37 +58,38 @@ namespace PowerWallet
             }
         }
 
-        private async void Search_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void Search_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var txt = GetText(e.OriginalSource);
             if (txt != null)
             {
-
-                var client = locator.Resolve<RapidBaseClientFactory>().CreateClient();
-                var result = await client.Get<string>("whatisit/" + txt);
-
-                var doc = new LayoutDocument();
-                doc.Title = txt;
-                doc.Content = new TextEditor()
+                new AsyncCommand(async t =>
                 {
-                    Text = result,
-                    InputBindings = 
+                    var client = locator.Resolve<RapidBaseClientFactory>().CreateClient();
+                    var result = await client.Get<string>("whatisit/" + txt);
+                    var doc = new LayoutDocument();
+                    doc.Title = txt;
+                    doc.Content = new TextEditor()
+                    {
+                        Text = result,
+                        InputBindings = 
                     {
                         new InputBinding(NavigationCommands.Search, NavigationCommands.Search.InputGestures[0])
                     },
-                    ContextMenu = new ContextMenu()
-                    {
-                        Items = 
+                        ContextMenu = new ContextMenu()
+                        {
+                            Items = 
                         {
                           new MenuItem()
                           {
                               Command = NavigationCommands.Search
                           }
                         }
-                    }
-                };
-                doc.IsActive = true;
-                documents.Children.Add(doc);
+                        }
+                    };
+                    doc.IsActive = true;
+                    documents.Children.Add(doc);
+                }).Notify(locator.Resolve<IMessenger>());
             }
         }
 
