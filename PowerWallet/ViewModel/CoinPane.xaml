@@ -14,7 +14,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel x:Name="coins">
         <DockPanel.CommandBindings>
-            <CommandBinding Command="NavigationCommands.Refresh"></CommandBinding>
+            <CommandBinding Command="NavigationCommands.Refresh" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute"></CommandBinding>
         </DockPanel.CommandBindings>
         <DockPanel DockPanel.Dock="Top" LastChildFill="True">
             <Button DockPanel.Dock="Right" Command="NavigationCommands.Refresh">Refresh</Button>
