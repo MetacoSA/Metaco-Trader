@@ -26,16 +26,25 @@ namespace PowerWallet.ViewModel
         /// </summary>
         public ViewModelLocator()
         {
-            ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-            SimpleIoc.Default.Register<CoinsViewModel>();
-            SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<RapidBaseClientFactory>();
-            SimpleIoc.Default.Register<StatusMainViewModel>();
-            SimpleIoc.Default.Register<IMessenger>(() => Messenger.Default);
+            var ioc = new SimpleIoc();
+            ServiceLocator.SetLocatorProvider(() => ioc);
+            ioc.Register<CoinsViewModel>();
+            ioc.Register<MainViewModel>();
+            ioc.Register<RapidBaseClientFactory>();
+            ioc.Register<StatusMainViewModel>();
+            ioc.Register<IMessenger>(() => GalaSoft.MvvmLight.Messaging.Messenger.Default);
         }
         public static void Cleanup()
         {
             // TODO Clear the ViewModels
+        }
+
+        public IMessenger Messenger
+        {
+            get
+            {
+                return Resolve<IMessenger>();
+            }
         }
 
         public T Resolve<T>()

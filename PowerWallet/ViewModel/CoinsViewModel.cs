@@ -12,6 +12,7 @@ using RapidBase.Models;
 using System.Threading;
 using System.ComponentModel;
 using PowerWallet.Controls;
+using PowerWallet.Messages;
 
 namespace PowerWallet.ViewModel
 {
@@ -83,7 +84,7 @@ namespace PowerWallet.ViewModel
         }
     }
 
-    public class CoinViewModel : PWViewModelBase
+    public class CoinViewModel : PWViewModelBase, IHasProperties
     {
         public CoinViewModel(ICoin coin, BalanceOperation op)
         {

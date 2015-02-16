@@ -14,5 +14,15 @@ namespace PowerWallet
     /// </summary>
     public partial class App : Application
     {
+        private static ViewModelLocator _Locator;
+        public static ViewModelLocator Locator
+        {
+            get
+            {
+                if (_Locator == null)
+                    _Locator = new ViewModelLocator();
+                return _Locator;
+            }
+        }
     }
 }

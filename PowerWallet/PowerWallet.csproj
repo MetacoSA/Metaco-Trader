@@ -142,9 +142,13 @@
     <Compile Include="Controls\ReadOnlyTextEditor.cs" />
     <Compile Include="Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Messages\ExposePropertiesMessage.cs" />
     <Compile Include="PowerCommands.cs" />
     <Compile Include="RapidBaseClientFactory.cs" />
     <Compile Include="ViewModelLocator.cs" />
+    <Compile Include="ViewModel\CoinPane.xaml.cs">
+      <DependentUpon>CoinPane.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\PWViewModelBase.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\StatusMainViewModel.cs" />
@@ -165,6 +169,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ViewModel\CoinPane.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

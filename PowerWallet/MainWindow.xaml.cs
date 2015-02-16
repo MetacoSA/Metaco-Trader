@@ -2,6 +2,7 @@
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Editing;
 using PowerWallet.Controls;
+using PowerWallet.Messages;
 using PowerWallet.ViewModel;
 using RapidBase.Client;
 using System;
@@ -28,14 +29,14 @@ namespace PowerWallet
     /// </summary>
     public partial class MainWindow : NiceWindow
     {
-        ViewModelLocator locator;
         public MainWindow()
         {
             InitializeComponent();
-            locator = new ViewModelLocator();
-            root.DataContext = locator.Resolve<MainViewModel>();
-            coins.DataContext = locator.Resolve<CoinsViewModel>();
-            grid.SelectionChanged += grid_SelectionChanged;
+            root.DataContext = App.Locator.Resolve<MainViewModel>();
+            App.Locator.Messenger.Register<ExposePropertiesMessage>(this, m =>
+            {
+                propertyGrid.SelectedObject = m.Target.ForPropertyGrid();
+            });
         }
 
         public MainViewModel ViewModel
@@ -46,18 +47,6 @@ namespace PowerWallet
             }
         }
 
-        void grid_SelectionChanged(object sender, Xceed.Wpf.DataGrid.DataGridSelectionChangedEventArgs e)
-        {
-            if (grid.SelectedItems.Count == 1)
-            {
-                var coin = grid.SelectedItems[0] as CoinViewModel;
-                if (coin != null)
-                {
-                    propertyGrid.SelectedObject = coin.ForPropertyGrid();
-                }
-            }
-        }
-
         private void Search_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var txt = GetText(e.OriginalSource);
@@ -65,7 +54,7 @@ namespace PowerWallet
             {
                 new AsyncCommand(async t =>
                 {
-                    var client = locator.Resolve<RapidBaseClientFactory>().CreateClient();
+                    var client = App.Locator.Resolve<RapidBaseClientFactory>().CreateClient();
                     var result = await client.Get<string>("whatisit/" + txt);
                     var doc = new LayoutDocument();
                     doc.Title = txt;
@@ -89,7 +78,7 @@ namespace PowerWallet
                     };
                     doc.IsActive = true;
                     documents.Children.Add(doc);
-                }).Notify(locator.Resolve<IMessenger>());
+                }).Notify(App.Locator.Resolve<IMessenger>());
             }
         }
 
