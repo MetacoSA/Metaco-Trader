@@ -16,8 +16,8 @@
             <StatusBarItem>
                 <Grid>
                     <Image 
-                                Visibility="{Binding State, Converter={StaticResource EqualsToVisibility}, ConverterParameter=Success}"
-                                Source="/PowerWallet;component/Images/112_Tick_Green_32x32_72.png" Height="18" Width="18" Stretch="UniformToFill"/>
+                        Visibility="{Binding State, Converter={StaticResource EqualsToVisibility}, ConverterParameter=Success}"
+                        Source="/PowerWallet;component/Images/112_Tick_Green_32x32_72.png" Height="18" Width="18" Stretch="UniformToFill"/>
                     <Image 
                         Visibility="{Binding State, Converter={StaticResource EqualsToVisibility}, ConverterParameter=Error}"
                         Source="/PowerWallet;component/Images/Remove.png" Height="18" Width="18" Stretch="UniformToFill"></Image>
@@ -54,6 +54,13 @@
                                         </grid:TableView>
                                     </grid:DataGridControl.View>
                                     <grid:DataGridControl.Columns>
+                                        <grid:UnboundColumn FieldName="." Width="24">
+                                            <grid:UnboundColumn.CellContentTemplate>
+                                                <DataTemplate>
+                                                    <Image Height="18" Width="18" Source="/PowerWallet;component/Images/coin.png"></Image>
+                                                </DataTemplate>
+                                            </grid:UnboundColumn.CellContentTemplate>
+                                        </grid:UnboundColumn>
                                         <grid:Column Title="Owner" FieldName="Owner">
                                         </grid:Column>
                                         <grid:Column Title="Value" FieldName="Value">
