@@ -140,6 +140,7 @@ namespace PowerWallet.ViewModel
         }
     }
 
+    [DisplayName("Coin")]
     public class CoinPropertyViewModel
     {
         public CoinPropertyViewModel(CoinViewModel coin)
