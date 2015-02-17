@@ -56,10 +56,9 @@ namespace PowerWallet
             {
                 new AsyncCommand(async t =>
                 {
-                    var client = App.Locator.Resolve<RapidBaseClientFactory>().CreateClient();
-                    var result = await client.Get<string>("whatisit/" + txt);
+                    var result = await ViewModel.Search(txt);
                     var doc = new LayoutDocument();
-                    doc.Title = txt;
+                    doc.Title = "Search";
                     doc.Content = new TextEditor()
                     {
                         Text = result,
