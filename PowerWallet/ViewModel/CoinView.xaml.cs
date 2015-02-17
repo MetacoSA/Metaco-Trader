@@ -37,10 +37,9 @@ namespace PowerWallet.ViewModel
             if (String.IsNullOrEmpty(str))
                 return 0.0;
             var bytes = UTF8Encoding.UTF8.GetBytes(str);
-            var result = Hashes.SHA256(bytes);
-            var inc = 1.0 / (255.0 * 255.0);
-            var r =  inc * (double)((int)result[0] +  ((int)result[1] << 8));
-            return r;
+            var result =  Hashes.SHA256(bytes);
+            var inc = 1.0m / (255.0m * 255.0m);
+            return (double)(inc * (decimal)((int)result[0] +  ((int)result[1] << 8)));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
