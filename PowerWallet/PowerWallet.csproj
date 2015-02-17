@@ -75,9 +75,9 @@
     <Reference Include="protobuf-net">
       <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="RapidBase.Client, Version=1.0.0.7, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="RapidBase.Client, Version=1.0.0.8, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RapidBase.Client.1.0.0.7\lib\net45\RapidBase.Client.dll</HintPath>
+      <HintPath>..\packages\RapidBase.Client.1.0.0.8\lib\net45\RapidBase.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

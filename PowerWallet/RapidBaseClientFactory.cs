@@ -27,7 +27,10 @@ namespace PowerWallet
         }
         public RapidBaseClient CreateClient()
         {
-            return new RapidBaseClient(Uri);
+            return new RapidBaseClient(Uri)
+            {
+                Network = App.Network
+            };
         }
     }
 }

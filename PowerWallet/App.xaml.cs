@@ -1,4 +1,5 @@
-﻿using PowerWallet.ViewModel;
+﻿using NBitcoin;
+using PowerWallet.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -29,7 +30,15 @@ namespace PowerWallet
         {
             get
             {
-                return typeof(App).Assembly.GetName().Version.ToString() + " by Nicolas Dorier";
+                return typeof(App).Assembly.GetName().Version.ToString() + " by Nicolas Dorier (" + Network.ToString() + ")";
+            }
+        }
+
+        public static Network Network
+        {
+            get
+            {
+                return NBitcoin.Network.Main;
             }
         }
     }

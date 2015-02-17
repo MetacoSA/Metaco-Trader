@@ -122,12 +122,12 @@ namespace PowerWallet.ViewModel
             else
             {
                 Value = colored.Asset.Quantity.ToString() + " Assets";
-                Type = colored.Asset.Id.GetWif(Network.Main).ToString();
+                Type = colored.Asset.Id.GetWif(App.Network).ToString();
             }
             Confirmations = op.Confirmations;
             Coin = coin;
             Op = op;
-            var address = coin.TxOut.ScriptPubKey.GetDestinationAddress(Network.Main);
+            var address = coin.TxOut.ScriptPubKey.GetDestinationAddress(App.Network);
             if (address != null)
                 Owner = address.ToString();
             else
