@@ -28,14 +28,15 @@ namespace PowerWallet
             bindable.RoutedCommand = command;
             bindable.CommandBinding = new CommandBinding(command);
             bindable.SetBinding(BindableCommandBinding.CommandProperty, binding);
-            element.CommandBindings.Add(bindable.CommandBinding);
             var method = typeof(FrameworkElement).GetMethod("AddLogicalChild", BindingFlags.NonPublic | BindingFlags.Instance);
-            method.Invoke(element, new[]{bindable});
+            method.Invoke(element, new[] { bindable });
+            element.Resources.Add(Guid.NewGuid(), bindable); //Prevent GC from collecting BindableCommandBinding
+            element.CommandBindings.Add(bindable.CommandBinding);
             return bindable.CommandBinding;
         }
     }
 
-    public class BindableCommandBinding : FrameworkElement
+    class BindableCommandBinding : FrameworkElement
     {
 
 
