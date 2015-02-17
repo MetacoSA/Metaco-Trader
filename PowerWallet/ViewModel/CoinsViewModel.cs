@@ -30,7 +30,7 @@ namespace PowerWallet.ViewModel
                 .ObserveHere()
                 .Subscribe((_) =>
                 {
-                    //Search.Execute(null);
+                    Search.Execute(null);
                 });
             SearchedCoins = "15sYbVpRh6dyWycZMwPdxJWD4xbfxReeHe";
         }

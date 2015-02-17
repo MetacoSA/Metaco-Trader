@@ -35,7 +35,7 @@ namespace PowerWallet
         }
     }
 
-    class BindableCommandBinding : FrameworkElement
+    public class BindableCommandBinding : FrameworkElement
     {
 
 
