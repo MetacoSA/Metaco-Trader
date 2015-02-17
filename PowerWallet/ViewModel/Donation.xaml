@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="PowerWallet.ViewModel.Donation"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:PowerWallet"
+             mc:Ignorable="d" 
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel VerticalAlignment="Center">
+        <toolkit:AutoSelectTextBox 
+            FontSize="15"
+            Text="15sYbVpRh6dyWycZMwPdxJWD4xbfxReeHe"
+            IsReadOnly="True"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Bottom"></toolkit:AutoSelectTextBox>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" DockPanel.Dock="Top">
+            <TextBlock 
+                x:Name="awesomebox"
+            Text="Every Satoshi sent, a kitten is saved"
+            FontFamily="Segoe UI"
+            FontSize="15"
+            >
+            </TextBlock>
+            <Button Margin="10,0,0,0" Click="Button_Click" ToolTip="More awesomeness" Style="{StaticResource IconButton}">
+                <Image Source="/PowerWallet;component/Images/112_RefreshArrow_Green_32x32_72.png"></Image>
+            </Button>
+        </StackPanel>
+        <Image 
+            DockPanel.Dock="Top"
+            Stretch="None"
+            Source="/PowerWallet;component/Images/QRDonation.png"></Image>
+    </DockPanel>
+</UserControl>

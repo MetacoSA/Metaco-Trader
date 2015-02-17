@@ -40,6 +40,7 @@
                     <MenuItem Header="_Transaction"></MenuItem>
                 </MenuItem>
             </MenuItem>
+            <MenuItem Header="Donate" Click="Donate_Click"></MenuItem>
         </Menu>
         <ad:DockingManager x:Name="dockManager" DockPanel.Dock="Top">
             <ad:LayoutRoot>
@@ -50,9 +51,6 @@
                         </ad:LayoutAnchorable>
                     </ad:LayoutAnchorablePane>
                     <ad:LayoutDocumentPane x:Name="documents">
-                        <ad:LayoutDocument  Title="Test">
-                            <edit:TextEditor></edit:TextEditor>
-                        </ad:LayoutDocument>
                     </ad:LayoutDocumentPane>
                     <ad:LayoutAnchorablePaneGroup DockWidth="250" Orientation="Vertical">
                         <ad:LayoutAnchorablePane DockHeight="1.618*">

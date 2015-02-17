@@ -38,6 +38,7 @@ namespace PowerWallet
             {
                 propertyGrid.SelectedObject = m.Target.ForPropertyGrid();
             });
+            Donate_Click(null, null);
         }
 
         public MainViewModel ViewModel
@@ -85,6 +86,16 @@ namespace PowerWallet
             }
         }
 
+        private void Donate_Click(object sender, RoutedEventArgs e)
+        {
+            var doc = new LayoutDocument();
+            doc.Title = "Donation";
+            doc.IsActive = true;
+            doc.Content = new Donation();
+            documents.Children.Add(doc);
+        }
+
+
         private string GetText(object source)
         {
             var txt = source as TextBox;
@@ -98,5 +109,6 @@ namespace PowerWallet
                 return txtEditor.TextArea.Selection.GetText();
             return null;
         }
+
     }
 }
