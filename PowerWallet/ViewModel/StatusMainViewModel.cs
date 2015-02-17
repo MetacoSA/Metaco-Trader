@@ -50,6 +50,7 @@ namespace PowerWallet.ViewModel
                  TaskStatus.WaitingForActivation,
              }.Contains(command.Task.Status))
             {
+                Message = "";
                 State = StatusState.Loading;
             }
 

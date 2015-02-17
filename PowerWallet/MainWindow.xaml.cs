@@ -33,6 +33,7 @@ namespace PowerWallet
         {
             InitializeComponent();
             root.DataContext = App.Locator.Resolve<MainViewModel>();
+            serverGrid.SelectedObject = ViewModel.Server;
             App.Locator.Messenger.Register<ExposePropertiesMessage>(this, m =>
             {
                 propertyGrid.SelectedObject = m.Target.ForPropertyGrid();

@@ -14,6 +14,7 @@ using System.ComponentModel;
 using PowerWallet.Controls;
 using PowerWallet.Messages;
 using System.Windows.Input;
+using System.Net;
 
 namespace PowerWallet.ViewModel
 {
@@ -29,7 +30,7 @@ namespace PowerWallet.ViewModel
                 .ObserveHere()
                 .Subscribe((_) =>
                 {
-                    Search.Execute(null);
+                    //Search.Execute(null);
                 });
             SearchedCoins = "15sYbVpRh6dyWycZMwPdxJWD4xbfxReeHe";
         }
@@ -53,6 +54,8 @@ namespace PowerWallet.ViewModel
                         }
                         if (balance == null)
                             balance = await client.GetBalance(SearchedCoins, true);
+                        if (balance == null)
+                            throw new WebException("Error 404");
                         PopulateCoins(balance);
                     })
                     .Notify(MessengerInstance);

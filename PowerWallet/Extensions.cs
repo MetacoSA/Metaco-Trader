@@ -31,7 +31,6 @@ namespace PowerWallet
             element.CommandBindings.Add(bindable.CommandBinding);
             var method = typeof(FrameworkElement).GetMethod("AddLogicalChild", BindingFlags.NonPublic | BindingFlags.Instance);
             method.Invoke(element, new[]{bindable});
-            //element.Resources.Add(Guid.NewGuid(), bindable);
             return bindable.CommandBinding;
         }
     }

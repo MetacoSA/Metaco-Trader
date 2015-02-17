@@ -52,11 +52,25 @@
                             <edit:TextEditor></edit:TextEditor>
                         </ad:LayoutDocument>
                     </ad:LayoutDocumentPane>
-                    <ad:LayoutAnchorablePane DockWidth="250">
-                        <ad:LayoutAnchorable Title="Properties">
-                            <toolkit:PropertyGrid x:Name="propertyGrid" NameColumnWidth="100"></toolkit:PropertyGrid>
-                        </ad:LayoutAnchorable>
-                    </ad:LayoutAnchorablePane>
+                    <ad:LayoutAnchorablePaneGroup DockWidth="250" Orientation="Vertical">
+                        <ad:LayoutAnchorablePane DockHeight="2*">
+                            <ad:LayoutAnchorable Title="Properties">
+                                <toolkit:PropertyGrid x:Name="propertyGrid" NameColumnWidth="80"></toolkit:PropertyGrid>
+                            </ad:LayoutAnchorable>
+                        </ad:LayoutAnchorablePane>
+                        <ad:LayoutAnchorablePane  DockHeight="1*">
+                            <ad:LayoutAnchorable Title="Server">
+                                <toolkit:PropertyGrid 
+                                x:Name="serverGrid" 
+                                ShowSearchBox="False"
+                                ShowSortOptions="False"
+                                ShowSummary="False"
+                                ShowPreview="False"
+                                NameColumnWidth="80">
+                                </toolkit:PropertyGrid>
+                            </ad:LayoutAnchorable>
+                        </ad:LayoutAnchorablePane>
+                    </ad:LayoutAnchorablePaneGroup>
                 </ad:LayoutPanel>
             </ad:LayoutRoot>
         </ad:DockingManager>
