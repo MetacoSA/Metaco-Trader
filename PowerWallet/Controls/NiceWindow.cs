@@ -23,8 +23,15 @@ namespace PowerWallet.Controls
         }
         public NiceWindow()
         {
+            this.SourceInitialized += NiceWindow_SourceInitialized;
         }
 
+        void NiceWindow_SourceInitialized(object sender, EventArgs e)
+        {
+            Interop.FixMaximize(this);
+        }
+
+        
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -35,7 +42,6 @@ namespace PowerWallet.Controls
             ((Button)GetTemplateChild("PART_Close")).Click += Close;
             ((Grid)GetTemplateChild("PART_Top")).MouseDown += NiceWindow_MouseDown;
         }
-
 
 
 
@@ -88,8 +94,6 @@ namespace PowerWallet.Controls
                 return;
             if (this.WindowState == System.Windows.WindowState.Normal)
             {
-                this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-                this.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
                 this.WindowState = System.Windows.WindowState.Maximized;
                 UpdateMaxButton(true);
             }
@@ -113,10 +117,6 @@ namespace PowerWallet.Controls
             var child = ((FrameworkElement)button.FindName(childName));
             if (child != null)
                 child.Visibility = value ? Visibility.Visible : System.Windows.Visibility.Hidden;
-        }
-        void Close(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }

@@ -140,6 +140,7 @@
     </ApplicationDefinition>
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="Controls\ChangeHueEffect.cs" />
+    <Compile Include="Controls\Interop.cs" />
     <Compile Include="Controls\ReadOnlyTextEditor.cs" />
     <Compile Include="Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="Extensions.cs" />
