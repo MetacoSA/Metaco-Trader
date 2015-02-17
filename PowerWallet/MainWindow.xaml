@@ -9,12 +9,14 @@
         xmlns:grid="http://schemas.xceed.com/wpf/xaml/datagrid"
         xmlns:gif="http://wpfanimatedgif.codeplex.com"
         xmlns:local="clr-namespace:PowerWallet"
-        Title="Power Wallet">
+        Title="Power Wallet"
+        Caption="{x:Static local:App.Caption}"                     
+                     >
     <controls:NiceWindow.CommandBindings>
         <CommandBinding Command="{x:Static NavigationCommands.Search}" Executed="Search_Executed"></CommandBinding>
     </controls:NiceWindow.CommandBindings>
     <DockPanel LastChildFill="True" x:Name="root">
-        <StatusBar Height="25"  DataContext="{Binding Status}"  DockPanel.Dock="Bottom">
+        <StatusBar Height="25"  DataContext="{Binding Status}" Background="White"  DockPanel.Dock="Bottom">
             <StatusBarItem>
                 <Grid>
                     <Image 
@@ -53,7 +55,7 @@
                         </ad:LayoutDocument>
                     </ad:LayoutDocumentPane>
                     <ad:LayoutAnchorablePaneGroup DockWidth="250" Orientation="Vertical">
-                        <ad:LayoutAnchorablePane DockHeight="2*">
+                        <ad:LayoutAnchorablePane DockHeight="1.618*">
                             <ad:LayoutAnchorable Title="Properties">
                                 <toolkit:PropertyGrid x:Name="propertyGrid" NameColumnWidth="80"></toolkit:PropertyGrid>
                             </ad:LayoutAnchorable>

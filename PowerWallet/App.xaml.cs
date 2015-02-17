@@ -24,5 +24,13 @@ namespace PowerWallet
                 return _Locator;
             }
         }
+
+        public static string Caption
+        {
+            get
+            {
+                return typeof(App).Assembly.GetName().Version.ToString() + " by Nicolas Dorier";
+            }
+        }
     }
 }

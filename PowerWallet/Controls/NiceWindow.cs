@@ -37,6 +37,26 @@ namespace PowerWallet.Controls
         }
 
 
+
+
+        public string Caption
+        {
+            get
+            {
+                return (string)GetValue(CaptionProperty);
+            }
+            set
+            {
+                SetValue(CaptionProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty CaptionProperty =
+            DependencyProperty.Register("Caption", typeof(string), typeof(NiceWindow), new PropertyMetadata(null));
+
+
+
+
         Button _Max;
 
         void NiceWindow_MouseDown(object sender, MouseButtonEventArgs e)
