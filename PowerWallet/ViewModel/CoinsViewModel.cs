@@ -32,7 +32,9 @@ namespace PowerWallet.ViewModel
                 {
                     Search.Execute(null);
                 });
-            SearchedCoins = "15sYbVpRh6dyWycZMwPdxJWD4xbfxReeHe";
+            SearchedCoins = "akSjSW57xhGp86K6JFXXroACfRCw7SPv637";
+            //15sYbVpRh6dyWycZMwPdxJWD4xbfxReeHe (me)
+            //akSjSW57xhGp86K6JFXXroACfRCw7SPv637 (colored)
         }
 
         ICommand _Search;
@@ -52,6 +54,14 @@ namespace PowerWallet.ViewModel
                         catch (FormatException)
                         {
                         }
+                        if (balance == null)
+                            try
+                            {
+                                balance = await client.GetBalance(new BitcoinColoredAddress(SearchedCoins), true);
+                            }
+                            catch (FormatException)
+                            {
+                            }
                         if (balance == null)
                             balance = await client.GetBalance(SearchedCoins, true);
                         if (balance == null)
@@ -106,7 +116,14 @@ namespace PowerWallet.ViewModel
     {
         public CoinViewModel(ICoin coin, BalanceOperation op)
         {
-            Value = coin.Amount;
+            var colored = coin as ColoredCoin;
+            if (colored == null)
+                Value = coin.Amount.ToUnit(MoneyUnit.BTC).ToString() + " BTC";
+            else
+            {
+                Value = colored.Asset.Quantity.ToString() + " Assets";
+                Type = colored.Asset.Id.GetWif(Network.Main).ToString();
+            }
             Confirmations = op.Confirmations;
             Coin = coin;
             Op = op;
@@ -117,10 +134,17 @@ namespace PowerWallet.ViewModel
                 Owner = coin.TxOut.ScriptPubKey.ToString();
         }
 
+
+        public string Type
+        {
+            get;
+            set;
+        }
+
         internal BalanceOperation Op;
         internal ICoin Coin;
 
-        public Money Value
+        public string Value
         {
             get;
             set;
@@ -155,7 +179,7 @@ namespace PowerWallet.ViewModel
             Owner = coin.Owner;
         }
         [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]
-        public Money Value
+        public string Value
         {
             get;
             set;

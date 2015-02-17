@@ -7,6 +7,7 @@
             xmlns:grid="http://schemas.xceed.com/wpf/xaml/datagrid"
             xmlns:gif="http://wpfanimatedgif.codeplex.com"
             xmlns:local="clr-namespace:PowerWallet"
+             xmlns:mvvm="clr-namespace:PowerWallet.ViewModel"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
@@ -25,29 +26,35 @@
                                     ></toolkit:WatermarkTextBox>
         </DockPanel>
         <grid:DataGridControl x:Name="grid" 
-                            ItemsSource="{Binding Coins}" 
+                            ItemsSource="{Binding Coins}"
                             DockPanel.Dock="Bottom"
                             ReadOnly="True" AutoCreateColumns="False">
             <grid:DataGridControl.InputBindings>
                 <KeyBinding Command="NavigationCommands.Refresh" Gesture="F5"></KeyBinding>
             </grid:DataGridControl.InputBindings>
             <grid:DataGridControl.View>
-                <grid:TableView  UseDefaultHeadersFooters="True">
+                <grid:TableView  
+                    UseDefaultHeadersFooters="True"
+                    ColumnStretchMode="Last"
+                    ShowRowSelectorPane="False">
                 </grid:TableView>
             </grid:DataGridControl.View>
             <grid:DataGridControl.Columns>
-                <grid:UnboundColumn FieldName="." Width="24">
-                    <grid:UnboundColumn.CellContentTemplate>
+                <grid:Column FieldName="." Title="Type" Width="24">
+                    <grid:Column.GroupDescription>
+                        <PropertyGroupDescription PropertyName="Type"></PropertyGroupDescription>
+                    </grid:Column.GroupDescription>
+                    <grid:Column.CellContentTemplate>
                         <DataTemplate>
-                            <Image Height="18" Width="18" Source="/PowerWallet;component/Images/coin.png"></Image>
+                            <mvvm:CoinView></mvvm:CoinView>
                         </DataTemplate>
-                    </grid:UnboundColumn.CellContentTemplate>
-                </grid:UnboundColumn>
+                    </grid:Column.CellContentTemplate>
+                </grid:Column>
+                <grid:Column Title="Value" Width="80" FieldName="Value">
+                </grid:Column>
+                <grid:Column Title="Confirmations" Width="50" FieldName="Confirmations">
+                </grid:Column>
                 <grid:Column Title="Owner" FieldName="Owner">
-                </grid:Column>
-                <grid:Column Title="Value" FieldName="Value">
-                </grid:Column>
-                <grid:Column Title="Confirmations" FieldName="Confirmations">
                 </grid:Column>
             </grid:DataGridControl.Columns>
         </grid:DataGridControl>

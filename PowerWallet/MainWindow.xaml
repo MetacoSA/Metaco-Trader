@@ -55,7 +55,10 @@
                     <ad:LayoutAnchorablePaneGroup DockWidth="250" Orientation="Vertical">
                         <ad:LayoutAnchorablePane DockHeight="1.618*">
                             <ad:LayoutAnchorable Title="Properties">
-                                <toolkit:PropertyGrid x:Name="propertyGrid" NameColumnWidth="80"></toolkit:PropertyGrid>
+                                <toolkit:PropertyGrid x:Name="propertyGrid"
+                                                      ShowTitle="False"
+                                                      ShowSummary="False"
+                                                      NameColumnWidth="80"></toolkit:PropertyGrid>
                             </ad:LayoutAnchorable>
                         </ad:LayoutAnchorablePane>
                         <ad:LayoutAnchorablePane  DockHeight="1*">
@@ -66,6 +69,7 @@
                                 ShowSortOptions="False"
                                 ShowSummary="False"
                                 ShowPreview="False"
+                                ShowTitle="False"
                                 NameColumnWidth="80">
                                 </toolkit:PropertyGrid>
                             </ad:LayoutAnchorable>
