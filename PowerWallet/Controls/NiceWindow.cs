@@ -118,5 +118,9 @@ namespace PowerWallet.Controls
             if (child != null)
                 child.Visibility = value ? Visibility.Visible : System.Windows.Visibility.Hidden;
         }
+        void Close(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
