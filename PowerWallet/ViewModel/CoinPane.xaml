@@ -21,6 +21,7 @@
                 <Image Source="/PowerWallet;component/Images/112_RefreshArrow_Green_32x32_72.png"></Image>
             </Button>
             <toolkit:WatermarkTextBox 
+                                    local:AttachedProperties.CommandOnTextChanged="{Binding Search}"
                                     Watermark="Search here for wallet or address"
                                     Text="{Binding SearchedCoins, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                     ></toolkit:WatermarkTextBox>

@@ -38,7 +38,6 @@ namespace PowerWallet
             {
                 propertyGrid.SelectedObject = m.Target.ForPropertyGrid();
             });
-            Donate_Click(null, null);
         }
 
         public MainViewModel ViewModel
@@ -54,44 +53,21 @@ namespace PowerWallet
             var txt = GetText(e.OriginalSource);
             if (txt != null)
             {
-                new AsyncCommand(async t =>
-                {
-                    var result = await ViewModel.Search(txt);
-                    var doc = new LayoutDocument();
-                    doc.Title = "Search";
-                    doc.Content = new TextEditor()
-                    {
-                        Text = result,
-                        InputBindings = 
-                    {
-                        new InputBinding(NavigationCommands.Search, NavigationCommands.Search.InputGestures[0])
-                    },
-                        ContextMenu = new ContextMenu()
-                        {
-                            Items = 
-                        {
-                          new MenuItem()
-                          {
-                              Command = NavigationCommands.Search
-                          }
-                        }
-                        }
-                    };
-                    doc.IsActive = true;
-                    documents.Children.Add(doc);
-                })
-                .Notify(App.Locator.Resolve<IMessenger>())
-                .Execute();
+                var search = ActivateSearch();
+                search.SearchedTerm = txt;
+                search.Search.Execute();
             }
         }
 
-        private void Donate_Click(object sender, RoutedEventArgs e)
+
+        private SearchViewModel ActivateSearch()
         {
-            var doc = new LayoutDocument();
-            doc.Title = "Donation";
-            doc.IsActive = true;
-            doc.Content = new Donation();
-            documents.Children.Add(doc);
+            if (!documents.Children.Contains(search))
+            {
+                documents.Children.Add(search);
+            }
+            search.IsActive = true;
+            return ((SearchView)(search.Content)).ViewModel;
         }
 
 

@@ -24,17 +24,10 @@ namespace PowerWallet.ViewModel
         public CoinsViewModel(RapidBaseClientFactory factory)
         {
             _Factory = factory;
-            this
-                .ObservablePropertyChanged
-                .Throttle(TimeSpan.FromMilliseconds(300))
-                .ObserveHere()
-                .Subscribe((_) =>
-                {
-                    Search.Execute(null);
-                });
             SearchedCoins = "akSjSW57xhGp86K6JFXXroACfRCw7SPv637";
             //15sYbVpRh6dyWycZMwPdxJWD4xbfxReeHe (me)
             //akSjSW57xhGp86K6JFXXroACfRCw7SPv637 (colored)
+            Search.Execute(null);
         }
 
         ICommand _Search;

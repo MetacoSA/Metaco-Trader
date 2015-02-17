@@ -59,34 +59,5 @@ namespace PowerWallet.ViewModel
                 return _Status;
             }
         }
-
-        public async Task<string> Search(string txt)
-        {
-            var client = App.Locator.Resolve<RapidBaseClientFactory>().CreateClient();
-            try
-            {
-                var result = await client.Get<string>("whatisit/" + txt);
-                return result;
-            }
-            catch (Exception)
-            {
-                try
-                {
-
-                    if (txt.StartsWith("00000000"))
-                    {
-                        Block block = new Block();
-                        block.FromBytes(Encoders.Hex.DecodeData(txt));
-                        return block.ToString();
-                    }
-                    Transaction transaction = new Transaction(txt);
-                    return transaction.ToString();
-                }
-                catch (Exception)
-                {
-                    return "Good question holmes!";
-                }
-            }
-        }
     }
 }

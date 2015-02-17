@@ -43,7 +43,7 @@ namespace PowerWallet
         {
             get
             {
-                return _Network;
+                return _Network ?? Network.Main;
             }
         }
     }

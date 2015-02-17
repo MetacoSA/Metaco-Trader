@@ -160,6 +160,10 @@
     </Compile>
     <Compile Include="ViewModel\PWViewModelBase.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\SearchView.xaml.cs">
+      <DependentUpon>SearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\SearchViewModel.cs" />
     <Compile Include="ViewModel\ServerViewModel.cs" />
     <Compile Include="ViewModel\StatusMainViewModel.cs" />
     <Page Include="MainWindow.xaml">
@@ -189,6 +193,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewModel\Donation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewModel\SearchView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

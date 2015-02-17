@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="PowerWallet.ViewModel.SearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:PowerWallet.Controls"
+            xmlns:mvvm="clr-namespace:PowerWallet.ViewModel"
+            xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+            xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+            xmlns:edit="http://icsharpcode.net/sharpdevelop/avalonedit"
+            xmlns:grid="http://schemas.xceed.com/wpf/xaml/datagrid"
+            xmlns:gif="http://wpfanimatedgif.codeplex.com"
+            xmlns:local="clr-namespace:PowerWallet"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <DockPanel x:Name="root" LastChildFill="True">
+        <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top">
+            <TextBlock VerticalAlignment="Center" FontFamily="Segoe UI">Search</TextBlock>
+            <TextBox Margin="5,0,0,0" 
+                     local:AttachedProperties.CommandOnTextChanged="{Binding Search}"
+                     Text="{Binding SearchedTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"></TextBox>
+        </DockPanel>
+        <edit:TextEditor x:Name="editor">
+            <edit:TextEditor.InputBindings>
+                <KeyBinding Command="NavigationCommands.Search" Key="F3"></KeyBinding>
+            </edit:TextEditor.InputBindings>
+            <edit:TextEditor.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="NavigationCommands.Search"></MenuItem>
+                </ContextMenu>
+            </edit:TextEditor.ContextMenu>
+        </edit:TextEditor>
+    </DockPanel>
+</UserControl>

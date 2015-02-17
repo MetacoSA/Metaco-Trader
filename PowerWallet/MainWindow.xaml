@@ -40,7 +40,6 @@
                     <MenuItem Header="_Transaction"></MenuItem>
                 </MenuItem>
             </MenuItem>
-            <MenuItem Header="Donate" Click="Donate_Click"></MenuItem>
         </Menu>
         <ad:DockingManager x:Name="dockManager" DockPanel.Dock="Top">
             <ad:LayoutRoot>
@@ -51,6 +50,12 @@
                         </ad:LayoutAnchorable>
                     </ad:LayoutAnchorablePane>
                     <ad:LayoutDocumentPane x:Name="documents">
+                        <ad:LayoutDocument Title="Donation" ContentId="Donation">
+                            <mvvm:Donation></mvvm:Donation> 
+                        </ad:LayoutDocument>
+                        <ad:LayoutDocument x:Name="search" Title="Search" ContentId="Search">
+                            <mvvm:SearchView></mvvm:SearchView>
+                        </ad:LayoutDocument>
                     </ad:LayoutDocumentPane>
                     <ad:LayoutAnchorablePaneGroup DockWidth="250" Orientation="Vertical">
                         <ad:LayoutAnchorablePane DockHeight="1.618*">
