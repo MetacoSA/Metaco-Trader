@@ -15,6 +15,11 @@ namespace PowerWallet
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            _Network = e.Args.Contains("-testnet") ? Network.TestNet : Network.Main;
+            base.OnStartup(e);
+        }
         private static ViewModelLocator _Locator;
         public static ViewModelLocator Locator
         {
@@ -30,15 +35,15 @@ namespace PowerWallet
         {
             get
             {
-                return typeof(App).Assembly.GetName().Version.ToString() + " by Nicolas Dorier (" + Network.ToString() + ")";
+                return typeof(App).Assembly.GetName().Version.ToString() + " by Nicolas Dorier (" + Network.ToString() + "net)";
             }
         }
-
+        static Network _Network;
         public static Network Network
         {
             get
             {
-                return NBitcoin.Network.Main;
+                return _Network;
             }
         }
     }
