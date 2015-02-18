@@ -16,9 +16,13 @@
     <DockPanel x:Name="root" LastChildFill="True">
         <DockPanel HorizontalAlignment="Stretch" DockPanel.Dock="Top">
             <TextBlock VerticalAlignment="Center" FontFamily="Segoe UI">Search</TextBlock>
-            <TextBox Margin="5,0,0,0" 
+            <toolkit:WatermarkTextBox Margin="5,0,0,0" 
                      local:AttachedProperties.CommandOnTextChanged="{Binding Search}"
-                     Text="{Binding SearchedTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"></TextBox>
+                     Watermark="Enter a string to parse (ex: 000000000000000010c9468dffbc5ca4341cd0053708cdee21631980defb07e0-json)" 
+                     AcceptsReturn="False" AcceptsTab="False"
+                     MaxLines="1"
+                     x:Name="searchBox"
+                     Text="{Binding SearchedTerm, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"></toolkit:WatermarkTextBox >
         </DockPanel>
         <edit:TextEditor x:Name="editor">
             <edit:TextEditor.InputBindings>

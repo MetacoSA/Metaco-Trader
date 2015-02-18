@@ -12,7 +12,7 @@ namespace PowerWallet.ViewModel
     {
         public SearchViewModel()
         {
-            
+
         }
         private string _SearchedTerm;
         public string SearchedTerm
@@ -41,40 +41,66 @@ namespace PowerWallet.ViewModel
                     _Search = new AsyncCommand(async t =>
                        {
                            var search = SearchedTerm;
+                           if (String.IsNullOrWhiteSpace(search))
+                           {
+                               Content = "";
+                               return;
+                           }
                            var client = App.Locator.Resolve<RapidBaseClientFactory>().CreateClient();
                            try
                            {
-                               var result = await client.Get<string>("whatisit/" + search);
-                               Content = result;
-                               return;
-                           }
-                           catch (Exception)
-                           {
-                               try
+                               if (search.Length < 520 * 2)
                                {
-
-                                   if (search.StartsWith("00000000"))
+                                   if (search.EndsWith("-json") || search.EndsWith("-raw"))
                                    {
-                                       Block block = new Block();
-                                       block.FromBytes(Encoders.Hex.DecodeData(search));
-                                       Content = block.ToString();
+                                       var format = search.Substring(search.LastIndexOf("-") + 1);
+                                       search = search.Substring(0, search.Length - format.Length - 1);
+                                       var tx = await client.Get<byte[]>("transactions/" + search + "?format=" + format);
+                                       if (tx != null)
+                                       {
+                                           Content = ToString(tx, format);
+                                           return;
+                                       }
+
+                                       var block = await client.Get<byte[]>("blocks/" + search + "?format=" + format);
+                                       if (block != null)
+                                       {
+                                           Content = ToString(block, format);
+                                       }
                                        return;
                                    }
-                                   Transaction transaction = new Transaction(search);
-                                   Content = transaction.ToString();
+                                   var result = await client.Get<string>("whatisit/" + search);
+                                   Content = result;
                                    return;
                                }
-                               catch (Exception)
-                               {
-                                   Content = "Good question holmes!";
-                                   return;
-                               }
+                           }
+                           catch
+                           {
+                           }
+                           try
+                           {
+                               Transaction transaction = new Transaction(search);
+                               Content = transaction.ToString();
+                               return;
+                           }
+                           catch
+                           {
+                               Content = "Good question holmes!";
                            }
                        }).Notify(MessengerInstance);
                 }
 
                 return _Search;
             }
+        }
+
+        private string ToString(byte[] bytes, string format)
+        {
+            if (format == "raw")
+                return Encoders.Hex.EncodeData(bytes);
+            if (format == "json")
+                return Encoding.UTF8.GetString(bytes);
+            throw new NotSupportedException("unsupported format " + format);
         }
 
         private string _Content;

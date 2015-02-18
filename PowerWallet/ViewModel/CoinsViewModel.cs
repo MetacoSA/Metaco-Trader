@@ -110,8 +110,9 @@ namespace PowerWallet.ViewModel
         public CoinViewModel(ICoin coin, BalanceOperation op)
         {
             var colored = coin as ColoredCoin;
+            BTCValue = coin.Amount.ToUnit(MoneyUnit.BTC).ToString() + " BTC";
             if (colored == null)
-                Value = coin.Amount.ToUnit(MoneyUnit.BTC).ToString() + " BTC";
+                Value = BTCValue;
             else
             {
                 Value = colored.Asset.Quantity.ToString() + " Assets";
@@ -158,26 +159,51 @@ namespace PowerWallet.ViewModel
             get;
             set;
         }
+
+        public string BTCValue
+        {
+            get;
+            set;
+        }
     }
 
-    [DisplayName("Coin")]
-    public class CoinPropertyViewModel
+    
+    public class CoinPropertyViewModel : PropertyViewModel
     {
         public CoinPropertyViewModel(CoinViewModel coin)
         {
-            Value = coin.Value;
+            Value = coin.BTCValue;
             Confirmations = coin.Confirmations;
             BlockId = coin.Op.BlockId;
             TransactionId = coin.Op.TransactionId;
             Owner = coin.Owner;
+            var cc = coin.Coin as ColoredCoin;
+            if (cc != null)
+            {
+                NewProperty("Asset")
+                .SetEditor(typeof(ReadOnlyTextEditor))
+                .AddAttributes(new CategoryAttribute("Colored Coin"))
+                .Commit()
+                .SetValue(cc.Asset.Id.GetWif(App.Network).ToString());
+
+                NewProperty("ColoredValue")                  
+                .SetEditor(typeof(ReadOnlyTextEditor))
+                .AddAttributes(new CategoryAttribute("Colored Coin"))
+                .AddAttributes(new DisplayNameAttribute("Value"))
+                .Commit()
+                .SetValue(coin.Value);
+            }
         }
+
         [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]
+        [Category("Coin")]
         public string Value
         {
             get;
             set;
         }
         [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]
+        [Category("Coin")]
         public int Confirmations
         {
             get;
@@ -185,6 +211,7 @@ namespace PowerWallet.ViewModel
         }
 
         [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]
+        [Category("Coin")]
         public string Owner
         {
             get;
@@ -192,12 +219,14 @@ namespace PowerWallet.ViewModel
         }
 
         [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]
+        [Category("Coin")]
         public uint256 BlockId
         {
             get;
             set;
         }
         [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]
+        [Category("Coin")]
         public uint256 TransactionId
         {
             get;

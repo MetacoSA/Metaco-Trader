@@ -25,6 +25,13 @@ namespace PowerWallet.ViewModel
         {
             InitializeComponent();
             ViewModel = new SearchViewModel();
+            searchBox.ToolTip =
+                "Formats:\r\n"  +
+                "blockId[-raw|-json]\r\n" +
+                "txid[-raw|-json]\r\n" +
+                "script|address|base58|pubkeys\r\n" +
+                "blockheader\r\n" +
+                "transaction";
         }
 
         public SearchViewModel ViewModel
