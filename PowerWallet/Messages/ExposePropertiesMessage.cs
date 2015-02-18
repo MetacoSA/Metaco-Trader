@@ -8,24 +8,19 @@ namespace PowerWallet.Messages
 {
     public class ExposePropertiesMessage
     {
-        public ExposePropertiesMessage(IHasProperties target)
+        public ExposePropertiesMessage(object target)
         {
             if (target == null)
                 throw new ArgumentNullException("target");
             _Target = target;
         }
-        private readonly IHasProperties _Target;
-        public IHasProperties Target
+        private readonly object _Target;
+        public object Target
         {
             get
             {
                 return _Target;
             }
         }
-    }
-
-    public interface IHasProperties
-    {
-        object ForPropertyGrid();
     }
 }

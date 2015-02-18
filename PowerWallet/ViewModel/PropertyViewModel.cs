@@ -40,6 +40,11 @@ namespace PowerWallet.ViewModel
             _Parent._Properties.Add(property);
             return property;
         }
+
+        public PropertyBuilder SetDisplay(string name)
+        {
+            return AddAttributes(new DisplayNameAttribute(name));
+        }
     }
     public class PropertyViewModel : CustomTypeDescriptor
     {
@@ -170,7 +175,11 @@ namespace PowerWallet.ViewModel
         }
         internal List<PropertyViewModelPropertyDescriptor> _Properties = new List<PropertyViewModelPropertyDescriptor>();
 
-
+        Random _Rand = new Random();
+        public PropertyBuilder NewProperty()
+        {
+            return new PropertyBuilder(this, "gen_" + _Rand.Next());
+        }
         public PropertyBuilder NewProperty(string name)
         {
             return new PropertyBuilder(this, name);

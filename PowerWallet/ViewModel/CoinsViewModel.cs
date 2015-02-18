@@ -15,6 +15,7 @@ using PowerWallet.Controls;
 using PowerWallet.Messages;
 using System.Windows.Input;
 using System.Net;
+using NBitcoin.OpenAsset;
 
 namespace PowerWallet.ViewModel
 {
@@ -105,7 +106,7 @@ namespace PowerWallet.ViewModel
         }
     }
 
-    public class CoinViewModel : PWViewModelBase, IHasProperties
+    public class CoinViewModel : PWViewModelBase
     {
         public CoinViewModel(ICoin coin, BalanceOperation op)
         {
@@ -167,6 +168,73 @@ namespace PowerWallet.ViewModel
         }
     }
 
+
+    public class CoinsPropertyViewModel : PropertyViewModel
+    {
+        public class CoinsGroup
+        {
+            public string Type
+            {
+                get;
+                set;
+            }
+            public Money SumBTC
+            {
+                get;
+                set;
+            }
+            public long SumAssets
+            {
+                get;
+                set;
+            }
+
+            public int Count
+            {
+                get;
+                set;
+            }
+        }
+        public CoinsPropertyViewModel(CoinViewModel[] coins)
+        {
+            var groups = coins
+                .GroupBy(c => c.Type ?? "BTC")
+                .Select(g => new CoinsGroup()
+                {
+                    Type = g.Key,
+                    SumBTC = g.Select(c=>c.Coin.TxOut.Value).Sum(),
+                    SumAssets = g.Select(c=>c.Coin).OfType<ColoredCoin>().Select(c=>c.Amount).Sum().Satoshi,
+                    Count = g.Count()
+                });
+            foreach (var group in groups)
+            {
+                var category = new CategoryAttribute(group.Type);
+                NewProperty()
+                    .SetDisplay("Value")
+                    .SetEditor(typeof(ReadOnlyTextEditor))
+                    .AddAttributes(category)
+                    .Commit()
+                    .SetValue(group.SumBTC.ToUnit(MoneyUnit.BTC));
+
+                if (group.SumAssets != 0)
+                {
+                    NewProperty()
+                    .SetDisplay("Quantity")
+                    .SetEditor(typeof(ReadOnlyTextEditor))
+                    .AddAttributes(category)
+                    .Commit()
+                    .SetValue(group.SumAssets);
+                }
+
+                NewProperty()
+                    .SetDisplay("Count")
+                    .SetEditor(typeof(ReadOnlyTextEditor))
+                    .AddAttributes(category)
+                    .Commit()
+                    .SetValue(group.Count);
+            }
+        }
+    }
     
     public class CoinPropertyViewModel : PropertyViewModel
     {

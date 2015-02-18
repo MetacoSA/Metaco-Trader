@@ -36,7 +36,7 @@ namespace PowerWallet
             serverGrid.SelectedObject = ViewModel.Server;
             App.Locator.Messenger.Register<ExposePropertiesMessage>(this, m =>
             {
-                propertyGrid.SelectedObject = m.Target.ForPropertyGrid();
+                propertyGrid.SelectedObject = m.Target;
             });
         }
 

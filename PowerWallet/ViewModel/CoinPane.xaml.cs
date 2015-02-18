@@ -47,12 +47,17 @@ namespace PowerWallet.ViewModel
         {
             if (grid.SelectedItems.Count == 1)
             {
-                
+
                 var coin = grid.SelectedItems[0] as CoinViewModel;
                 if (coin != null)
                 {
-                    App.Locator.Messenger.Send(new ExposePropertiesMessage(coin));
+                    App.Locator.Messenger.Send(new ExposePropertiesMessage(coin.ForPropertyGrid()));
                 }
+            }
+            else
+            {
+                var coins = grid.SelectedItems.OfType<CoinViewModel>().ToArray();
+                App.Locator.Messenger.Send(new ExposePropertiesMessage(new CoinsPropertyViewModel(coins)));
             }
         }
 
