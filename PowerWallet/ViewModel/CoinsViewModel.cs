@@ -171,35 +171,11 @@ namespace PowerWallet.ViewModel
 
     public class CoinsPropertyViewModel : PropertyViewModel
     {
-        public class CoinsGroup
-        {
-            public string Type
-            {
-                get;
-                set;
-            }
-            public Money SumBTC
-            {
-                get;
-                set;
-            }
-            public long SumAssets
-            {
-                get;
-                set;
-            }
-
-            public int Count
-            {
-                get;
-                set;
-            }
-        }
         public CoinsPropertyViewModel(CoinViewModel[] coins)
         {
             var groups = coins
                 .GroupBy(c => c.Type ?? "BTC")
-                .Select(g => new CoinsGroup()
+                .Select(g => new
                 {
                     Type = g.Key,
                     SumBTC = g.Select(c=>c.Coin.TxOut.Value).Sum(),
