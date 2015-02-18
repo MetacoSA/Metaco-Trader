@@ -111,7 +111,7 @@ namespace PowerWallet.ViewModel
         public CoinViewModel(ICoin coin, BalanceOperation op)
         {
             var colored = coin as ColoredCoin;
-            BTCValue = coin.Amount.ToUnit(MoneyUnit.BTC).ToString() + " BTC";
+            BTCValue = coin.TxOut.Value.ToUnit(MoneyUnit.BTC).ToString() + " BTC";
             if (colored == null)
                 Value = BTCValue;
             else
