@@ -7,6 +7,7 @@ using PowerWallet.ViewModel;
 using RapidBase.Client;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
+using Xceed.Wpf.AvalonDock.Layout.Serialization;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 
 namespace PowerWallet
@@ -38,7 +41,73 @@ namespace PowerWallet
             {
                 propertyGrid.SelectedObject = m.Target;
             });
+
+
+            LoadDefaultLayout();
+            FillViewMenu();
+            LoadLayout();
         }
+
+        private void LoadDefaultLayout()
+        {
+            XmlLayoutSerializer seria = new XmlLayoutSerializer(dockManager);
+            StringWriter writer = new StringWriter();
+            seria.Serialize(writer);
+            defaultLayout = writer.ToString();
+        }
+
+        private void FillViewMenu()
+        {
+            foreach (var view in dockManager
+                .Layout
+                .Descendents()
+                .OfType<LayoutContent>()
+                .Where(c => c.ContentId != null))
+            {
+                var localView = view;
+                MenuItem subMenu = new MenuItem();
+                subMenu.Header = localView.Title;
+                viewMenu.Items.Add(subMenu);
+                subMenu.Click += (s, a) =>
+                {
+                    var layout = dockManager.Layout.Hidden.FirstOrDefault(v => v.Content == localView.Content);
+                    if (layout != null)
+                    {
+                        layout.Show();
+                    }
+                    var doc = localView as LayoutDocument;
+                    if (doc != null)
+                    {
+                        var documents = GetDocumentPane();
+                        if (!documents.Children.Contains(doc))
+                            documents.Children.Add(doc);
+                        doc.IsActive = true;
+                    }
+                };
+            }
+        }
+
+        private void LoadLayout()
+        {
+            try
+            {
+                var localStorage = App.Locator.Resolve<IStorage>();
+                var layout = localStorage.Get<string>(LAYOUT_KEY).Result;
+                if (layout != null)
+                {
+
+                    XmlLayoutSerializer seria = new XmlLayoutSerializer(dockManager);
+                    seria.Deserialize(new StringReader(layout));
+                }
+            }
+            catch (Exception ex)
+            {
+                PWTrace.Error("Exception when restoring layout", ex);
+            }
+        }
+
+        const string LAYOUT_KEY = "Layout-Data";
+
 
         public MainViewModel ViewModel
         {
@@ -62,12 +131,19 @@ namespace PowerWallet
 
         private SearchViewModel ActivateSearch()
         {
+            var documents = GetDocumentPane();
             if (!documents.Children.Contains(search))
             {
                 documents.Children.Add(search);
             }
             search.IsActive = true;
             return ((SearchView)(search.Content)).ViewModel;
+        }
+
+        private LayoutDocumentPane GetDocumentPane()
+        {
+            var documents = dockManager.Layout.Descendents().OfType<LayoutDocumentPane>().First();
+            return documents;
         }
 
 
@@ -85,5 +161,29 @@ namespace PowerWallet
             return null;
         }
 
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            try
+            {
+                var localStorage = App.Locator.Resolve<IStorage>();
+                XmlLayoutSerializer serializer = new XmlLayoutSerializer(dockManager);
+                StringWriter writer = new StringWriter();
+                serializer.Serialize(writer);
+                localStorage.Put(LAYOUT_KEY, writer.ToString()).Wait();
+            }
+            catch (Exception ex)
+            {
+                PWTrace.Error("Error when saving layout", ex);
+            }
+        }
+
+        string defaultLayout;
+        private void ResetLayout_Click(object sender, RoutedEventArgs e)
+        {
+            XmlLayoutSerializer seria = new XmlLayoutSerializer(dockManager);
+            seria.Deserialize(new StringReader(defaultLayout));
+        }
     }
 }

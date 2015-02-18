@@ -46,7 +46,7 @@ namespace PowerWallet.ViewModel
             }
             catch (Exception ex)
             {
-                PWTrace.Error(ex);
+                PWTrace.Error("Error while updating rapidbase server information", ex);
             }
         }
 

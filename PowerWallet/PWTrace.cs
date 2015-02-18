@@ -8,7 +8,7 @@ namespace PowerWallet
 {
     public class PWTrace
     {
-        internal static void Error(Exception ex)
+        internal static void Error(string msg, Exception ex)
         {
         }
     }

@@ -40,23 +40,28 @@
                     <MenuItem Header="_Transaction"></MenuItem>
                 </MenuItem>
             </MenuItem>
+            <MenuItem Header="_View" x:Name="viewMenu">
+            </MenuItem>
+            <MenuItem Header="_Window">
+                <MenuItem Header="Reset layout" Click="ResetLayout_Click"></MenuItem>
+            </MenuItem>
         </Menu>
         <ad:DockingManager x:Name="dockManager" DockPanel.Dock="Top">
             <ad:LayoutRoot>
                 <ad:LayoutPanel Orientation="Horizontal">
                     <ad:LayoutAnchorablePaneGroup DockWidth="250" Orientation="Vertical">
                         <ad:LayoutAnchorablePane DockHeight="1*">
-                            <ad:LayoutAnchorable Title="Coins">
+                            <ad:LayoutAnchorable Title="Coins" ContentId="Coins">
                                 <mvvm:CoinPane></mvvm:CoinPane>
                             </ad:LayoutAnchorable>
                         </ad:LayoutAnchorablePane>
                         <ad:LayoutAnchorablePane DockHeight="1*">
-                            <ad:LayoutAnchorable Title="Wallets">
+                            <ad:LayoutAnchorable Title="Wallets" ContentId="Wallets">
                                 <mvvm:WalletsView></mvvm:WalletsView>
                             </ad:LayoutAnchorable>
                         </ad:LayoutAnchorablePane>
                     </ad:LayoutAnchorablePaneGroup>
-                    <ad:LayoutDocumentPane x:Name="documents">
+                    <ad:LayoutDocumentPane>
                         <ad:LayoutDocument Title="Donation" ContentId="Donation">
                             <mvvm:Donation></mvvm:Donation>
                         </ad:LayoutDocument>
@@ -66,7 +71,7 @@
                     </ad:LayoutDocumentPane>
                     <ad:LayoutAnchorablePaneGroup DockWidth="250" Orientation="Vertical">
                         <ad:LayoutAnchorablePane DockHeight="1.618*">
-                            <ad:LayoutAnchorable Title="Properties">
+                            <ad:LayoutAnchorable Title="Properties" ContentId="Properties">
                                 <toolkit:PropertyGrid x:Name="propertyGrid"
                                                       ShowTitle="False"
                                                       ShowSummary="False"
@@ -74,7 +79,7 @@
                             </ad:LayoutAnchorable>
                         </ad:LayoutAnchorablePane>
                         <ad:LayoutAnchorablePane  DockHeight="1*">
-                            <ad:LayoutAnchorable Title="Server">
+                            <ad:LayoutAnchorable Title="Server" ContentId="Server">
                                 <toolkit:PropertyGrid 
                                 x:Name="serverGrid" 
                                 ShowSearchBox="False"
