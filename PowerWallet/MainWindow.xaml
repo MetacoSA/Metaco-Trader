@@ -44,14 +44,21 @@
         <ad:DockingManager x:Name="dockManager" DockPanel.Dock="Top">
             <ad:LayoutRoot>
                 <ad:LayoutPanel Orientation="Horizontal">
-                    <ad:LayoutAnchorablePane DockWidth="250">
-                        <ad:LayoutAnchorable Title="Coins">
-                            <mvvm:CoinPane></mvvm:CoinPane>
-                        </ad:LayoutAnchorable>
-                    </ad:LayoutAnchorablePane>
+                    <ad:LayoutAnchorablePaneGroup DockWidth="250" Orientation="Vertical">
+                        <ad:LayoutAnchorablePane DockHeight="1*">
+                            <ad:LayoutAnchorable Title="Coins">
+                                <mvvm:CoinPane></mvvm:CoinPane>
+                            </ad:LayoutAnchorable>
+                        </ad:LayoutAnchorablePane>
+                        <ad:LayoutAnchorablePane DockHeight="1*">
+                            <ad:LayoutAnchorable Title="Wallets">
+                                <mvvm:WalletsView></mvvm:WalletsView>
+                            </ad:LayoutAnchorable>
+                        </ad:LayoutAnchorablePane>
+                    </ad:LayoutAnchorablePaneGroup>
                     <ad:LayoutDocumentPane x:Name="documents">
                         <ad:LayoutDocument Title="Donation" ContentId="Donation">
-                            <mvvm:Donation></mvvm:Donation> 
+                            <mvvm:Donation></mvvm:Donation>
                         </ad:LayoutDocument>
                         <ad:LayoutDocument x:Name="search" Title="Search" ContentId="Search">
                             <mvvm:SearchView></mvvm:SearchView>

@@ -33,6 +33,8 @@ namespace PowerWallet.ViewModel
             ioc.Register<RapidBaseClientFactory>();
             ioc.Register<StatusMainViewModel>();
             ioc.Register<ServerViewModel>();
+            ioc.Register<WalletsViewModel>();
+            ioc.Register<IStorage>(() => new LocalStorage());
             ioc.Register<IMessenger>(() => GalaSoft.MvvmLight.Messaging.Messenger.Default);
         }
         public static void Cleanup()

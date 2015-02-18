@@ -45,6 +45,11 @@ namespace PowerWallet.ViewModel
         {
             return AddAttributes(new DisplayNameAttribute(name));
         }
+
+        public PropertyBuilder SetCategory(string name)
+        {
+            return AddAttributes(new CategoryAttribute(name));
+        }
     }
     public class PropertyViewModel : CustomTypeDescriptor
     {

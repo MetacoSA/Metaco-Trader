@@ -75,9 +75,9 @@
     <Reference Include="protobuf-net">
       <HintPath>..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="RapidBase.Client, Version=1.0.0.9, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="RapidBase.Client, Version=1.0.0.10, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RapidBase.Client.1.0.0.9\lib\net45\RapidBase.Client.dll</HintPath>
+      <HintPath>..\packages\RapidBase.Client.1.0.0.10\lib\net45\RapidBase.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -145,9 +145,11 @@
     <Compile Include="Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Messages\ExposePropertiesMessage.cs" />
+    <Compile Include="Messages\ShowCoinsMessage.cs" />
     <Compile Include="PowerCommands.cs" />
     <Compile Include="PWTrace.cs" />
     <Compile Include="RapidBaseClientFactory.cs" />
+    <Compile Include="Store.cs" />
     <Compile Include="ViewModelLocator.cs" />
     <Compile Include="ViewModel\CoinPane.xaml.cs">
       <DependentUpon>CoinPane.xaml</DependentUpon>
@@ -167,6 +169,10 @@
     <Compile Include="ViewModel\SearchViewModel.cs" />
     <Compile Include="ViewModel\ServerViewModel.cs" />
     <Compile Include="ViewModel\StatusMainViewModel.cs" />
+    <Compile Include="ViewModel\WalletsView.xaml.cs">
+      <DependentUpon>WalletsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\WalletsViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -198,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewModel\SearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewModel\WalletsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

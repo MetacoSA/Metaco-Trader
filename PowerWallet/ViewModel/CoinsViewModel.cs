@@ -22,13 +22,40 @@ namespace PowerWallet.ViewModel
     public class CoinsViewModel : PWViewModelBase
     {
         RapidBaseClientFactory _Factory;
-        public CoinsViewModel(RapidBaseClientFactory factory)
+        IStorage _LocalStorage;
+
+        public CoinsViewModel(RapidBaseClientFactory factory, IStorage localStorage)
         {
+            if (factory == null)
+                throw new ArgumentNullException("factory");
+            if (localStorage == null)
+                throw new ArgumentNullException("localStorage");
             _Factory = factory;
-            SearchedCoins = "akSjSW57xhGp86K6JFXXroACfRCw7SPv637";
+            _LocalStorage = localStorage;                     
+
+
             //15sYbVpRh6dyWycZMwPdxJWD4xbfxReeHe (me)
             //akSjSW57xhGp86K6JFXXroACfRCw7SPv637 (colored)
-            Search.Execute(null);
+            
+            MessengerInstance.Register<ShowCoinsMessage>(this, _ =>
+            {
+                SearchedCoins = _.Container;
+                Search.Execute(null);
+            });
+
+            var notrack = LoadCache();
+        }
+
+        const string CACHE_KEY = "Default-Coin-Search";
+
+        private async Task LoadCache()
+        {
+            _SearchedCoins = await _LocalStorage.Get<string>(CACHE_KEY);
+            if (_SearchedCoins != null)
+            {
+                OnPropertyChanged(() => this.SearchedCoins);
+                Search.Execute(null);
+            }
         }
 
         ICommand _Search;
@@ -82,6 +109,7 @@ namespace PowerWallet.ViewModel
                 {
                     _SearchedCoins = value;
                     OnPropertyChanged(() => this.SearchedCoins);
+                    var notrack = _LocalStorage.Put(CACHE_KEY, value);
                 }
             }
         }
