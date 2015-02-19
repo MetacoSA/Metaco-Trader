@@ -16,6 +16,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
+using System;
 
 namespace PowerWallet.ViewModel
 {
@@ -30,8 +31,8 @@ namespace PowerWallet.ViewModel
             ServiceLocator.SetLocatorProvider(() => ioc);
             ioc.Register<CoinsViewModel>();
             ioc.Register<MainViewModel>();
-            ioc.Register<RapidBaseClientFactory>();
             ioc.Register<StatusMainViewModel>();
+            ioc.Register<RapidBaseClientFactory>();
             ioc.Register<ServerViewModel>();
             ioc.Register<WalletsViewModel>();
             ioc.Register<IStorage>(() => new LocalStorage());

@@ -9,9 +9,21 @@ namespace PowerWallet
 {
     public class RapidBaseClientFactory
     {
-        public RapidBaseClientFactory()
+        IStorage _Storage;
+        public RapidBaseClientFactory(IStorage storage)
         {
-            _Uri = new Uri("http://rapidbase-test.azurewebsites.net/");
+            _Storage = storage;
+            var rapidbase = "http://rapidbase-test.azurewebsites.net/";
+            var server = storage.Get<string>("Rapidbase-Server").Result;
+            server = server ?? rapidbase;
+            try
+            {
+                Uri = new Uri(server);
+            }
+            catch
+            {
+                Uri = new Uri(rapidbase);
+            }
         }
         private Uri _Uri;
         public Uri Uri
@@ -23,6 +35,7 @@ namespace PowerWallet
             set
             {
                 _Uri = value;
+                var notrack = _Storage.Put("Rapidbase-Server", value.AbsoluteUri);
             }
         }
         public RapidBaseClient CreateClient()

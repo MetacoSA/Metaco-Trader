@@ -59,16 +59,17 @@
                             <ad:LayoutAnchorable Title="Wallets" ContentId="Wallets">
                                 <mvvm:WalletsView></mvvm:WalletsView>
                             </ad:LayoutAnchorable>
+                            <ad:LayoutAnchorable Title="Addresses" ContentId="Addresses"></ad:LayoutAnchorable>
                         </ad:LayoutAnchorablePane>
                     </ad:LayoutAnchorablePaneGroup>
-                    <ad:LayoutDocumentPane>
+                    <ad:LayoutDocumentPane DockHeight="1.618*">
                         <ad:LayoutDocument Title="Donation" ContentId="Donation">
                             <mvvm:Donation></mvvm:Donation>
                         </ad:LayoutDocument>
                         <ad:LayoutDocument x:Name="search" Title="Search" ContentId="Search">
                             <mvvm:SearchView></mvvm:SearchView>
                         </ad:LayoutDocument>
-                    </ad:LayoutDocumentPane>
+                    </ad:LayoutDocumentPane>                    
                     <ad:LayoutAnchorablePaneGroup DockWidth="250" Orientation="Vertical">
                         <ad:LayoutAnchorablePane DockHeight="1.618*">
                             <ad:LayoutAnchorable Title="Properties" ContentId="Properties">
