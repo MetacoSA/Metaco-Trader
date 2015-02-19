@@ -2,12 +2,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" 
-    x:Class="PowerWallet.App" StartupUri="MainWindow.xaml" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:converters="clr-namespace:PowerWallet.Converters"
-    d1p1:Ignorable="d" xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
+    x:Class="PowerWallet.App" StartupUri="MainWindow.xaml"
+    d1p1:Ignorable="d">
     <Application.Resources>
-        <converters:EnumToVisibilityConverter x:Key="EqualsToVisibility"></converters:EnumToVisibilityConverter>
+        <converters:EnumToVisibilityConverter x:Key="EqualsToVisibility"/>
         <Style TargetType="{x:Type Menu}">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
@@ -374,8 +375,8 @@
         <Style x:Key="IconButton" TargetType="{x:Type Button}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
             <Setter Property="Background" Value="White"/>
-            <Setter Property="Width" Value="24"></Setter>
-            <Setter Property="Height" Value="24"></Setter>
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
             <Setter Property="BorderBrush" Value="LightGray"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
@@ -407,7 +408,197 @@
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="TextWrapping" Value="NoWrap"/>
             <Setter Property="TextTrimming" Value="None"/>
-            <Setter Property="FontFamily" Value="Segoe UI"></Setter>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+        </Style>
+
+        <Style x:Key="NoStyleButton" TargetType="{x:Type Button}">
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="LightGray"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter Property="Foreground" Value="Black"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="{x:Type xctk:ChildWindow}">
+            <Setter Property="MinWidth" Value="140"/>
+            <Setter Property="MinHeight" Value="40"/>
+            <Setter Property="CloseButtonStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource NoStyleButton}">
+                        <Setter Property="ToolTip" Value="Close"/>
+                        <Setter Property="Content">
+                            <Setter.Value>
+                                <Grid Background="Transparent" Width="18" Height="18">
+                                    <Path 
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Data="F1M0,0L2,0 5,3 8,0 10,0 6,4 10,8 8,8 5,5 2,8 0,8 4,4 0,0z" SnapsToDevicePixels="True" Fill="Gray" />
+                                </Grid>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="BorderBrush" Value="LightGray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CaptionForeground" Value="Black"/>
+            <Setter Property="WindowBorderBrush" Value="LightGray"/>
+            <Setter Property="WindowBorderThickness" Value="1"></Setter>
+            <Setter Property="CaptionForeground" Value="Gray"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type xctk:ChildWindow}">
+                        <Grid x:Name="PART_Root">
+                            <Grid x:Name="PART_WindowRoot" HorizontalAlignment="Left" Height="{TemplateBinding Height}" MinWidth="{TemplateBinding MinWidth}" MinHeight="{TemplateBinding MinHeight}" VerticalAlignment="Top" Width="{TemplateBinding Width}">
+                                <xctk:WindowControl x:Name="PART_WindowControl" 
+                                                    BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" 
+                                                    Background="{TemplateBinding Background}" 
+                                                    CloseButtonVisibility="{TemplateBinding CloseButtonVisibility}" 
+                                                    CaptionForeground="{TemplateBinding CaptionForeground}" 
+                                                    Caption="{TemplateBinding Caption}" 
+                                                    Content="{TemplateBinding Content}" 
+                                                    CaptionShadowBrush="{TemplateBinding CaptionShadowBrush}" 
+                                                    CloseButtonStyle="{TemplateBinding CloseButtonStyle}" 
+                                                    CaptionIcon="{TemplateBinding CaptionIcon}" 
+                                                    Height="{TemplateBinding Height}" 
+                                                    IsActive="{TemplateBinding IsActive}" 
+                                                    WindowStyle="{TemplateBinding WindowStyle}" 
+                                                    WindowBackground="{TemplateBinding WindowBackground}" 
+                                                    WindowOpacity="{TemplateBinding WindowOpacity}" 
+                                                    WindowInactiveBackground="{TemplateBinding WindowInactiveBackground}" 
+                                                    WindowBorderBrush="{TemplateBinding WindowBorderBrush}" 
+                                                    Width="{TemplateBinding Width}" 
+                                                    WindowBorderThickness="{TemplateBinding WindowBorderThickness}"
+                                                    >
+                                    <xctk:WindowControl.Template>
+                                        <ControlTemplate TargetType="{x:Type xctk:WindowControl}">
+                                            <Grid>
+                                                <Border Name="PART_WindowRoot" Background="{TemplateBinding WindowBackground}" 
+                                                        BorderThickness="{TemplateBinding xctk:WindowControl.WindowBorderThickness}" BorderBrush="{TemplateBinding xctk:WindowControl.WindowBorderBrush}" 
+                                                        Width="{TemplateBinding FrameworkElement.Width}" Height="{TemplateBinding FrameworkElement.Height}">
+                                                    <Border Name="WindowRootInnerBorder" BorderThickness="1" BorderBrush="#FFFFFFFF">
+                                                        <Grid>
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition />
+                                                            </Grid.RowDefinitions>
+                                                            <Grid Name="PART_HeaderGrid">
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="{Binding WindowThickness.Left, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                    <ColumnDefinition Width="*" />
+                                                                    <ColumnDefinition Name="HeaderButtonsColumn" Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <Grid.RowDefinitions>
+                                                                    <RowDefinition Name="HeaderRow" Height="22" />
+                                                                    <RowDefinition Height="{Binding WindowThickness.Top, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                                </Grid.RowDefinitions>
+                                                                <Image Name="PART_Icon" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center" Source="{TemplateBinding xctk:WindowControl.CaptionIcon}" MaxWidth="15" MaxHeight="15" Margin="0,2,0,2" />
+                                                                <Grid Name="Title" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2">
+                                                                    <Rectangle Fill="{TemplateBinding xctk:WindowControl.CaptionShadowBrush}" Width="{Binding ElementName=TitleGrid, Path=ActualWidth}" Height="{Binding ElementName=TitleGrid, Path=ActualHeight}" HorizontalAlignment="{Binding ElementName=TitleGrid, Path=HorizontalAlignment}" VerticalAlignment="{Binding ElementName=TitleGrid, Path=VerticalAlignment}">
+                                                                        <Rectangle.Effect>
+                                                                            <BlurEffect Radius="10" />
+                                                                        </Rectangle.Effect>
+                                                                    </Rectangle>
+                                                                    <Grid Name="TitleGrid" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                                                        <TextBlock Name="TitleText" 
+                                                                                   Text="{TemplateBinding xctk:WindowControl.Caption}" 
+                                                                                   TextBlock.Foreground="{TemplateBinding xctk:WindowControl.CaptionForeground}" 
+                                                                                   FontFamily="Segoe UI"
+                                                                                   TextTrimming="CharacterEllipsis" Margin="5,0,5,0" />
+                                                                    </Grid>
+                                                                </Grid>
+                                                                <StackPanel Name="ButtonsPanel" Margin="{TemplateBinding WindowThickness}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Right">
+                                                                    <Button Name="PART_CloseButton" Style="{TemplateBinding xctk:WindowControl.CloseButtonStyle}" Visibility="{TemplateBinding xctk:WindowControl.CloseButtonVisibility}" />
+                                                                </StackPanel>
+                                                                <Border Name="ToolWindowBorder" Margin="{TemplateBinding WindowThickness}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="3" VerticalAlignment="Top" Visibility="Collapsed" HorizontalAlignment="Right">
+                                                                    <Button Name="PART_ToolWindowCloseButton" Margin="0,3,0,1" Style="{TemplateBinding xctk:WindowControl.CloseButtonStyle}" />
+                                                                </Border>
+                                                                <Thumb Name="PART_HeaderThumb" Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Opacity="0" IsTabStop="False" />
+                                                            </Grid>
+                                                            <Border Name="ContentOuterBorder" Margin="{TemplateBinding WindowThickness}" Grid.Row="1" BorderBrush="#FFDFEEFD" BorderThickness="1">
+                                                                <Border Name="ContentBorder" Background="{TemplateBinding Control.Background}" BorderBrush="{TemplateBinding Control.BorderBrush}" BorderThickness="{TemplateBinding Control.BorderThickness}">
+                                                                    <Border Name="ContentInnerBorder" BorderBrush="#FFF2F2F2" BorderThickness="0">
+                                                                        <ContentPresenter Name="Content" Content="{TemplateBinding ContentControl.Content}" ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}" />
+                                                                    </Border>
+                                                                </Border>
+                                                            </Border>
+                                                        </Grid>
+                                                    </Border>
+                                                </Border>
+                                                <Border Name="PART_BlockMouseInputsBorder" Background="#00FFFFFF" Visibility="Collapsed" />
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="xctk:WindowControl.WindowStyle" Value="None">
+                                                    <Setter TargetName="HeaderRow" Property="RowDefinition.Height" Value="0" />
+                                                    <Setter TargetName="PART_Icon" Property="UIElement.Visibility" Value="Collapsed" />
+                                                    <Setter TargetName="Title" Property="UIElement.Visibility" Value="Collapsed" />
+                                                    <Setter TargetName="PART_HeaderThumb" Property="UIElement.Visibility" Value="Collapsed" />
+                                                    <Setter TargetName="ButtonsPanel" Property="UIElement.Visibility" Value="Collapsed" />
+                                                    <Setter TargetName="HeaderRow" Property="RowDefinition.Height" Value="0" />
+                                                </Trigger>
+                                                <Trigger Property="xctk:WindowControl.WindowStyle" Value="ToolWindow">
+                                                    <Setter TargetName="HeaderRow" Property="RowDefinition.Height" Value="Auto" />
+                                                    <Setter TargetName="PART_Icon" Property="UIElement.Visibility" Value="Collapsed" />
+                                                    <Setter TargetName="ButtonsPanel" Property="UIElement.Visibility" Value="Collapsed" />
+                                                    <Setter TargetName="ToolWindowBorder" Property="UIElement.Visibility" Value="Visible" />
+                                                    <Setter TargetName="PART_WindowRoot" Property="Border.CornerRadius" Value="0" />
+                                                    <Setter TargetName="WindowRootInnerBorder" Property="Border.CornerRadius" Value="0" />
+                                                    <Setter TargetName="ContentOuterBorder" Property="Border.BorderBrush" Value="#FFFFFFFF" />
+                                                    <Setter TargetName="ContentBorder" Property="Border.BorderBrush" Value="#FF000000" />
+                                                    <Setter TargetName="ContentInnerBorder" Property="Border.BorderThickness" Value="1" />
+                                                </Trigger>
+                                                <Trigger Property="xctk:WindowControl.IsActive" Value="False">
+                                                    <Setter TargetName="PART_WindowRoot" Value="{Binding WindowInactiveBackground, RelativeSource={RelativeSource TemplatedParent}}" Property="Border.Background" />
+                                                    <Setter TargetName="PART_WindowRoot" Property="Border.BorderBrush" Value="#FF666666" />
+                                                    <Setter TargetName="ContentBorder" Property="Border.BorderBrush" Value="#FF7B7B7B" />
+                                                    <Setter TargetName="Content" Property="UIElement.IsEnabled" Value="False" />
+                                                </Trigger>
+                                                <Trigger Property="UIElement.IsKeyboardFocusWithin" Value="True">
+                                                    <Setter Property="KeyboardNavigation.TabNavigation" Value="Cycle" />
+                                                </Trigger>
+                                                <Trigger SourceName="TitleText" Property="TextBlock.Text" Value="">
+                                                    <Setter TargetName="TitleText" Property="FrameworkElement.Margin" Value="0" />
+                                                </Trigger>
+                                                <Trigger SourceName="TitleText" Value="{x:Null}" Property="TextBlock.Text">
+                                                    <Setter TargetName="TitleText" Property="FrameworkElement.Margin" Value="0" />
+                                                </Trigger>                                                
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </xctk:WindowControl.Template>
+                                </xctk:WindowControl>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="WindowState" Value="Closed">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="WindowBackground" Value="White"></Setter>
+            <Setter Property="WindowBorderThickness" Value="1"/>
+            <Setter Property="WindowInactiveBackground" Value="White"></Setter>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
         </Style>
     </Application.Resources>
 </Application>
