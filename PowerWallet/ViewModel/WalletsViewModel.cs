@@ -14,13 +14,27 @@ namespace PowerWallet.ViewModel
 {
     public class WalletsViewModel : PWViewModelBase
     {
-        public WalletsViewModel(RapidBaseClientFactory factory)
+        private IStorage _Storage;
+        const string WALLETS_KEY = "Opened-Wallets";
+
+        public WalletsViewModel(RapidBaseClientFactory factory, IStorage storage)
         {
-            var wallet = new WalletViewModel("temp-1Nicolas Dorier", this);
-            Wallets.Add(wallet);
             _ClientFactory = factory;
-            wallet.Refresh.Execute();
+            _Storage = storage;
+            var unused = LoadCache();
         }
+
+
+        private async Task LoadCache()
+        {
+            var wallets = (await _Storage.Get<string[]>(WALLETS_KEY)) ?? new string[0];
+            foreach (var wallet in wallets)
+            {
+                AddWallet(wallet, false);
+            }
+        }
+
+
 
         private readonly RapidBaseClientFactory _ClientFactory;
         public RapidBaseClientFactory ClientFactory
@@ -43,7 +57,6 @@ namespace PowerWallet.ViewModel
         public class NewWalletCommand : AsyncCommand
         {
             private WalletsViewModel _Parent;
-
             public NewWalletCommand(WalletsViewModel parent)
             {
                 this._Parent = parent;
@@ -86,7 +99,7 @@ namespace PowerWallet.ViewModel
             protected override async Task CreateTask(System.Threading.CancellationToken cancelation)
             {
                 var client = _Parent.ClientFactory.CreateClient();
-                _Parent.AddWallet(await client.CreateWallet(Name));
+                _Parent.AddWallet(await client.CreateWallet(Name), true);
             }
         }
 
@@ -100,13 +113,24 @@ namespace PowerWallet.ViewModel
             return new OpenWalletCommand(this).Notify(MessengerInstance);
         }
 
-        internal void AddWallet(WalletModel model)
+        private void AddWallet(string wallet, bool save)
+        {
+            AddWallet(new WalletModel()
+            {
+                Name = wallet
+            }, save);
+        }
+        internal void AddWallet(WalletModel model, bool save)
         {
             if (!this.Wallets.Any(w => w.Name.Equals(model.Name, StringComparison.OrdinalIgnoreCase)))
             {
                 var wallet = new WalletViewModel(model.Name, this);
                 this.Wallets.Add(wallet);
                 wallet.Refresh.Execute();
+                if (save)
+                {
+                    var unused = _Storage.Put(WALLETS_KEY, Wallets.Select(w => w.Name).ToArray());
+                }
             }
         }
     }
@@ -146,7 +170,7 @@ namespace PowerWallet.ViewModel
             }
             else
             {
-                _Parent.AddWallet(model);
+                _Parent.AddWallet(model, true);
             }
         }
     }

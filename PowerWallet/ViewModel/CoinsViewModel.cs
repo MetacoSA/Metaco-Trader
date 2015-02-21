@@ -66,6 +66,8 @@ namespace PowerWallet.ViewModel
                 if (_Search == null)
                     _Search = new AsyncCommand(async c =>
                     {
+                        if (String.IsNullOrEmpty(SearchedCoins))
+                            return;
                         var client = _Factory.CreateClient();
                         BalanceModel balance = null;
                         try
