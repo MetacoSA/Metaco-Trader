@@ -43,8 +43,6 @@ namespace PowerWallet
             {
                 propertyGrid.SelectedObject = m.Target;
             });
-
-
             LoadDefaultLayout();
             FillViewMenu();
             LoadLayout();
@@ -186,6 +184,31 @@ namespace PowerWallet
         {
             XmlLayoutSerializer seria = new XmlLayoutSerializer(dockManager);
             seria.Deserialize(new StringReader(defaultLayout));
+        }
+
+        private void NewWallet_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var command = App.Locator.Resolve<WalletsViewModel>().CreateNewWalletCommand();
+            Show(new NewWalletWindow()
+            {
+                DataContext = command
+            });
+        }
+
+        private void Show(ChildWindow win)
+        {
+            win.WindowStartupLocation = Xceed.Wpf.Toolkit.WindowStartupLocation.Center;
+            windowsContainer.Children.Add(win);            
+            win.Show();
+        }
+
+        private void OpenWallet_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var command = App.Locator.Resolve<WalletsViewModel>().CreateOpenWalletCommand();
+            Show(new OpenWalletWindow()
+            {
+                DataContext = command
+            });
         }
     }
 }

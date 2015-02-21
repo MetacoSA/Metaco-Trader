@@ -18,7 +18,9 @@
             <Button DockPanel.Dock="Right" 
                     Command="NavigationCommands.Refresh" 
                     Style="{DynamicResource IconButton}">
-                <Image Source="/PowerWallet;component/Images/112_RefreshArrow_Green_32x32_72.png"></Image>
+                <Image 
+                    Height="18" Width="18"
+                    Source="/PowerWallet;component/Images/112_RefreshArrow_Green_32x32_72.png"></Image>
             </Button>
             <toolkit:WatermarkTextBox 
                                     local:AttachedProperties.CommandOnTextChanged="{Binding Search}"

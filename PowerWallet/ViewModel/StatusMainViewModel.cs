@@ -61,10 +61,7 @@ namespace PowerWallet.ViewModel
              }.Contains(command.Task.Status))
             {
                 State = StatusState.Error;
-                if (command.Task.Exception != null)
-                {
-                    Message = command.Task.Exception.InnerException.Message;
-                }
+                Message = command.ErrorMessage;
                 if (command.Task.Status == TaskStatus.Canceled)
                 {
                     Message = "Canceled";
@@ -76,7 +73,13 @@ namespace PowerWallet.ViewModel
                  TaskStatus.RanToCompletion
              }.Contains(command.Task.Status))
             {
-                State = StatusState.Success;
+                if (command.ErrorMessage == "")
+                    State = StatusState.Success;
+                else
+                {
+                    Message = command.ErrorMessage;
+                    State = StatusState.Error;
+                }
             }
         }
 

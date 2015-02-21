@@ -13,10 +13,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="root">
+    <DockPanel x:Name="root" LastChildFill="True">
+        <StackPanel 
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+            <Button 
+                Style="{StaticResource IconButton}" Command="{x:Static local:PowerCommands.OpenWallet}">
+                <Image Source="/PowerWallet;component/Images/Open_6529.png" Height="18" Width="18"></Image>
+            </Button>
+            <Button Style="{StaticResource IconButton}" Command="{x:Static local:PowerCommands.NewWallet}">
+                <Image Source="/PowerWallet;component/Images/Add.png" Height="18" Width="18"></Image>
+            </Button>
+        </StackPanel>
         <TreeView 
                   x:Name="tree"
                   ItemsSource="{Binding Wallets}" 
+                  DockPanel.Dock="Bottom"
                   SelectedItemChanged="tree_SelectedItemChanged">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding KeySets}">
@@ -29,5 +41,5 @@
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
-    </Grid>
+    </DockPanel>
 </UserControl>

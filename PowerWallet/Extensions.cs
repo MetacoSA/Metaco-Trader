@@ -98,7 +98,12 @@ namespace PowerWallet
 
         void command_CanExecuteChanged(object sender, EventArgs e)
         {
+            //Dispatcher.BeginInvoke(new Action(()=>
+            //{
             CommandManager.InvalidateRequerySuggested();
+            Console.Write("Invalidate Requery Suggested !");
+            Console.WriteLine(Command.CanExecute(null));
+            //}), null);
         }
 
 

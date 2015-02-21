@@ -23,7 +23,7 @@
             >
             </TextBlock>
             <Button Margin="10,0,0,0" Click="Button_Click" ToolTip="More awesomeness" Style="{StaticResource IconButton}">
-                <Image Source="/PowerWallet;component/Images/112_RefreshArrow_Green_32x32_72.png"></Image>
+                <Image Height="18" Width="18" Source="/PowerWallet;component/Images/112_RefreshArrow_Green_32x32_72.png"></Image>
             </Button>
         </StackPanel>
         <Image 

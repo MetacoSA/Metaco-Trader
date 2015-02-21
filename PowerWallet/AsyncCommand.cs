@@ -19,6 +19,10 @@ namespace PowerWallet
                 throw new ArgumentNullException("exec");
             _Exec = exec;
         }
+        public AsyncCommand()
+        {
+
+        }
         Task _Task;
         internal Task Task
         {
@@ -74,16 +78,78 @@ namespace PowerWallet
         {
             Execute(null);
         }
+
+
+        private string _Status;
+        public string Status
+        {
+            get
+            {
+                return _Status;
+            }
+            private set
+            {
+                if (value != _Status)
+                {
+                    _Status = value;
+                    OnPropertyChanged(() => this.Status);
+                }
+            }
+        }
+
+        private string _Error;
+        public string ErrorMessage
+        {
+            get
+            {
+                return _Error;
+            }
+            private set
+            {
+                if (value != _Error)
+                {
+                    _Error = value;
+                    Status = ErrorMessage;
+                    OnPropertyChanged(() => this.ErrorMessage);
+                }
+            }
+        }
+
+
+        public void Info(string message)
+        {
+            Status = message;
+        }
+        public void Error(string message)
+        {
+            ErrorMessage = message;
+        }
+
         public void Execute(object parameter)
         {
             if (CanExecute(parameter))
             {
                 _Cancel = new CancellationTokenSource();
+                Status = "";
+                ErrorMessage = "";
                 Task = CreateTask(_Cancel.Token);
+                var task = Task;
+                Task.GetAwaiter().OnCompleted(() =>
+                {
+                    if (task.Exception != null && ErrorMessage == "")
+                    {
+                        ErrorMessage = task.Exception.InnerException.Message;
+                    }
+                    OnCanExecuteChanged();
+                    if (Executed != null)
+                        Executed(this, EventArgs.Empty);
+                });
                 if (messenger != null)
                     messenger.Send<AsyncCommand>(this);
             }
         }
+
+        public event EventHandler Executed;
 
         CancellationTokenSource _Cancel;
         public void Cancel()

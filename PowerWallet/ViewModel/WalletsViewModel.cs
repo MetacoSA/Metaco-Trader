@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace PowerWallet.ViewModel
 {
@@ -38,12 +39,121 @@ namespace PowerWallet.ViewModel
                 return _Wallets;
             }
         }
-    }
 
+        public class NewWalletCommand : AsyncCommand
+        {
+            private WalletsViewModel _Parent;
+
+            public NewWalletCommand(WalletsViewModel parent)
+            {
+                this._Parent = parent;
+            }
+
+            private string _Name = "";
+            public string Name
+            {
+                get
+                {
+                    return _Name;
+                }
+                set
+                {
+                    if (value != _Name)
+                    {
+                        _Name = value;
+                        OnPropertyChanged(() => this.Name);
+                    }
+                }
+            }
+
+            private bool _IsColored;
+            public bool IsColored
+            {
+                get
+                {
+                    return _IsColored;
+                }
+                set
+                {
+                    if (value != _IsColored)
+                    {
+                        _IsColored = value;
+                        OnPropertyChanged(() => this.IsColored);
+                    }
+                }
+            }
+
+            protected override async Task CreateTask(System.Threading.CancellationToken cancelation)
+            {
+                var client = _Parent.ClientFactory.CreateClient();
+                _Parent.AddWallet(await client.CreateWallet(Name));
+            }
+        }
+
+        public ICommand CreateNewWalletCommand()
+        {
+            return new NewWalletCommand(this).Notify(MessengerInstance);
+        }
+
+        internal ICommand CreateOpenWalletCommand()
+        {
+            return new OpenWalletCommand(this).Notify(MessengerInstance);
+        }
+
+        internal void AddWallet(WalletModel model)
+        {
+            if (!this.Wallets.Any(w => w.Name.Equals(model.Name, StringComparison.OrdinalIgnoreCase)))
+            {
+                var wallet = new WalletViewModel(model.Name, this);
+                this.Wallets.Add(wallet);
+                wallet.Refresh.Execute();
+            }
+        }
+    }
+    public class OpenWalletCommand : AsyncCommand
+    {
+        private WalletsViewModel _Parent;
+
+        public OpenWalletCommand(WalletsViewModel parent)
+        {
+            this._Parent = parent;
+        }
+
+        private string _Name;
+        public string Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                if (value != _Name)
+                {
+                    _Name = value;
+                    OnPropertyChanged(() => this.Name);
+                }
+            }
+        }
+
+        protected override async Task CreateTask(System.Threading.CancellationToken cancelation)
+        {
+            var client = _Parent.ClientFactory.CreateClient();
+            var model = await client.GetWallet(Name);
+            if (model == null)
+            {
+                Error("Wallet does not exist");
+            }
+            else
+            {
+                _Parent.AddWallet(model);
+            }
+        }
+    }
     public class WalletViewModel : PWViewModelBase
     {
         WalletsViewModel _Parent;
-        public WalletViewModel(string name, 
+        public WalletViewModel(string name,
                                WalletsViewModel parent)
         {
             _Name = name;
@@ -127,7 +237,7 @@ namespace PowerWallet.ViewModel
 
     public class KeySetPropertyViewModel : PropertyViewModel
     {
-        
+
         public KeySetPropertyViewModel(KeySetData keyset)
         {
             Name = keyset.KeySet.Name;

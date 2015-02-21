@@ -14,17 +14,19 @@
                      >
     <controls:NiceWindow.CommandBindings>
         <CommandBinding Command="{x:Static NavigationCommands.Search}" Executed="Search_Executed"></CommandBinding>
+        <CommandBinding Command="{x:Static local:PowerCommands.NewWallet}" Executed="NewWallet_Executed"></CommandBinding>
+        <CommandBinding Command="{x:Static local:PowerCommands.OpenWallet}" Executed="OpenWallet_Executed"></CommandBinding>
     </controls:NiceWindow.CommandBindings>
-    <Grid>
+    <Grid x:Name="root">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <DockPanel LastChildFill="True" x:Name="root">
+        <DockPanel LastChildFill="True" >
             <Menu x:Name="menu" DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem Header="_New">
-                        <MenuItem Header="_Wallet">
+                        <MenuItem Header="_Wallet" Command="{x:Static local:PowerCommands.NewWallet}">
                         </MenuItem>
                         <MenuItem Header="_Transaction"></MenuItem>
                     </MenuItem>
@@ -104,8 +106,7 @@
             </StatusBarItem>
             <StatusBarItem Content="{Binding Message}"></StatusBarItem>
         </StatusBar>
-        <!--<toolkit:WindowContainer x:Name="windowsContainer"  Background="#79D3D3D3">
-            <toolkit:ChildWindow x:Name="win" Caption="Nicolas Dorier"></toolkit:ChildWindow>
-        </toolkit:WindowContainer>-->
+        <controls:CustomWindowContainer x:Name="windowsContainer"  Background="#79D3D3D3">
+        </controls:CustomWindowContainer>
     </Grid>
 </controls:NiceWindow>
