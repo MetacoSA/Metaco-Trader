@@ -38,18 +38,6 @@
                 </MenuItem>
             </Menu>
             <ad:DockingManager x:Name="dockManager" DockPanel.Dock="Top">
-                <ad:LayoutRoot>
-                    <ad:LayoutPanel Orientation="Horizontal">
-                        <ad:LayoutDocumentPane DockHeight="1.618*">
-                            <ad:LayoutDocument Title="Donation" ContentId="Donation">
-                                <mvvm:Donation></mvvm:Donation>
-                            </ad:LayoutDocument>
-                            <ad:LayoutDocument x:Name="search" Title="Search" ContentId="Search">
-                                <mvvm:SearchView></mvvm:SearchView>
-                            </ad:LayoutDocument>
-                        </ad:LayoutDocumentPane>
-                    </ad:LayoutPanel>
-                </ad:LayoutRoot>
             </ad:DockingManager>
         </DockPanel>
         <StatusBar 

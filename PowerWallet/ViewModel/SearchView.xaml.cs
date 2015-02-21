@@ -24,7 +24,7 @@ namespace PowerWallet.ViewModel
         public SearchView()
         {
             InitializeComponent();
-            ViewModel = new SearchViewModel();
+            ViewModel = App.Locator.Resolve<SearchViewModel>();
             searchBox.ToolTip =
                 "Formats:\r\n"  +
                 "blockId[-raw|-json]\r\n" +

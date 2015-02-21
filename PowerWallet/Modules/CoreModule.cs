@@ -27,6 +27,11 @@ namespace PowerWallet.Modules
             context.Main.RegisterAnchorable<PropertiesView>("Properties");
 
             context.Container.RegisterType<StatusMainViewModel>().SingleInstance();
+
+            context.Main.RegisterDocument<Donation>("Donation");
+            context.Container.RegisterType<SearchViewModel>().SingleInstance();
+
+            context.Main.RegisterDocument<SearchView>("Search");
         }
 
         #endregion

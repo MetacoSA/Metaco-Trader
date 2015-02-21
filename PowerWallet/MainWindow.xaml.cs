@@ -54,15 +54,11 @@ namespace PowerWallet
             }
         }
 
-  
-       public void RegisterAnchorable<T>(string viewName, int defaultWidth = 250, int defaultHeight = 400) where T : new()
+
+        public void RegisterAnchorable<T>(string viewName, int defaultWidth = 250, int defaultHeight = 400) where T : new()
         {
             _Contents.Add(viewName, new Lazy<object>(() => new T()));
-
-            MenuItem subMenu = new MenuItem();
-            subMenu.Header = viewName;
-            viewMenu.Items.Add(subMenu);
-            subMenu.Click += (s, a) =>
+            _ShowViews.Add(viewName, () =>
             {
                 var anchorable = Find<LayoutAnchorable>(viewName);
                 if (anchorable == null)
@@ -93,17 +89,51 @@ namespace PowerWallet
                 }
                 if (anchorable.IsHidden)
                     anchorable.Show();
-            };
+
+                anchorable.IsActive = true;
+            });
+
+            MenuItem subMenu = new MenuItem();
+            subMenu.Header = viewName;
+            viewMenu.Items.Add(subMenu);
+            subMenu.Click += (s, a) => ShowView(viewName);
         }
 
-      
-       Dictionary<string, Lazy<object>> _Contents = new Dictionary<string, Lazy<object>>();
-       private object FindContent(string contentId)
-       {
-           Lazy<object> val;
-           _Contents.TryGetValue(contentId, out val);
-           return val.Value;
-       }
+        public void RegisterDocument<T>(string viewName) where T : new()
+        {
+            _Contents.Add(viewName, new Lazy<object>(() => new T()));
+            _ShowViews.Add(viewName, () =>
+            {
+                var doc = Find<LayoutDocument>(viewName);
+                if (doc == null)
+                {
+                    doc = new LayoutDocument();
+                    doc.Title = viewName;
+                    doc.ContentId = viewName;
+                    GetDocumentPane().Children.Add(doc);
+                }
+                if (doc.Content == null)
+                {
+                    doc.Content = FindContent(viewName);
+                }
+                doc.IsActive = true;
+            });
+
+
+            MenuItem subMenu = new MenuItem();
+            subMenu.Header = viewName;
+            viewMenu.Items.Add(subMenu);
+            subMenu.Click += (s, a) => ShowView(viewName);
+        }
+
+        Dictionary<string, Action> _ShowViews = new Dictionary<string, Action>();
+        Dictionary<string, Lazy<object>> _Contents = new Dictionary<string, Lazy<object>>();
+        private object FindContent(string contentId)
+        {
+            Lazy<object> val;
+            _Contents.TryGetValue(contentId, out val);
+            return val.Value;
+        }
 
         /// <summary>
         /// Big hack to make this freaking windows appear
@@ -177,22 +207,16 @@ namespace PowerWallet
             var txt = GetText(e.OriginalSource);
             if (txt != null)
             {
-                var search = ActivateSearch();
+                var search = App.Locator.Resolve<SearchViewModel>();
                 search.SearchedTerm = txt;
                 search.Search.Execute();
+                ShowView("Search");
             }
         }
 
-
-        private SearchViewModel ActivateSearch()
+        private void ShowView(string viewName)
         {
-            var documents = GetDocumentPane();
-            if (!documents.Children.Contains(search))
-            {
-                documents.Children.Add(search);
-            }
-            search.IsActive = true;
-            return ((SearchView)(search.Content)).ViewModel;
+            _ShowViews[viewName]();
         }
 
         private LayoutDocumentPane GetDocumentPane()
@@ -244,7 +268,7 @@ namespace PowerWallet
             }
         }
 
-     
+
         private void NewWallet_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var command = App.Locator.Resolve<WalletsViewModel>().CreateNewWalletCommand();
@@ -269,6 +293,8 @@ namespace PowerWallet
                 DataContext = command
             });
         }
+
+
 
 
     }
