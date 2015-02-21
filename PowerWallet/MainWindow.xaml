@@ -50,7 +50,9 @@
                                 <ad:LayoutAnchorable Title="Wallets" ContentId="Wallets">
                                     <mvvm:WalletsView></mvvm:WalletsView>
                                 </ad:LayoutAnchorable>
-                                <ad:LayoutAnchorable Title="Addresses" ContentId="Addresses"></ad:LayoutAnchorable>
+                                <ad:LayoutAnchorable Title="Addresses" ContentId="Addresses">
+                                    <mvvm:AddressesView></mvvm:AddressesView>
+                                </ad:LayoutAnchorable>
                             </ad:LayoutAnchorablePane>
                         </ad:LayoutAnchorablePaneGroup>
                         <ad:LayoutDocumentPane DockHeight="1.618*">

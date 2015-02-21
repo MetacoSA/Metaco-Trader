@@ -25,6 +25,14 @@ namespace PowerWallet.ViewModel
         }
 
 
+        private readonly ObservableCollection<AddressViewModel> _Addresses = new ObservableCollection<AddressViewModel>();
+        public ObservableCollection<AddressViewModel> Addresses
+        {
+            get
+            {
+                return _Addresses;
+            }
+        }
         private async Task LoadCache()
         {
             var wallets = (await _Storage.Get<string[]>(WALLETS_KEY)) ?? new string[0];
@@ -202,6 +210,7 @@ namespace PowerWallet.ViewModel
             }
         }
 
+
         private AsyncCommand _Refresh;
         public AsyncCommand Refresh
         {
@@ -228,6 +237,18 @@ namespace PowerWallet.ViewModel
         public void Select()
         {
             MessengerInstance.Send(new ShowCoinsMessage(_Name));
+            new AsyncCommand(async (_) =>
+            {
+                var rb = _Parent.ClientFactory.CreateClient();
+                var addresses = await rb.GetAddresses(Name);
+                _Parent.Addresses.Clear();
+                foreach (var address in addresses)
+                {
+                    _Parent.Addresses.Add(new AddressViewModel(address.Address.ToString()));
+                }
+            })
+            .Notify(MessengerInstance)
+            .Execute();
         }
     }
 
@@ -306,6 +327,20 @@ namespace PowerWallet.ViewModel
         [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]
         [Category("Current State")]
         public NBitcoin.KeyPath CurrentPath
+        {
+            get;
+            set;
+        }
+    }
+
+    public class AddressViewModel : PWViewModelBase
+    {
+        public AddressViewModel(string address)
+        {
+            Address = address;
+        }
+
+        public string Address
         {
             get;
             set;
