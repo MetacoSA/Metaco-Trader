@@ -175,20 +175,17 @@ namespace PowerWallet
             try
             {
                 var localStorage = App.Locator.Resolve<IStorage>();
-                var layout = localStorage.Get<string>(LAYOUT_KEY).Result;
-                if (layout != null)
-                {
-
-                    XmlLayoutSerializer seria = new XmlLayoutSerializer(dockManager);
-                    seria.LayoutSerializationCallback += LayoutDeserialization;
-                    seria.Deserialize(new StringReader(layout));
-                }
+                var layout = localStorage.Get<string>(LAYOUT_KEY).Result ?? GetDefaultLayout();
+                XmlLayoutSerializer seria = new XmlLayoutSerializer(dockManager);
+                seria.LayoutSerializationCallback += LayoutDeserialization;
+                seria.Deserialize(new StringReader(layout));
             }
             catch (Exception ex)
             {
                 PWTrace.Error("Exception when restoring layout", ex);
             }
         }
+
 
         void LayoutDeserialization(object sender, LayoutSerializationCallbackEventArgs e)
         {
@@ -261,13 +258,17 @@ namespace PowerWallet
         private void ResetLayout_Click(object sender, RoutedEventArgs e)
         {
             XmlLayoutSerializer seria = new XmlLayoutSerializer(dockManager);
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PowerWallet.DefaultLayout.xml"))
-            {
-                seria.LayoutSerializationCallback += LayoutDeserialization;
-                seria.Deserialize(stream);
-            }
+            seria.LayoutSerializationCallback += LayoutDeserialization;
+            seria.Deserialize(new StringReader(GetDefaultLayout()));
         }
 
+        private string GetDefaultLayout()
+        {
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PowerWallet.DefaultLayout.xml"))
+            {
+                return new StreamReader(stream).ReadToEnd();
+            }
+        }
 
         private void NewWallet_Executed(object sender, ExecutedRoutedEventArgs e)
         {

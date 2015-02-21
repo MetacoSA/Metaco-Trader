@@ -49,13 +49,6 @@ namespace PowerWallet
             set;
         }
 
-        //public static IContainer Container
-        //{
-        //    get;
-        //    private set;
-        //}
-
-        
         public static ViewModelLocator Locator
         {
             get;
