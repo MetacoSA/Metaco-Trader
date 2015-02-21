@@ -45,18 +45,6 @@ namespace PowerWallet.Modules
 
             InitializeSearch(context);
 
-            context.Main.CommandBindings.Add(new CommandBinding(NavigationCommands.Search, (s, e) =>
-            {
-                var txt = GetText(e.OriginalSource);
-                if (txt != null)
-                {
-                    var search = App.Locator.Resolve<SearchViewModel>();
-                    search.SearchedTerm = txt;
-                    search.Search.Execute();
-                    context.Main.ShowView("Search");
-                }
-            }));
-
             context.Main.CommandBindings.Add(new CommandBinding(PowerCommands.NewWallet, (s, e) =>
             {
                 var command = App.Locator.Resolve<WalletsViewModel>().CreateNewWalletCommand();
@@ -93,6 +81,41 @@ namespace PowerWallet.Modules
                     });
                 }
             }), true);
+
+            EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, a) =>
+            {
+                var txt = GetTextElement(s);
+                if (txt != null && !txt.InputBindings.OfType<KeyBinding>().Any(k => k.Key == Key.F3))
+                {
+                    txt.InputBindings.Add(new KeyBinding(NavigationCommands.Search, Key.F3, ModifierKeys.None));
+                }
+            }), true);
+
+            context.Main.CommandBindings.Add(new CommandBinding(NavigationCommands.Search, (s, e) =>
+            {
+                var txt = GetText(e.OriginalSource);
+                if (txt != null)
+                {
+                    var search = App.Locator.Resolve<SearchViewModel>();
+                    search.SearchedTerm = txt;
+                    search.Search.Execute();
+                    context.Main.ShowView("Search");
+                }
+            }));
+        }
+
+        private UIElement GetTextElement(object source)
+        {
+            var txt = source as TextBox;
+            if (txt != null)
+                return txt;
+            var txtArea = source as TextArea;
+            if (txtArea != null)
+                return txtArea;
+            var txtEditor = source as TextEditor;
+            if (txtEditor != null)
+                return txtEditor;
+            return null;
         }
 
         private string GetText(object source)

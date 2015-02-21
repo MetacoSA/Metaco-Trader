@@ -20,7 +20,6 @@ namespace PowerWallet.Controls
             AutoSelectTextBox textBox = new AutoSelectTextBox();
             textBox.IsReadOnly = true;
             textBox.AutoSelectBehavior = AutoSelectBehavior.OnFocus;
-            textBox.InputBindings.Add(new InputBinding(NavigationCommands.Search, NavigationCommands.Search.InputGestures[0]));
             return textBox;
         }
         protected override void SetValueDependencyProperty()

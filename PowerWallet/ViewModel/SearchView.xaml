@@ -29,9 +29,7 @@
                 <KeyBinding Command="NavigationCommands.Search" Key="F3"></KeyBinding>
             </edit:TextEditor.InputBindings>
             <edit:TextEditor.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Command="NavigationCommands.Search"></MenuItem>
-                </ContextMenu>
+                <ContextMenu></ContextMenu>
             </edit:TextEditor.ContextMenu>
         </edit:TextEditor>
     </DockPanel>
