@@ -198,7 +198,10 @@ namespace PowerWallet.ViewModel
             {
                 using (var client = new HttpClient())
                 {
-                    var resp = await client.GetAsync("https://api.coinprism.com/v1/assets/" + assetId.GetWif(App.Network));
+                    var url = "https://api.coinprism.com/v1/assets/";
+                    if (App.Network == Network.TestNet)
+                        url = "https://api.testnet.coinprism.com/v1/assets/";
+                    var resp = await client.GetAsync(url + assetId.GetWif(App.Network));
                     resp.EnsureSuccessStatusCode();
                     var str = await resp.Content.ReadAsStringAsync();
                     var definition = Serializer.ToObject<AssetDefinition>(str, App.Network);
