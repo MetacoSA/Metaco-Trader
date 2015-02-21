@@ -198,19 +198,7 @@ namespace PowerWallet
         const string LAYOUT_KEY = "Layout-Data";
 
 
-        private void Search_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            var txt = GetText(e.OriginalSource);
-            if (txt != null)
-            {
-                var search = App.Locator.Resolve<SearchViewModel>();
-                search.SearchedTerm = txt;
-                search.Search.Execute();
-                ShowView("Search");
-            }
-        }
-
-        private void ShowView(string viewName)
+        public void ShowView(string viewName)
         {
             _ShowViews[viewName]();
         }
@@ -219,21 +207,6 @@ namespace PowerWallet
         {
             var documents = dockManager.Layout.Descendents().OfType<LayoutDocumentPane>().First();
             return documents;
-        }
-
-
-        private string GetText(object source)
-        {
-            var txt = source as TextBox;
-            if (txt != null)
-                return txt.Text;
-            var txtArea = source as TextArea;
-            if (txtArea != null)
-                return txtArea.Selection.GetText();
-            var txtEditor = source as TextEditor;
-            if (txtEditor != null)
-                return txtEditor.TextArea.Selection.GetText();
-            return null;
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
@@ -269,14 +242,6 @@ namespace PowerWallet
             }
         }
 
-        private void NewWallet_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            var command = App.Locator.Resolve<WalletsViewModel>().CreateNewWalletCommand();
-            Show(new NewWalletWindow()
-            {
-                DataContext = command
-            });
-        }
 
         public void Show(ChildWindow win)
         {
@@ -285,13 +250,5 @@ namespace PowerWallet
             win.Show();
         }
 
-        private void OpenWallet_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            var command = App.Locator.Resolve<WalletsViewModel>().CreateOpenWalletCommand();
-            Show(new OpenWalletWindow()
-            {
-                DataContext = command
-            });
-        }
     }
 }

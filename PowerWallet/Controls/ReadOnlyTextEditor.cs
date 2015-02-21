@@ -20,24 +20,7 @@ namespace PowerWallet.Controls
             AutoSelectTextBox textBox = new AutoSelectTextBox();
             textBox.IsReadOnly = true;
             textBox.AutoSelectBehavior = AutoSelectBehavior.OnFocus;
-            textBox.ContextMenu = new ContextMenu();
             textBox.InputBindings.Add(new InputBinding(NavigationCommands.Search, NavigationCommands.Search.InputGestures[0]));
-            textBox.ContextMenu.Items.Add(new MenuItem()
-            {
-                Command = NavigationCommands.Search
-            });
-            textBox.ContextMenu.Items.Add(new MenuItem()
-            {
-                Command = ApplicationCommands.Cut,
-            });
-            textBox.ContextMenu.Items.Add(new MenuItem()
-            {
-                Command = ApplicationCommands.Copy,
-            });
-            textBox.ContextMenu.Items.Add(new MenuItem()
-            {
-                Command = ApplicationCommands.Paste,
-            });
             return textBox;
         }
         protected override void SetValueDependencyProperty()

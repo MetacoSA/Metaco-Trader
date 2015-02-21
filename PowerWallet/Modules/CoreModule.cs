@@ -7,6 +7,11 @@ using Autofac;
 using PowerWallet.ViewModel;
 using System.ComponentModel.Composition;
 using GalaSoft.MvvmLight.Messaging;
+using System.Windows.Input;
+using System.Windows.Controls;
+using ICSharpCode.AvalonEdit.Editing;
+using ICSharpCode.AvalonEdit;
+using System.Windows;
 
 namespace PowerWallet.Modules
 {
@@ -38,8 +43,70 @@ namespace PowerWallet.Modules
 
             context.Main.RegisterDocument<Donation>("Donation");
 
+            InitializeSearch(context);
+
+            context.Main.CommandBindings.Add(new CommandBinding(NavigationCommands.Search, (s, e) =>
+            {
+                var txt = GetText(e.OriginalSource);
+                if (txt != null)
+                {
+                    var search = App.Locator.Resolve<SearchViewModel>();
+                    search.SearchedTerm = txt;
+                    search.Search.Execute();
+                    context.Main.ShowView("Search");
+                }
+            }));
+
+            context.Main.CommandBindings.Add(new CommandBinding(PowerCommands.NewWallet, (s, e) =>
+            {
+                var command = App.Locator.Resolve<WalletsViewModel>().CreateNewWalletCommand();
+                context.Main.Show(new NewWalletWindow()
+                {
+                    DataContext = command
+                });
+            }));
+
+            context.Main.CommandBindings.Add(new CommandBinding(PowerCommands.OpenWallet, (s, e) =>
+            {
+                var command = App.Locator.Resolve<WalletsViewModel>().CreateOpenWalletCommand();
+                context.Main.Show(new OpenWalletWindow()
+                {
+                    DataContext = command
+                });
+            }));
+        }
+
+        private void InitializeSearch(InitializationContext context)
+        {
             context.Container.RegisterType<SearchViewModel>().SingleInstance();
             context.Main.RegisterDocument<SearchView>("Search");
+            EventManager.RegisterClassHandler(typeof(ContextMenu), ContextMenu.OpenedEvent, new RoutedEventHandler((s, a) =>
+            {
+                var menu = (ContextMenu)s;
+
+                var txt = GetText(menu.PlacementTarget);
+                if (txt != null)
+                {
+                    menu.Items.Add(new MenuItem()
+                    {
+                        Command = NavigationCommands.Search
+                    });
+                }
+            }), true);
+        }
+
+        private string GetText(object source)
+        {
+            var txt = source as TextBox;
+            if (txt != null)
+                return txt.Text;
+            var txtArea = source as TextArea;
+            if (txtArea != null)
+                return txtArea.Selection.GetText();
+            var txtEditor = source as TextEditor;
+            if (txtEditor != null)
+                return txtEditor.TextArea.Selection.GetText();
+            return null;
         }
 
         #endregion

@@ -12,11 +12,6 @@
         Title="Power Wallet"
         Caption="{x:Static local:App.Caption}"                     
                      >
-    <controls:NiceWindow.CommandBindings>
-        <CommandBinding Command="{x:Static NavigationCommands.Search}" Executed="Search_Executed"></CommandBinding>
-        <CommandBinding Command="{x:Static local:PowerCommands.NewWallet}" Executed="NewWallet_Executed"></CommandBinding>
-        <CommandBinding Command="{x:Static local:PowerCommands.OpenWallet}" Executed="OpenWallet_Executed"></CommandBinding>
-    </controls:NiceWindow.CommandBindings>
     <Grid x:Name="root">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
