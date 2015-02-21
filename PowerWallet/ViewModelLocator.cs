@@ -12,6 +12,7 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using Autofac;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
@@ -22,25 +23,13 @@ namespace PowerWallet.ViewModel
 {
     public class ViewModelLocator
     {
+        IContainer _Container;
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
-        public ViewModelLocator()
+        public ViewModelLocator(IContainer container)
         {
-            var ioc = new SimpleIoc();
-            ServiceLocator.SetLocatorProvider(() => ioc);
-            ioc.Register<CoinsViewModel>();
-            ioc.Register<MainViewModel>();
-            ioc.Register<StatusMainViewModel>();
-            ioc.Register<RapidBaseClientFactory>();
-            ioc.Register<ServerViewModel>();
-            ioc.Register<WalletsViewModel>();
-            ioc.Register<IStorage>(() => new LocalStorage());
-            ioc.Register<IMessenger>(() => GalaSoft.MvvmLight.Messaging.Messenger.Default);
-        }
-        public static void Cleanup()
-        {
-            // TODO Clear the ViewModels
+            _Container = container;
         }
 
         public IMessenger Messenger
@@ -53,7 +42,7 @@ namespace PowerWallet.ViewModel
 
         public T Resolve<T>()
         {
-            return ServiceLocator.Current.GetInstance<T>();
+            return _Container.Resolve<T>();
         }
     }
 }

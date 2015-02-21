@@ -5,7 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:converters="clr-namespace:PowerWallet.Converters"
     xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit" 
-    x:Class="PowerWallet.App" StartupUri="MainWindow.xaml"
+    x:Class="PowerWallet.App"
     d1p1:Ignorable="d">
     <Application.Resources>
         <converters:EnumToVisibilityConverter x:Key="EqualsToVisibility"/>

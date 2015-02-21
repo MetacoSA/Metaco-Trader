@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -21,6 +22,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Xceed.Wpf.AvalonDock;
+using Xceed.Wpf.AvalonDock.Controls;
 using Xceed.Wpf.AvalonDock.Layout;
 using Xceed.Wpf.AvalonDock.Layout.Serialization;
 using Xceed.Wpf.Toolkit;
@@ -37,57 +39,108 @@ namespace PowerWallet
         public MainWindow()
         {
             InitializeComponent();
-            root.DataContext = App.Locator.Resolve<MainViewModel>();
-            serverGrid.SelectedObject = ViewModel.Server;
-            App.Locator.Messenger.Register<ExposePropertiesMessage>(this, m =>
-            {
-                propertyGrid.SelectedObject = m.Target;
-            });
-            LoadDefaultLayout();
-            FillViewMenu();
-            LoadLayout();
         }
 
-        private void LoadDefaultLayout()
+        internal void ModuleInitialized()
         {
-            XmlLayoutSerializer seria = new XmlLayoutSerializer(dockManager);
-            StringWriter writer = new StringWriter();
-            seria.Serialize(writer);
-            defaultLayout = writer.ToString();
+            statusBar.DataContext = App.Locator.Resolve<StatusMainViewModel>();
         }
 
-        private void FillViewMenu()
+        public MenuItem ViewMenu
         {
-            foreach (var view in dockManager
-                .Layout
-                .Descendents()
-                .OfType<LayoutContent>()
-                .Where(c => c.ContentId != null))
+            get
             {
-                var localView = view;
-                MenuItem subMenu = new MenuItem();
-                subMenu.Header = localView.Title;
-                viewMenu.Items.Add(subMenu);
-                subMenu.Click += (s, a) =>
-                {
-                    var layout = dockManager.Layout.Hidden.FirstOrDefault(v => v.Content == localView.Content);
-                    if (layout != null)
-                    {
-                        layout.Show();
-                    }
-                    var doc = localView as LayoutDocument;
-                    if (doc != null)
-                    {
-                        var documents = GetDocumentPane();
-                        if (!documents.Children.Contains(doc))
-                            documents.Children.Add(doc);
-                        doc.IsActive = true;
-                    }
-                };
+                return viewMenu;
             }
         }
 
-        private void LoadLayout()
+  
+       public void RegisterAnchorable<T>(string viewName, int defaultWidth = 250, int defaultHeight = 400) where T : new()
+        {
+            _Contents.Add(viewName, new Lazy<object>(() => new T()));
+
+            MenuItem subMenu = new MenuItem();
+            subMenu.Header = viewName;
+            viewMenu.Items.Add(subMenu);
+            subMenu.Click += (s, a) =>
+            {
+                var anchorable = Find<LayoutAnchorable>(viewName);
+                if (anchorable == null)
+                {
+                    anchorable = new LayoutAnchorable();
+                    anchorable.Title = viewName;
+                    anchorable.ContentId = viewName;
+                    anchorable.FloatingWidth = defaultWidth;
+                    anchorable.FloatingHeight = defaultHeight;
+                    LayoutFloatingWindow layoutFloatingWindow = new LayoutAnchorableFloatingWindow
+                    {
+                        RootPanel = new LayoutAnchorablePaneGroup(new LayoutAnchorablePane(anchorable)
+                        {
+                            //DockMinHeight = layoutPositionableElement.DockMinHeight,
+                            //DockMinWidth = layoutPositionableElement.DockMinWidth,
+                            //FloatingLeft = layoutPositionableElement.FloatingLeft,
+                            //FloatingTop = layoutPositionableElement.FloatingTop,
+                            FloatingWidth = defaultWidth,
+                            FloatingHeight = defaultHeight,
+                        })
+                    };
+                    dockManager.Layout.FloatingWindows.Add(layoutFloatingWindow);
+                    AttachToUI(layoutFloatingWindow, anchorable);
+                }
+                if (anchorable.Content == null)
+                {
+                    anchorable.Content = FindContent(viewName);
+                }
+                if (anchorable.IsHidden)
+                    anchorable.Show();
+            };
+        }
+
+      
+       Dictionary<string, Lazy<object>> _Contents = new Dictionary<string, Lazy<object>>();
+       private object FindContent(string contentId)
+       {
+           Lazy<object> val;
+           _Contents.TryGetValue(contentId, out val);
+           return val.Value;
+       }
+
+        /// <summary>
+        /// Big hack to make this freaking windows appear
+        /// </summary>
+        /// <param name="window"></param>
+        private void AttachToUI(LayoutFloatingWindow layoutFloatingWindow, LayoutAnchorable contentModel)
+        {
+            var ctor = typeof(LayoutAnchorableFloatingWindowControl).GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance).First();
+
+            var fwc = (LayoutAnchorableFloatingWindowControl)ctor.Invoke(new object[] { layoutFloatingWindow });
+
+            fwc.Width = contentModel.FloatingWidth;
+            fwc.Height = contentModel.FloatingHeight;
+            fwc.Left = this.Left + (this.Width / 2) - (fwc.Width / 2);
+            fwc.Top = this.Top + (this.Height / 2) - (fwc.Height / 2);
+
+            var floatings = (List<LayoutFloatingWindowControl>)
+                typeof(DockingManager)
+                .GetField("_fwList", BindingFlags.Instance | BindingFlags.NonPublic)
+                .GetValue(dockManager);
+
+            floatings.Add(fwc);
+            fwc.Show();
+        }
+
+
+        private T Find<T>()
+        {
+            return dockManager.Layout.Descendents().OfType<T>().FirstOrDefault();
+        }
+
+        private T Find<T>(string viewName) where T : LayoutContent
+        {
+            return dockManager.Layout.Descendents().OfType<T>().Where(t => t.ContentId == viewName).FirstOrDefault();
+        }
+
+        public void LoadLayout()
         {
             try
             {
@@ -97,6 +150,7 @@ namespace PowerWallet
                 {
 
                     XmlLayoutSerializer seria = new XmlLayoutSerializer(dockManager);
+                    seria.LayoutSerializationCallback += LayoutDeserialization;
                     seria.Deserialize(new StringReader(layout));
                 }
             }
@@ -106,16 +160,17 @@ namespace PowerWallet
             }
         }
 
-        const string LAYOUT_KEY = "Layout-Data";
-
-
-        public MainViewModel ViewModel
+        void LayoutDeserialization(object sender, LayoutSerializationCallbackEventArgs e)
         {
-            get
+            if (e.Content == null)
             {
-                return root.DataContext as MainViewModel;
+                e.Content = FindContent(e.Model.ContentId);
             }
         }
+
+
+        const string LAYOUT_KEY = "Layout-Data";
+
 
         private void Search_Executed(object sender, ExecutedRoutedEventArgs e)
         {
@@ -179,13 +234,17 @@ namespace PowerWallet
             }
         }
 
-        string defaultLayout;
         private void ResetLayout_Click(object sender, RoutedEventArgs e)
         {
             XmlLayoutSerializer seria = new XmlLayoutSerializer(dockManager);
-            seria.Deserialize(new StringReader(defaultLayout));
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PowerWallet.DefaultLayout.xml"))
+            {
+                seria.LayoutSerializationCallback += LayoutDeserialization;
+                seria.Deserialize(stream);
+            }
         }
 
+     
         private void NewWallet_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var command = App.Locator.Resolve<WalletsViewModel>().CreateNewWalletCommand();
@@ -198,7 +257,7 @@ namespace PowerWallet
         private void Show(ChildWindow win)
         {
             win.WindowStartupLocation = Xceed.Wpf.Toolkit.WindowStartupLocation.Center;
-            windowsContainer.Children.Add(win);            
+            windowsContainer.Children.Add(win);
             win.Show();
         }
 
@@ -210,5 +269,7 @@ namespace PowerWallet
                 DataContext = command
             });
         }
+
+
     }
 }
