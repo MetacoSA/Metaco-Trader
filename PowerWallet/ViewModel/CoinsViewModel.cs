@@ -16,6 +16,9 @@ using PowerWallet.Messages;
 using System.Windows.Input;
 using System.Net;
 using NBitcoin.OpenAsset;
+using Newtonsoft.Json;
+using System.Net.Http;
+using RapidBase;
 
 namespace PowerWallet.ViewModel
 {
@@ -89,7 +92,7 @@ namespace PowerWallet.ViewModel
                             balance = await client.GetBalance(SearchedCoins, true);
                         if (balance == null)
                             throw new WebException("Error 404");
-                        PopulateCoins(balance);
+                        await PopulateCoins(balance);
                     })
                     .Notify(MessengerInstance);
                 return _Search;
@@ -125,13 +128,86 @@ namespace PowerWallet.ViewModel
             }
         }
 
-        private void PopulateCoins(BalanceModel balance)
+        private async Task PopulateCoins(BalanceModel balance)
         {
             Coins.Clear();
             foreach (var op in balance.Operations)
             {
                 foreach (var coin in op.ReceivedCoins)
                     Coins.Add(new CoinViewModel(coin, op));
+            }
+
+            var colored = 
+                Coins
+                .Where(c => c.Coin is ColoredCoin)
+                .GroupBy(c => ((ColoredCoin)(c.Coin)).Asset.Id)
+                .Select(g =>
+                new
+                {
+                    Coins = g,
+                    Metadata = DownloadMetadata(g),
+                });
+
+            await Task.WhenAll(colored.Select(c => c.Metadata).ToArray());
+        }
+
+        public class AssetDefinition
+        {
+            [JsonProperty("asset_id")]
+            public BitcoinAssetId AssetId
+            {
+                get;
+                set;
+            }
+
+            public string Name
+            {
+                get;
+                set;
+            }
+
+            public int Divisibility
+            {
+                get;
+                set;
+            }
+            public string Description
+            {
+                get;
+                set;
+            }
+
+            [JsonProperty("name_short")]
+            public string NameShort
+            {
+                get;
+                set;
+            }
+
+            public decimal ToDecimal(ulong quantity)
+            {
+                var value = (decimal)quantity;
+                return value / (decimal)Math.Pow(10, Divisibility);
+            }
+        }
+
+        private async Task DownloadMetadata(IEnumerable<CoinViewModel> coins)
+        {
+            var assetId = ((ColoredCoin)coins.First().Coin).Asset.Id;
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var resp = await client.GetAsync("https://api.coinprism.com/v1/assets/" + assetId.GetWif(App.Network));
+                    resp.EnsureSuccessStatusCode();
+                    var str = await resp.Content.ReadAsStringAsync();
+                    var definition = Serializer.ToObject<AssetDefinition>(str, App.Network);
+                    foreach(var coin in coins)
+                        coin.AssetDefinition = definition;
+                }
+            }
+            catch
+            {
             }
         }
     }
@@ -169,10 +245,21 @@ namespace PowerWallet.ViewModel
         internal BalanceOperation Op;
         internal ICoin Coin;
 
+        private string _Value;
         public string Value
         {
-            get;
-            set;
+            get
+            {
+                return _Value;
+            }
+            set
+            {
+                if (value != _Value)
+                {
+                    _Value = value;
+                    OnPropertyChanged(() => this.Value);
+                }
+            }
         }
         public int Confirmations
         {
@@ -195,6 +282,29 @@ namespace PowerWallet.ViewModel
         {
             get;
             set;
+        }
+
+        private CoinsViewModel.AssetDefinition _AssetDefinition;
+        public CoinsViewModel.AssetDefinition AssetDefinition
+        {
+            get
+            {
+                return _AssetDefinition;
+            }
+            set
+            {
+                if (value != _AssetDefinition)
+                {
+                    _AssetDefinition = value;
+                    OnPropertyChanged(() => this.AssetDefinition);
+
+                    if (value != null)
+                    {
+                        var q = ((ColoredCoin)Coin).Asset.Quantity;
+                        Value = value.ToDecimal(q).ToString() + " " + value.NameShort;
+                    }
+                }
+            }
         }
     }
 
@@ -266,7 +376,23 @@ namespace PowerWallet.ViewModel
                 .AddAttributes(new DisplayNameAttribute("Value"))
                 .Commit()
                 .SetValue(coin.Value);
+
+                if (coin.AssetDefinition != null)
+                {
+                    NewProperty("Name")
+                        .SetEditor(typeof(ReadOnlyTextEditor))
+                        .SetCategory("Colored Coin")
+                        .Commit()
+                        .SetValue(coin.AssetDefinition.Name);
+
+                    NewProperty("Description")
+                        .SetEditor(typeof(ReadOnlyTextEditor))
+                        .SetCategory("Colored Coin")
+                        .Commit()
+                        .SetValue(coin.AssetDefinition.Description);
+                }
             }
+
         }
 
         [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]

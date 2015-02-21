@@ -122,7 +122,7 @@ namespace PowerWallet.Modules
         {
             var txt = source as TextBox;
             if (txt != null)
-                return txt.Text;
+                return txt.SelectedText;
             var txtArea = source as TextArea;
             if (txtArea != null)
                 return txtArea.Selection.GetText();
