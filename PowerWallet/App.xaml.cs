@@ -35,22 +35,11 @@ namespace PowerWallet
             {
                 module.Initialize(ctx);
             }
-            AddStatic(ctx.Container);
             Locator = new ViewModelLocator(ctx.Container.Build());
             window.ModuleInitialized();
             window.LoadLayout();
             window.Show();
             base.OnStartup(e);           
-        }
-
-        private void AddStatic(ContainerBuilder ioc)
-        {
-            ioc.RegisterType<CoinsViewModel>().SingleInstance();
-            ioc.RegisterType<StatusMainViewModel>().SingleInstance();
-            ioc.RegisterType<RapidBaseClientFactory>().SingleInstance();
-            ioc.RegisterType<ServerViewModel>().SingleInstance();
-            ioc.Register<IStorage>((ctx) => new LocalStorage()).SingleInstance();
-            ioc.Register<IMessenger>((ctx) => GalaSoft.MvvmLight.Messaging.Messenger.Default).SingleInstance();
         }
 
         [ImportMany]

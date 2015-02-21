@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Autofac;
 using PowerWallet.ViewModel;
 using System.ComponentModel.Composition;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace PowerWallet.Modules
 {
@@ -16,12 +17,19 @@ namespace PowerWallet.Modules
 
         public void Initialize(InitializationContext context)
         {
+            context.Container.Register<IStorage>((ctx) => new LocalStorage()).SingleInstance();
+            context.Container.Register<IMessenger>(ctx => GalaSoft.MvvmLight.Messaging.Messenger.Default).SingleInstance();
+
+            context.Container.RegisterType<RapidBaseClientFactory>().SingleInstance();
+
             context.Container.RegisterType<WalletsViewModel>().SingleInstance();
             context.Main.RegisterAnchorable<WalletsView>("Wallets");
             context.Main.RegisterAnchorable<AddressesView>("Addresses");
 
             context.Container.RegisterType<CoinsViewModel>().SingleInstance();
             context.Main.RegisterAnchorable<CoinPane>("Coins");
+
+            context.Container.RegisterType<ServerViewModel>().SingleInstance();
             context.Main.RegisterAnchorable<ServerView>("Server");
 
             context.Main.RegisterAnchorable<PropertiesView>("Properties");
