@@ -168,6 +168,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Messages\ExposePropertiesMessage.cs" />
     <Compile Include="Messages\ShowCoinsMessage.cs" />
+    <Compile Include="Messages\StatusMessage.cs" />
     <Compile Include="Modules\IModule.cs" />
     <Compile Include="Modules\InitializationContext.cs" />
     <Compile Include="Modules\CoreModule.cs" />
@@ -184,6 +185,10 @@
     </Compile>
     <Compile Include="ViewModel\Donation.xaml.cs">
       <DependentUpon>Donation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\NewKeySetViewModel.cs" />
+    <Compile Include="ViewModel\NewKeySetWindow.xaml.cs">
+      <DependentUpon>NewKeySetWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\OpenWalletWindow.xaml.cs">
       <DependentUpon>OpenWalletWindow.xaml</DependentUpon>
@@ -241,6 +246,10 @@
     <Page Include="ViewModel\Donation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewModel\NewKeySetWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewModel\OpenWalletWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

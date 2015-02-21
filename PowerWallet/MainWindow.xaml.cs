@@ -40,7 +40,6 @@ namespace PowerWallet
         {
             InitializeComponent();
         }
-
         internal void ModuleInitialized()
         {
             statusBar.DataContext = App.Locator.Resolve<StatusMainViewModel>();
@@ -279,7 +278,7 @@ namespace PowerWallet
             });
         }
 
-        private void Show(ChildWindow win)
+        public void Show(ChildWindow win)
         {
             win.WindowStartupLocation = Xceed.Wpf.Toolkit.WindowStartupLocation.Center;
             windowsContainer.Children.Add(win);
@@ -294,9 +293,5 @@ namespace PowerWallet
                 DataContext = command
             });
         }
-
-
-
-
     }
 }

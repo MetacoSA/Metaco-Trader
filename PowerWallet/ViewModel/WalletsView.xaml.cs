@@ -62,5 +62,15 @@ namespace PowerWallet.ViewModel
                 keyset.Select();
             }
         }
+
+        private void AddKeySet_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var wallet = (WalletViewModel)e.Parameter;
+            var win = (MainWindow)App.Current.MainWindow;
+            win.Show(new NewKeySetWindow()
+            {
+                DataContext = wallet.CreateNewKeysetCommand()
+            });
+        }
     }
 }

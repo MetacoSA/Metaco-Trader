@@ -15,5 +15,7 @@ namespace PowerWallet
 
         public static RoutedUICommand Execute = new RoutedUICommand("Execute", "Execute", typeof(PowerCommands));
 
+
+        public static RoutedUICommand AddKeySet = new RoutedUICommand("Add keyset", "AddKeyset", typeof(PowerCommands));
     }
 }

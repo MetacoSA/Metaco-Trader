@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using PowerWallet.Messages;
 using PowerWallet.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace PowerWallet
 {
     public class AsyncCommand : PWViewModelBase, ICommand
     {
-        Func<CancellationToken, Task> _Exec;
-        public AsyncCommand(Func<CancellationToken, Task> exec)
+        Func<AsyncCommand, Task> _Exec;
+        public AsyncCommand(Func<AsyncCommand, Task> exec)
         {
             if (exec == null)
                 throw new ArgumentNullException("exec");
@@ -119,34 +120,64 @@ namespace PowerWallet
         public void Info(string message)
         {
             Status = message;
+            Notify(message);
+        }
+
+        private void Notify(string message)
+        {
+            if (messenger != null)
+                messenger.Send(new StatusMessage(_State, message));
         }
         public void Error(string message)
         {
             ErrorMessage = message;
+            Notify(StatusState.Error, message);
         }
 
+        StatusState _State;
+        private void Notify(StatusState state, string message)
+        {
+            _State = state;
+            Notify(message);
+        }
+        public void Execute(bool notify)
+        {
+            ExecuteCore(false, null);
+        }
         public void Execute(object parameter)
         {
             if (CanExecute(parameter))
             {
-                _Cancel = new CancellationTokenSource();
-                Status = "";
-                ErrorMessage = "";
-                Task = CreateTask(_Cancel.Token);
-                var task = Task;
-                Task.GetAwaiter().OnCompleted(() =>
-                {
-                    if (task.Exception != null && ErrorMessage == "")
-                    {
-                        ErrorMessage = task.Exception.InnerException.Message;
-                    }
-                    OnCanExecuteChanged();
-                    if (Executed != null)
-                        Executed(this, EventArgs.Empty);
-                });
-                if (messenger != null)
-                    messenger.Send<AsyncCommand>(this);
+                ExecuteCore(true, parameter);
             }
+        }
+
+        private void ExecuteCore(bool notify, object parameter)
+        {
+            var oldMessenger = messenger;
+            if (!notify)
+                messenger = null;
+            _Cancel = new CancellationTokenSource();
+            Status = "";
+            ErrorMessage = "";
+            Notify(StatusState.Loading, "");
+            Task = CreateTask(_Cancel.Token);
+            var task = Task;
+            if (messenger != null && notify)
+                messenger.Send<AsyncCommand>(this);
+            Task.GetAwaiter().OnCompleted(() =>
+            {
+                if (task.Exception != null && ErrorMessage == "")
+                {
+                    Error(task.Exception.InnerException.Message);
+                }
+                else
+                    Notify(StatusState.Success, null);
+                messenger = oldMessenger;
+                OnCanExecuteChanged();
+                if (Executed != null)
+                    Executed(this, EventArgs.Empty);
+            });
         }
 
         public event EventHandler Executed;
@@ -160,7 +191,7 @@ namespace PowerWallet
 
         protected virtual Task CreateTask(CancellationToken cancelation)
         {
-            return _Exec(cancelation);
+            return _Exec(this);
         }
 
         #endregion

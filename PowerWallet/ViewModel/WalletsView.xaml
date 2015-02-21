@@ -13,6 +13,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.CommandBindings>
+        <CommandBinding Command="local:PowerCommands.AddKeySet" Executed="AddKeySet_Executed"></CommandBinding>
+    </UserControl.CommandBindings>
     <DockPanel x:Name="root" LastChildFill="True">
         <StackPanel 
             DockPanel.Dock="Top"
@@ -37,7 +40,13 @@
                             <TextBlock Text="{Binding Name}"></TextBlock>
                         </DataTemplate>
                     </HierarchicalDataTemplate.ItemTemplate>
-                    <TextBlock Text="{Binding Name}"></TextBlock>
+                    <TextBlock Text="{Binding Name}">
+                        <TextBlock.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Add keyset" Command="local:PowerCommands.AddKeySet" CommandParameter="{Binding}"></MenuItem>
+                            </ContextMenu>
+                        </TextBlock.ContextMenu>
+                    </TextBlock>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

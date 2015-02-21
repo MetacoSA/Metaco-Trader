@@ -51,25 +51,32 @@ namespace PowerWallet.ViewModel
                            {
                                if (search.Length < 520 * 2)
                                {
+                                   var url = "";
                                    if (search.EndsWith("-json") || search.EndsWith("-raw"))
                                    {
                                        var format = search.Substring(search.LastIndexOf("-") + 1);
                                        search = search.Substring(0, search.Length - format.Length - 1);
-                                       var tx = await client.Get<byte[]>("transactions/" + search + "?format=" + format);
+                                       url = "transactions/" + search + "?format=" + format;
+                                       var tx = await client.Get<byte[]>(url);
+                                       t.Info(url);
                                        if (tx != null)
                                        {
                                            Content = ToString(tx, format);
                                            return;
                                        }
 
-                                       var block = await client.Get<byte[]>("blocks/" + search + "?format=" + format);
+                                       url = "blocks/" + search + "?format=" + format;
+                                       var block = await client.Get<byte[]>(url);
+                                       t.Info(url);
                                        if (block != null)
                                        {
                                            Content = ToString(block, format);
                                        }
                                        return;
                                    }
-                                   var result = await client.Get<string>("whatisit/" + search);
+                                   url = "whatisit/" + search;
+                                   var result = await client.Get<string>(url);
+                                   t.Info(url);
                                    Content = result;
                                    return;
                                }

@@ -37,8 +37,8 @@ namespace PowerWallet.Modules
             context.Container.RegisterType<StatusMainViewModel>().SingleInstance();
 
             context.Main.RegisterDocument<Donation>("Donation");
-            context.Container.RegisterType<SearchViewModel>().SingleInstance();
 
+            context.Container.RegisterType<SearchViewModel>().SingleInstance();
             context.Main.RegisterDocument<SearchView>("Search");
         }
 

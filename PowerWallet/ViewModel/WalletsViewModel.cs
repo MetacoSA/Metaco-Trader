@@ -184,7 +184,7 @@ namespace PowerWallet.ViewModel
     }
     public class WalletViewModel : PWViewModelBase
     {
-        WalletsViewModel _Parent;
+        internal WalletsViewModel _Parent;
         public WalletViewModel(string name,
                                WalletsViewModel parent)
         {
@@ -250,6 +250,11 @@ namespace PowerWallet.ViewModel
             .Notify(MessengerInstance)
             .Execute();
         }
+
+        public NewKeySetViewModel CreateNewKeysetCommand()
+        {
+            return (NewKeySetViewModel)new NewKeySetViewModel(this).Notify(MessengerInstance);
+        }
     }
 
     public class KeySetViewModel : PWViewModelBase
@@ -286,7 +291,7 @@ namespace PowerWallet.ViewModel
         public KeySetPropertyViewModel(KeySetData keyset)
         {
             Name = keyset.KeySet.Name;
-            Path = keyset.KeySet.Path.ToString();
+            Path = keyset.KeySet.Path == null ? "" : keyset.KeySet.Path.ToString();
             SignatureCount = keyset.KeySet.SignatureCount;
             CurrentPath = keyset.State.CurrentPath;
             int keyIndex = 0;
