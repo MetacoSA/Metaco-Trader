@@ -19,6 +19,7 @@ using NBitcoin.OpenAsset;
 using Newtonsoft.Json;
 using System.Net.Http;
 using RapidBase;
+using System.Net.Security;
 
 namespace PowerWallet.ViewModel
 {
@@ -95,7 +96,10 @@ namespace PowerWallet.ViewModel
                             {
                             }
                         if (balance == null)
+                        {
+                            client.Colored = true;
                             balance = await client.GetBalance(SearchedCoins, true);
+                        }
                         if (balance == null)
                             throw new WebException("Error 404");
                         await PopulateCoins(balance);
@@ -199,24 +203,38 @@ namespace PowerWallet.ViewModel
 
         private async Task DownloadMetadata(IEnumerable<CoinViewModel> coins)
         {
-            var assetId = ((ColoredCoin)coins.First().Coin).Asset.Id;
+            RemoteCertificateValidationCallback disableSSL = (a, b, c, d) => true;
             try
             {
-                using (var client = new HttpClient())
+                var assetId = ((ColoredCoin)coins.First().Coin).Asset.Id;
+                try
                 {
-                    var url = "https://api.coinprism.com/v1/assets/";
-                    if (Network == Network.TestNet)
-                        url = "https://api.testnet.coinprism.com/v1/assets/";
-                    var resp = await client.GetAsync(url + assetId.GetWif(Network));
-                    resp.EnsureSuccessStatusCode();
-                    var str = await resp.Content.ReadAsStringAsync();
-                    var definition = Serializer.ToObject<AssetDefinition>(str, Network);
-                    foreach (var coin in coins)
-                        coin.AssetDefinition = definition;
+                    using (var client = new HttpClient())
+                    {
+                        var url = "https://api.coinprism.com/v1/assets/";
+                        if (Network == Network.TestNet)
+                        {
+                            ServicePointManager.ServerCertificateValidationCallback += disableSSL;
+                            url = "https://testnet.api.coinprism.com/v1/assets/";
+                        }
+                        var resp = await client.GetAsync(url + assetId.GetWif(Network));
+                        resp.EnsureSuccessStatusCode();
+                        var str = await resp.Content.ReadAsStringAsync();
+                        var definition = Serializer.ToObject<AssetDefinition>(str, Network);
+                        foreach (var coin in coins)
+                            coin.AssetDefinition = definition;
+                    }
+                }
+                catch
+                {
                 }
             }
-            catch
+            finally
             {
+                if (Network == Network.TestNet)
+                {
+                    ServicePointManager.ServerCertificateValidationCallback -= disableSSL;
+                }
             }
         }
     }

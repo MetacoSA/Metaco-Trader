@@ -20,9 +20,9 @@
             <controls:Field Label="Name">
                 <toolkit:WatermarkTextBox x:Name="FocusBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Watermark="Enter wallet name"></toolkit:WatermarkTextBox>
             </controls:Field>
-            <controls:Field Label="Colored">
+            <!--<controls:Field Label="Colored">
                 <CheckBox IsChecked="{Binding IsColored,Mode=TwoWay}"></CheckBox>
-            </controls:Field>
+            </controls:Field>-->
         </StackPanel>
         <Button HorizontalAlignment="Stretch" 
                 Style="{StaticResource IconButton}"
