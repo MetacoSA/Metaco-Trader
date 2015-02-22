@@ -16,6 +16,7 @@
     <DockPanel x:Name="root" LastChildFill="True">
         <grid:DataGridControl x:Name="grid" 
                             ItemsSource="{Binding Addresses}"
+                            SelectionChanged="grid_SelectionChanged"
                             DockPanel.Dock="Bottom"
                             ReadOnly="True" AutoCreateColumns="False">
             <grid:DataGridControl.View>
@@ -27,6 +28,10 @@
             </grid:DataGridControl.View>
             <grid:DataGridControl.Columns>
                 <grid:Column Title="Address" FieldName="Address">
+                </grid:Column>
+                <grid:Column Title="Keyset" FieldName="Keyset">
+                </grid:Column>
+                <grid:Column Title="Path" FieldName="Path">
                 </grid:Column>
             </grid:DataGridControl.Columns>
         </grid:DataGridControl>

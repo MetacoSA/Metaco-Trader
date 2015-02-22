@@ -152,7 +152,7 @@ namespace PowerWallet
             }
         }
 
-        private void ExecuteCore(bool notify, object parameter)
+        private Task ExecuteCore(bool notify, object parameter)
         {
             var oldMessenger = messenger;
             if (!notify)
@@ -179,6 +179,7 @@ namespace PowerWallet
                 if (Executed != null)
                     Executed(this, EventArgs.Empty);
             });
+            return task;
         }
 
         public event EventHandler Executed;
@@ -203,5 +204,19 @@ namespace PowerWallet
             this.messenger = messenger;
             return this;
         }
+
+        public Task ExecuteAsync(bool notify)
+        {
+            return ExecuteCore(false, null);
+        }
+        public Task ExecuteAsync(object parameter)
+        {
+            if (CanExecute(parameter))
+            {
+                return ExecuteCore(true, parameter);
+            }
+            return Task.FromResult(true);
+        }
+
     }
 }

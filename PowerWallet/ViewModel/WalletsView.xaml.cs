@@ -24,6 +24,10 @@ namespace PowerWallet.ViewModel
         {
             InitializeComponent();
             ViewModel = App.Locator.Resolve<WalletsViewModel>();
+            this.CreateCommandBinding(NavigationCommands.Refresh, new Binding("ViewModel.Refresh")
+            {
+                Source = this
+            });
         }
 
         public WalletsViewModel ViewModel

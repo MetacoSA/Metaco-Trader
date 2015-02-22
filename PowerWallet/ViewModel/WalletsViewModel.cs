@@ -25,6 +25,23 @@ namespace PowerWallet.ViewModel
         }
 
 
+        private AsyncCommand _Refresh;
+        public AsyncCommand Refresh
+        {
+            get
+            {
+                if (_Refresh == null)
+                {
+                    _Refresh = new AsyncCommand(async _ =>
+                    {
+                        var refreshs = Wallets.Select(w => w.Refresh.ExecuteAsync(false)).ToArray();
+                        await Task.WhenAll(refreshs);
+                    });
+                }
+                return _Refresh;
+            }
+        }
+
         private readonly ObservableCollection<AddressViewModel> _Addresses = new ObservableCollection<AddressViewModel>();
         public ObservableCollection<AddressViewModel> Addresses
         {
@@ -134,12 +151,12 @@ namespace PowerWallet.ViewModel
             {
                 var wallet = new WalletViewModel(model.Name, this);
                 this.Wallets.Add(wallet);
-                wallet.Refresh.Execute();
                 if (save)
                 {
                     var unused = _Storage.Put(WALLETS_KEY, Wallets.Select(w => w.Name).ToArray());
                 }
             }
+            this.Refresh.Execute();
         }
 
     }
@@ -226,7 +243,7 @@ namespace PowerWallet.ViewModel
                         KeySets.Clear();
                         foreach (var keyset in keysets)
                         {
-                            KeySets.Add(new KeySetViewModel(keyset));
+                            KeySets.Add(new KeySetViewModel(this, keyset));
                         }
                     })
                     .Notify(MessengerInstance);
@@ -245,7 +262,7 @@ namespace PowerWallet.ViewModel
                 _Parent.Addresses.Clear();
                 foreach (var address in addresses)
                 {
-                    _Parent.Addresses.Add(new AddressViewModel(address.Address.ToString()));
+                    _Parent.Addresses.Add(new AddressViewModel(address));
                 }
             })
             .Notify(MessengerInstance)
@@ -261,10 +278,12 @@ namespace PowerWallet.ViewModel
     public class KeySetViewModel : PWViewModelBase
     {
         KeySetData _Keyset;
-        public KeySetViewModel(KeySetData keyset)
+        WalletViewModel _Wallet;
+        public KeySetViewModel(WalletViewModel parent, KeySetData keyset)
         {
             _Keyset = keyset;
             _Name = keyset.KeySet.Name;
+            _Wallet = parent;
         }
         private readonly string _Name;
         public string Name
@@ -272,6 +291,26 @@ namespace PowerWallet.ViewModel
             get
             {
                 return _Name;
+            }
+        }
+
+        AsyncCommand _Generate;
+        public AsyncCommand Generate
+        {
+            get
+            {
+                if (_Generate == null)
+                    _Generate = new AsyncCommand(async _ =>
+                    {
+                        var rb = _Wallet._Parent.ClientFactory.CreateClient();
+                        var result = 
+                            await rb
+                            .GetWalletClient(_Wallet.Name)
+                            .GetKeySetClient(Name)
+                            .GenerateKey();
+                        _.Info("Address copied in clipboard : " + result.Address);
+                    }).Notify(MessengerInstance);
+                return _Generate;
             }
         }
 
@@ -339,14 +378,32 @@ namespace PowerWallet.ViewModel
         }
     }
 
-    public class AddressViewModel : PWViewModelBase
+    public class AddressViewModel
     {
-        public AddressViewModel(string address)
+        public AddressViewModel(WalletAddress address)
         {
-            Address = address;
+            Address = address.Address.ToString();
+            if (address.KeysetData != null)
+            {
+                Keyset = address.KeysetData.KeySet.Name;
+                Path = address.KeysetData.State.CurrentPath.ToString();
+            }
         }
 
+        [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]
         public string Address
+        {
+            get;
+            set;
+        }
+        [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]
+        public string Keyset
+        {
+            get;
+            set;
+        }
+        [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]
+        public string Path
         {
             get;
             set;

@@ -27,26 +27,52 @@
             <Button Style="{StaticResource IconButton}" Command="{x:Static local:PowerCommands.NewWallet}">
                 <Image Source="/PowerWallet;component/Images/Add.png" Height="18" Width="18"></Image>
             </Button>
+            <Button 
+                    Command="NavigationCommands.Refresh" 
+                    Style="{DynamicResource IconButton}">
+                <Image 
+                    Height="18" Width="18"
+                    Source="/PowerWallet;component/Images/112_RefreshArrow_Green_32x32_72.png"></Image>
+            </Button>
         </StackPanel>
         <TreeView 
                   x:Name="tree"
                   ItemsSource="{Binding Wallets}" 
                   DockPanel.Dock="Bottom"
                   SelectedItemChanged="tree_SelectedItemChanged">
+            <TreeView.InputBindings>
+                <KeyBinding Command="NavigationCommands.Refresh" Key="F5"></KeyBinding>
+            </TreeView.InputBindings>
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="ContextMenu">
+                        <Setter.Value>
+                            <ContextMenu>
+                                <MenuItem Header="Add keyset" Command="local:PowerCommands.AddKeySet" CommandParameter="{Binding}"></MenuItem>
+                            </ContextMenu>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding KeySets}">
+                    <HierarchicalDataTemplate.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem">
+                            <Setter Property="ContextMenu">
+                                <Setter.Value>
+                                    <ContextMenu>
+                                        <MenuItem Header="Generate new address" Command="{Binding Generate}"></MenuItem>
+                                    </ContextMenu>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </HierarchicalDataTemplate.ItemContainerStyle>
                     <HierarchicalDataTemplate.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}"></TextBlock>
                         </DataTemplate>
                     </HierarchicalDataTemplate.ItemTemplate>
-                    <TextBlock Text="{Binding Name}">
-                        <TextBlock.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Add keyset" Command="local:PowerCommands.AddKeySet" CommandParameter="{Binding}"></MenuItem>
-                            </ContextMenu>
-                        </TextBlock.ContextMenu>
-                    </TextBlock>
+                    <TextBlock Text="{Binding Name}"></TextBlock>
                 </HierarchicalDataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>

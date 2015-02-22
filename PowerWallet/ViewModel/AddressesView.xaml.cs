@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Messaging;
+using PowerWallet.Messages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,6 +49,13 @@ namespace PowerWallet.ViewModel
         {
             AddressesView view = obj as AddressesView;
             view.root.DataContext = args.NewValue;
+        }
+
+        private void grid_SelectionChanged(object sender, Xceed.Wpf.DataGrid.DataGridSelectionChangedEventArgs e)
+        {
+            var address = grid.SelectedItem as AddressViewModel;
+            if (address != null)
+                App.Locator.Resolve<IMessenger>().Send(new ExposePropertiesMessage(address));
         }
 
     }

@@ -72,11 +72,11 @@ namespace PowerWallet.ViewModel
 
         public NewKeySetViewModel(WalletViewModel walletViewModel, Network network)
         {
+            _Network = network;
             _Parent = walletViewModel;
             KeyCount = 1;
-            UpdateExtPubKeys();
             SignatureCount = 1;
-            _Network = network;
+            UpdateExtPubKeys();
         }
         Network _Network;
 
