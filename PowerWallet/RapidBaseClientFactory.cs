@@ -1,4 +1,5 @@
-﻿using RapidBase.Client;
+﻿using NBitcoin;
+using RapidBase.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,12 @@ namespace PowerWallet
     public class RapidBaseClientFactory
     {
         IStorage _Storage;
-        public RapidBaseClientFactory(IStorage storage)
+        public RapidBaseClientFactory(IStorage storage, Network network)
         {
             _Storage = storage;
             var rapidbase = "http://rapidbase-test.azurewebsites.net/";
+            if (network == Network.TestNet)
+                rapidbase = "http://testnet-rapidbase.azurewebsites.net/";
             var server = storage.Get<string>("Rapidbase-Server").Result;
             server = server ?? rapidbase;
             try

@@ -167,9 +167,10 @@ namespace PowerWallet
                 messenger.Send<AsyncCommand>(this);
             Task.GetAwaiter().OnCompleted(() =>
             {
-                if (task.Exception != null && ErrorMessage == "")
+                if (task.Exception != null || ErrorMessage != "")
                 {
-                    Error(task.Exception.InnerException.Message);
+                    if (task.Exception != null)
+                        Error(task.Exception.InnerException.Message);
                 }
                 else
                     Notify(StatusState.Success, null);
