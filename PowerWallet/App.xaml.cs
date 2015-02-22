@@ -27,7 +27,7 @@ namespace PowerWallet
             _Network = network;
             var window = new MainWindow();
             MainWindow = window;
-            
+
             AssemblyCatalog catalog = new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly());
             CompositionContainer container = new CompositionContainer(catalog);
             container.ComposeParts(this);
@@ -41,7 +41,7 @@ namespace PowerWallet
             window.ModuleInitialized();
             window.LoadLayout();
             window.Show();
-            base.OnStartup(e);           
+            base.OnStartup(e);
         }
 
         [ImportMany]
@@ -61,7 +61,7 @@ namespace PowerWallet
         {
             get
             {
-                return typeof(App).Assembly.GetName().Version.ToString() + " by Nicolas Dorier (" + Network.ToString() + "net)";
+                return typeof(App).Assembly.GetName().Version.ToString() + " by Nicolas Dorier (" + (Network == Network.TestNet ? "Testnet" : "Mainnet") + ")";
             }
         }
         static Network _Network;
