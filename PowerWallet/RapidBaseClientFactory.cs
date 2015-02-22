@@ -11,12 +11,14 @@ namespace PowerWallet
     public class RapidBaseClientFactory
     {
         IStorage _Storage;
+        Network _Network;
         public RapidBaseClientFactory(IStorage storage, Network network)
         {
             _Storage = storage;
             var rapidbase = "http://rapidbase-test.azurewebsites.net/";
             if (network == Network.TestNet)
                 rapidbase = "http://testnet-rapidbase.azurewebsites.net/";
+            _Network = network;
             var server = storage.Get<string>("Rapidbase-Server").Result;
             server = server ?? rapidbase;
             try
@@ -45,8 +47,16 @@ namespace PowerWallet
         {
             return new RapidBaseClient(Uri)
             {
-                Network = App.Network
+                Network = _Network
             };
+        }
+
+        public Network Network
+        {
+            get
+            {
+                return _Network;
+            }
         }
     }
 }

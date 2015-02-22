@@ -14,17 +14,21 @@ namespace PowerWallet.ViewModel
     {
         public class ExtPubkeyViewModel : PWViewModelBase
         {
-
+            Network _Network;
+            public ExtPubkeyViewModel(Network network)
+            {
+                _Network = network;
+            }
             public AsyncCommand Generate
             {
                 get
                 {
                     return new AsyncCommand(_ =>
                     {
-                        var key = new ExtKey().GetWif(App.Network);
+                        var key = new ExtKey().GetWif(_Network);
                         Clipboard.SetText(key.ToString());
                         _.Info("Private key copied in clipboard");
-                        Value = key.ExtKey.Neuter().ToString(App.Network);
+                        Value = key.ExtKey.Neuter().ToString(_Network);
                         return Task.FromResult(true);
                     })
                     .Notify(MessengerInstance);
@@ -66,13 +70,15 @@ namespace PowerWallet.ViewModel
         }
         private WalletViewModel _Parent;
 
-        public NewKeySetViewModel(WalletViewModel walletViewModel)
+        public NewKeySetViewModel(WalletViewModel walletViewModel, Network network)
         {
             _Parent = walletViewModel;
             KeyCount = 1;
             UpdateExtPubKeys();
             SignatureCount = 1;
+            _Network = network;
         }
+        Network _Network;
 
         private string _Name;
         public string Name
@@ -160,7 +166,7 @@ namespace PowerWallet.ViewModel
             {
                 if (ExtPubKeys.Count < i + 1)
                 {
-                    ExtPubKeys.Add(new ExtPubkeyViewModel()
+                    ExtPubKeys.Add(new ExtPubkeyViewModel(_Network)
                     {
                         FieldName = "Key " + (i + 1),
                     });
@@ -181,7 +187,7 @@ namespace PowerWallet.ViewModel
             keyset.ExtPubKeys
                 =
                 ExtPubKeys
-                .Select(_ => new BitcoinExtPubKey(_.Value, App.Network))
+                .Select(_ => new BitcoinExtPubKey(_.Value, _Network))
                 .ToArray();
 
             var client = _Parent._Parent.ClientFactory.CreateClient();

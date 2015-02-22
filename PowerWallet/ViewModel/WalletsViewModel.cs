@@ -141,6 +141,7 @@ namespace PowerWallet.ViewModel
                 }
             }
         }
+
     }
     public class OpenWalletCommand : AsyncCommand
     {
@@ -253,7 +254,7 @@ namespace PowerWallet.ViewModel
 
         public NewKeySetViewModel CreateNewKeysetCommand()
         {
-            return (NewKeySetViewModel)new NewKeySetViewModel(this).Notify(MessengerInstance);
+            return (NewKeySetViewModel)new NewKeySetViewModel(this, _Parent.ClientFactory.Network).Notify(MessengerInstance);
         }
     }
 

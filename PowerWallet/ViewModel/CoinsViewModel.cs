@@ -48,7 +48,13 @@ namespace PowerWallet.ViewModel
 
             var notrack = LoadCache();
         }
-
+        public Network Network
+        {
+            get
+            {
+                return _Factory.Network;
+            }
+        }
         const string CACHE_KEY = "Default-Coin-Search";
 
         private async Task LoadCache()
@@ -134,7 +140,7 @@ namespace PowerWallet.ViewModel
             foreach (var op in balance.Operations)
             {
                 foreach (var coin in op.ReceivedCoins)
-                    Coins.Add(new CoinViewModel(coin, op));
+                    Coins.Add(new CoinViewModel(Network, coin, op));
             }
 
             var colored =
@@ -199,12 +205,12 @@ namespace PowerWallet.ViewModel
                 using (var client = new HttpClient())
                 {
                     var url = "https://api.coinprism.com/v1/assets/";
-                    if (App.Network == Network.TestNet)
+                    if (Network == Network.TestNet)
                         url = "https://api.testnet.coinprism.com/v1/assets/";
-                    var resp = await client.GetAsync(url + assetId.GetWif(App.Network));
+                    var resp = await client.GetAsync(url + assetId.GetWif(Network));
                     resp.EnsureSuccessStatusCode();
                     var str = await resp.Content.ReadAsStringAsync();
-                    var definition = Serializer.ToObject<AssetDefinition>(str, App.Network);
+                    var definition = Serializer.ToObject<AssetDefinition>(str, Network);
                     foreach (var coin in coins)
                         coin.AssetDefinition = definition;
                 }
@@ -217,8 +223,9 @@ namespace PowerWallet.ViewModel
 
     public class CoinViewModel : PWViewModelBase
     {
-        public CoinViewModel(ICoin coin, BalanceOperation op)
+        public CoinViewModel(Network network, ICoin coin, BalanceOperation op)
         {
+            _Network = network;
             var colored = coin as ColoredCoin;
             BTCValue = coin.TxOut.Value.ToUnit(MoneyUnit.BTC).ToString() + " BTC";
             if (colored == null)
@@ -226,19 +233,26 @@ namespace PowerWallet.ViewModel
             else
             {
                 Value = colored.Asset.Quantity.ToString() + " Assets";
-                Type = colored.Asset.Id.GetWif(App.Network).ToString();
+                Type = colored.Asset.Id.GetWif(network).ToString();
             }
             Confirmations = op.Confirmations;
             Coin = coin;
             Op = op;
-            var address = coin.TxOut.ScriptPubKey.GetDestinationAddress(App.Network);
+            var address = coin.TxOut.ScriptPubKey.GetDestinationAddress(network);
             if (address != null)
                 Owner = address.ToString();
             else
                 Owner = coin.TxOut.ScriptPubKey.ToString();
         }
 
-
+        Network _Network;
+        public Network Network
+        {
+            get
+            {
+                return _Network;
+            }
+        }
         public string Type
         {
             get;
@@ -309,6 +323,7 @@ namespace PowerWallet.ViewModel
                 }
             }
         }
+
     }
 
 
@@ -383,7 +398,7 @@ namespace PowerWallet.ViewModel
                 .SetEditor(typeof(ReadOnlyTextEditor))
                 .AddAttributes(new CategoryAttribute("Colored Coin"))
                 .Commit()
-                .SetValue(cc.Asset.Id.GetWif(App.Network).ToString());
+                .SetValue(cc.Asset.Id.GetWif(coin.Network).ToString());
 
                 NewProperty("ColoredValue")
                 .SetEditor(typeof(ReadOnlyTextEditor))

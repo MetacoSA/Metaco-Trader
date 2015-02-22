@@ -23,7 +23,8 @@ namespace PowerWallet
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            _Network = e.Args.Contains("-testnet") ? Network.TestNet : Network.Main;
+            var network = e.Args.Contains("-testnet") ? Network.TestNet : Network.Main;
+            _Network = network;
             var window = new MainWindow();
             MainWindow = window;
             
@@ -31,6 +32,7 @@ namespace PowerWallet
             CompositionContainer container = new CompositionContainer(catalog);
             container.ComposeParts(this);
             InitializationContext ctx = new InitializationContext(window);
+            ctx.Container.RegisterInstance<Network>(network);
             foreach (var module in Modules)
             {
                 module.Initialize(ctx);
@@ -63,7 +65,7 @@ namespace PowerWallet
             }
         }
         static Network _Network;
-        public static Network Network
+        static Network Network
         {
             get
             {

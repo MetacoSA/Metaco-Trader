@@ -23,8 +23,7 @@ namespace PowerWallet.Modules
 
         public void Initialize(InitializationContext context)
         {
-            context.Container.RegisterInstance<Network>(App.Network);
-            context.Container.Register<IStorage>((ctx) => new LocalStorage(App.Network == Network.Main ? "main" : "test")).SingleInstance();
+            context.Container.Register<IStorage>((ctx) => new LocalStorage(ctx.Resolve<Network>() == Network.Main ? "main" : "test")).SingleInstance();
             context.Container.Register<IMessenger>(ctx => GalaSoft.MvvmLight.Messaging.Messenger.Default).SingleInstance();
 
             context.Container.RegisterType<RapidBaseClientFactory>().SingleInstance();
