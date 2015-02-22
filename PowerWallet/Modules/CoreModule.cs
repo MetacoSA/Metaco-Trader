@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit;
 using System.Windows;
+using NBitcoin;
 
 namespace PowerWallet.Modules
 {
@@ -22,7 +23,7 @@ namespace PowerWallet.Modules
 
         public void Initialize(InitializationContext context)
         {
-            context.Container.Register<IStorage>((ctx) => new LocalStorage()).SingleInstance();
+            context.Container.Register<IStorage>((ctx) => new LocalStorage(App.Network == Network.Main ? "main" : "test")).SingleInstance();
             context.Container.Register<IMessenger>(ctx => GalaSoft.MvvmLight.Messaging.Messenger.Default).SingleInstance();
 
             context.Container.RegisterType<RapidBaseClientFactory>().SingleInstance();
@@ -85,9 +86,9 @@ namespace PowerWallet.Modules
             EventManager.RegisterClassHandler(typeof(TextBox), TextBox.GotFocusEvent, new RoutedEventHandler((s, a) =>
             {
                 var txt = GetTextElement(s);
-                if (txt != null && !txt.InputBindings.OfType<KeyBinding>().Any(k => k.Key == Key.F3))
+                if (txt != null && !txt.InputBindings.OfType<KeyBinding>().Any(k => k.Key == System.Windows.Input.Key.F3))
                 {
-                    txt.InputBindings.Add(new KeyBinding(NavigationCommands.Search, Key.F3, ModifierKeys.None));
+                    txt.InputBindings.Add(new KeyBinding(NavigationCommands.Search, System.Windows.Input.Key.F3, ModifierKeys.None));
                 }
             }), true);
 

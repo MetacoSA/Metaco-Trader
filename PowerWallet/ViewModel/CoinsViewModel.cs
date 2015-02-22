@@ -34,12 +34,12 @@ namespace PowerWallet.ViewModel
             if (localStorage == null)
                 throw new ArgumentNullException("localStorage");
             _Factory = factory;
-            _LocalStorage = localStorage;                     
+            _LocalStorage = localStorage;
 
 
             //15sYbVpRh6dyWycZMwPdxJWD4xbfxReeHe (me)
             //akSjSW57xhGp86K6JFXXroACfRCw7SPv637 (colored)
-            
+
             MessengerInstance.Register<ShowCoinsMessage>(this, _ =>
             {
                 SearchedCoins = _.Container;
@@ -137,7 +137,7 @@ namespace PowerWallet.ViewModel
                     Coins.Add(new CoinViewModel(coin, op));
             }
 
-            var colored = 
+            var colored =
                 Coins
                 .Where(c => c.Coin is ColoredCoin)
                 .GroupBy(c => ((ColoredCoin)(c.Coin)).Asset.Id)
@@ -205,7 +205,7 @@ namespace PowerWallet.ViewModel
                     resp.EnsureSuccessStatusCode();
                     var str = await resp.Content.ReadAsStringAsync();
                     var definition = Serializer.ToObject<AssetDefinition>(str, App.Network);
-                    foreach(var coin in coins)
+                    foreach (var coin in coins)
                         coin.AssetDefinition = definition;
                 }
             }
@@ -321,28 +321,40 @@ namespace PowerWallet.ViewModel
                 .Select(g => new
                 {
                     Type = g.Key,
-                    SumBTC = g.Select(c=>c.Coin.TxOut.Value).Sum(),
-                    SumAssets = g.Select(c=>c.Coin).OfType<ColoredCoin>().Select(c=>c.Amount).Sum().Satoshi,
-                    Count = g.Count()
+                    SumBTC = g.Select(c => c.Coin.TxOut.Value).Sum(),
+                    SumAssets = g.Select(c => c.Coin).OfType<ColoredCoin>().Select(c => c.Amount).Sum().Satoshi,
+                    Count = g.Count(),
+                    AssetDefinition = g.First().AssetDefinition
                 });
             foreach (var group in groups)
             {
                 var category = new CategoryAttribute(group.Type);
+                if (group.AssetDefinition != null)
+                {
+                    category = new CategoryAttribute(group.AssetDefinition.Name + " (" + category.Category + ")");
+                }
                 NewProperty()
-                    .SetDisplay("Value")
+                    .SetDisplay("BTC")
                     .SetEditor(typeof(ReadOnlyTextEditor))
                     .AddAttributes(category)
                     .Commit()
-                    .SetValue(group.SumBTC.ToUnit(MoneyUnit.BTC));
+                    .SetValue(group.SumBTC.ToUnit(MoneyUnit.BTC) + " BTC");
 
                 if (group.SumAssets != 0)
                 {
+                    string assets = group.SumAssets + " Assets";
+                    if (group.AssetDefinition != null)
+                    {
+                        assets = group.AssetDefinition
+                                      .ToDecimal((ulong)group.SumAssets)
+                                      .ToString() + " " + group.AssetDefinition.NameShort;
+                    }
                     NewProperty()
-                    .SetDisplay("Quantity")
+                    .SetDisplay("Assets")
                     .SetEditor(typeof(ReadOnlyTextEditor))
                     .AddAttributes(category)
                     .Commit()
-                    .SetValue(group.SumAssets);
+                    .SetValue(assets);
                 }
 
                 NewProperty()
@@ -354,7 +366,7 @@ namespace PowerWallet.ViewModel
             }
         }
     }
-    
+
     public class CoinPropertyViewModel : PropertyViewModel
     {
         public CoinPropertyViewModel(CoinViewModel coin)
@@ -373,7 +385,7 @@ namespace PowerWallet.ViewModel
                 .Commit()
                 .SetValue(cc.Asset.Id.GetWif(App.Network).ToString());
 
-                NewProperty("ColoredValue")                  
+                NewProperty("ColoredValue")
                 .SetEditor(typeof(ReadOnlyTextEditor))
                 .AddAttributes(new CategoryAttribute("Colored Coin"))
                 .AddAttributes(new DisplayNameAttribute("Value"))
