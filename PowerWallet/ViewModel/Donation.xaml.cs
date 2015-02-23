@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Gma.QrCodeNet.Encoding;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,7 +27,7 @@ namespace PowerWallet.ViewModel
             InitializeComponent();
             awesomeness = new[]
             {
-                "For every Satoshi sent, a kitten is saved",
+                "For every Satoshi sent, a kitty is saved",
                 "For every Satoshi sent, a bear whale is punished",
                 "For every Satoshi sent, a Satoshi is sent",
                 "For every Satoshi sent, your banker drops a tear",

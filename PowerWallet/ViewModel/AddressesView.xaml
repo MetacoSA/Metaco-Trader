@@ -26,6 +26,12 @@
                     ShowRowSelectorPane="False">
                 </grid:TableView>
             </grid:DataGridControl.View>
+            <grid:DataGridControl.ItemContainerStyle>
+                <Style TargetType="grid:DataRow">
+                    <EventSetter Event="Control.MouseDoubleClick" Handler="Address_MouseDoubleClick"></EventSetter>
+                    <EventSetter Event="Control.PreviewKeyDown" Handler="Address_KeyDown"></EventSetter>
+                </Style>
+            </grid:DataGridControl.ItemContainerStyle>
             <grid:DataGridControl.Columns>
                 <grid:Column Title="Address" FieldName="Address">
                 </grid:Column>

@@ -49,7 +49,7 @@ namespace PowerWallet
             if (command != null)
             {
                 command.Detach();
-                SetTextboxCommand(sender,null);
+                SetTextboxCommand(sender, null);
             }
 
             if (args.NewValue != null)
@@ -82,6 +82,8 @@ namespace PowerWallet
                 _Sub =
                     Observable.FromEventPattern<KeyEventArgs>(TextBox, "KeyUp")
                       .Select(e => e.EventArgs)
+                      .Where(e => (e.KeyboardDevice.Modifiers & ModifierKeys.Control) == 0)
+                      .Where(e => e.Key != Key.LeftCtrl && e.Key != Key.LeftShift)
                       .Throttle(TimeSpan.FromMilliseconds(300))
                       .ObserveHere()
                       .Subscribe(_ =>

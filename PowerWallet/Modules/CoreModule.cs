@@ -13,6 +13,7 @@ using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit;
 using System.Windows;
 using NBitcoin;
+using PowerWallet.Messages;
 
 namespace PowerWallet.Modules
 {
@@ -45,6 +46,9 @@ namespace PowerWallet.Modules
             context.Main.RegisterDocument<Donation>("Donation");
 
             InitializeSearch(context);
+
+            context.Container.RegisterType<AddressDesignerViewModel>().SingleInstance();
+            context.Main.RegisterDocument<AddressDesigner>("Address designer");
 
             context.Main.CommandBindings.Add(new CommandBinding(PowerCommands.NewWallet, (s, e) =>
             {
@@ -97,9 +101,8 @@ namespace PowerWallet.Modules
                 var txt = GetText(e.OriginalSource);
                 if (txt != null)
                 {
-                    var search = App.Locator.Resolve<SearchViewModel>();
-                    search.SearchedTerm = txt;
-                    search.Search.Execute();
+                    var messenger = App.Locator.Resolve<IMessenger>();
+                    messenger.Send(new SearchMessage(txt));
                     context.Main.ShowView("Search");
                 }
             }));

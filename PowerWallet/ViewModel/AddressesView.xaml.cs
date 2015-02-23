@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xceed.Wpf.DataGrid;
 
 namespace PowerWallet.ViewModel
 {
@@ -56,6 +57,33 @@ namespace PowerWallet.ViewModel
             var address = grid.SelectedItem as AddressViewModel;
             if (address != null)
                 App.Locator.Resolve<IMessenger>().Send(new ExposePropertiesMessage(address));
+        }
+
+        protected void Address_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            ShowAddress(sender as DataRow);
+            e.Handled = true;
+        }
+
+        void Address_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                ShowAddress(sender as DataRow);
+                e.Handled = true;
+            }
+        }
+
+        private void ShowAddress(DataRow dataRow)
+        {
+            if (dataRow != null)
+            {
+                var vm = (dataRow.DataContext as AddressViewModel);
+                if (vm != null)
+                {
+                    vm.ShowAddress();
+                }
+            }
         }
 
     }

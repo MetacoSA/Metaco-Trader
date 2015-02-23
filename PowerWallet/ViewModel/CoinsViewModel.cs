@@ -43,8 +43,11 @@ namespace PowerWallet.ViewModel
 
             MessengerInstance.Register<ShowCoinsMessage>(this, _ =>
             {
-                SearchedCoins = _.Container;
-                Search.Execute(null);
+                if (SearchedCoins != _.Container)
+                {
+                    SearchedCoins = _.Container;
+                    Search.Execute(null);
+                }
             });
 
             var notrack = LoadCache();

@@ -1,4 +1,5 @@
-﻿using PowerWallet.Controls;
+﻿using GalaSoft.MvvmLight.Messaging;
+using PowerWallet.Controls;
 using PowerWallet.Messages;
 using RapidBase.Models;
 using System;
@@ -262,7 +263,7 @@ namespace PowerWallet.ViewModel
                 _Parent.Addresses.Clear();
                 foreach (var address in addresses)
                 {
-                    _Parent.Addresses.Add(new AddressViewModel(address));
+                    _Parent.Addresses.Add(new AddressViewModel(address, MessengerInstance));
                 }
             })
             .Notify(MessengerInstance)
@@ -303,7 +304,7 @@ namespace PowerWallet.ViewModel
                     _Generate = new AsyncCommand(async _ =>
                     {
                         var rb = _Wallet._Parent.ClientFactory.CreateClient();
-                        var result = 
+                        var result =
                             await rb
                             .GetWalletClient(_Wallet.Name)
                             .GetKeySetClient(Name)
@@ -380,8 +381,10 @@ namespace PowerWallet.ViewModel
 
     public class AddressViewModel
     {
-        public AddressViewModel(WalletAddress address)
+        IMessenger _Messenger;
+        public AddressViewModel(WalletAddress address, IMessenger messenger)
         {
+            _Messenger = messenger;
             Address = address.Address.ToString();
             if (address.KeysetData != null)
             {
@@ -407,6 +410,12 @@ namespace PowerWallet.ViewModel
         {
             get;
             set;
+        }
+
+        public void ShowAddress()
+        {
+            _Messenger.Send(new SearchMessage(Address));
+            _Messenger.Send(new ShowCoinsMessage(Address));
         }
     }
 }

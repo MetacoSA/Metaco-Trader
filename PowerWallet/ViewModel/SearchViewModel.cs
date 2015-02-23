@@ -1,5 +1,6 @@
 ﻿using NBitcoin;
 using NBitcoin.DataEncoders;
+using PowerWallet.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,14 @@ namespace PowerWallet.ViewModel
     {
         public SearchViewModel()
         {
-
+            MessengerInstance.Register<SearchMessage>(this, m =>
+            {
+                if (SearchedTerm != m.Term)
+                {
+                    SearchedTerm = m.Term;
+                    Search.Execute();
+                }
+            });
         }
         private string _SearchedTerm;
         public string SearchedTerm

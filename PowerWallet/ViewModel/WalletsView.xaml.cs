@@ -67,6 +67,12 @@ namespace PowerWallet.ViewModel
             }
         }
 
+        protected void Wallet_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var wallet = ((WalletViewModel)(sender as TreeViewItem).DataContext);
+            wallet.Select();
+        }
+
         private void AddKeySet_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var wallet = (WalletViewModel)e.Parameter;

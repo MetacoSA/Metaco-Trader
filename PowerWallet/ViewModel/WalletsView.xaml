@@ -52,6 +52,7 @@
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>
+                    <EventSetter Event="Control.MouseDoubleClick" Handler="Wallet_MouseDoubleClick"></EventSetter>
                 </Style>
             </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>
