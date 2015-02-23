@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace PowerWallet.ViewModel
@@ -40,15 +41,6 @@ namespace PowerWallet.ViewModel
                     });
                 }
                 return _Refresh;
-            }
-        }
-
-        private readonly ObservableCollection<AddressViewModel> _Addresses = new ObservableCollection<AddressViewModel>();
-        public ObservableCollection<AddressViewModel> Addresses
-        {
-            get
-            {
-                return _Addresses;
             }
         }
         private async Task LoadCache()
@@ -160,6 +152,23 @@ namespace PowerWallet.ViewModel
             this.Refresh.Execute();
         }
 
+
+        private WalletViewModel _SelectedWallet;
+        public WalletViewModel SelectedWallet
+        {
+            get
+            {
+                return _SelectedWallet;
+            }
+            set
+            {
+                if (value != _SelectedWallet)
+                {
+                    _SelectedWallet = value;
+                    OnPropertyChanged(() => this.SelectedWallet);
+                }
+            }
+        }
     }
     public class OpenWalletCommand : AsyncCommand
     {
@@ -246,6 +255,10 @@ namespace PowerWallet.ViewModel
                         {
                             KeySets.Add(new KeySetViewModel(this, keyset));
                         }
+                        if (_Parent.SelectedWallet != null && _Parent.SelectedWallet.Name == this.Name)
+                        {
+                            await RefreshAddresses.ExecuteAsync(false);
+                        }
                     })
                     .Notify(MessengerInstance);
                 }
@@ -253,21 +266,43 @@ namespace PowerWallet.ViewModel
             }
         }
 
+        AsyncCommand _RefreshAddresses;
+        public AsyncCommand RefreshAddresses
+        {
+            get
+            {
+                if (_RefreshAddresses == null)
+                {
+                    _RefreshAddresses = new AsyncCommand(async (_) =>
+                    {
+                        var rb = _Parent.ClientFactory.CreateClient();
+                        var addresses = await rb.GetAddresses(Name);
+                        Addresses.Clear();
+                        foreach (var address in addresses)
+                        {
+                            Addresses.Add(new AddressViewModel(address, MessengerInstance));
+                        }
+                    })
+                    .Notify(MessengerInstance);
+                }
+                return _RefreshAddresses;
+            }
+        }
+
+        private readonly ObservableCollection<AddressViewModel> _Addresses = new ObservableCollection<AddressViewModel>();
+        public ObservableCollection<AddressViewModel> Addresses
+        {
+            get
+            {
+                return _Addresses;
+            }
+        }
+
         public void Select()
         {
             MessengerInstance.Send(new ShowCoinsMessage(_Name));
-            new AsyncCommand(async (_) =>
-            {
-                var rb = _Parent.ClientFactory.CreateClient();
-                var addresses = await rb.GetAddresses(Name);
-                _Parent.Addresses.Clear();
-                foreach (var address in addresses)
-                {
-                    _Parent.Addresses.Add(new AddressViewModel(address, MessengerInstance));
-                }
-            })
-            .Notify(MessengerInstance)
-            .Execute();
+            _Parent.SelectedWallet = this;
+            RefreshAddresses.Execute();
         }
 
         public NewKeySetViewModel CreateNewKeysetCommand()
@@ -310,6 +345,8 @@ namespace PowerWallet.ViewModel
                             .GetKeySetClient(Name)
                             .GenerateKey();
                         _.Info("Address copied in clipboard : " + result.Address);
+                        Clipboard.SetText(result.Address.ToString());
+                        await _Wallet.RefreshAddresses.ExecuteAsync(false);
                     }).Notify(MessengerInstance);
                 return _Generate;
             }

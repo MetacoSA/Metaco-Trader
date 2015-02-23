@@ -15,7 +15,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <DockPanel x:Name="root" LastChildFill="True">
         <grid:DataGridControl x:Name="grid" 
-                            ItemsSource="{Binding Addresses}"
+                            ItemsSource="{Binding SelectedWallet.Addresses}"
                             SelectionChanged="grid_SelectionChanged"
                             DockPanel.Dock="Bottom"
                             ReadOnly="True" AutoCreateColumns="False">
