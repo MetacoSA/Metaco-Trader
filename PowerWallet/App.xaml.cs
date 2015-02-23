@@ -85,8 +85,9 @@ namespace PowerWallet
             logo.EndInit();
             image.Source = logo;
 
-            image.Width = 32;
+            image.Width = 40;
             image.Height = image.Width;
+            RenderOptions.SetBitmapScalingMode(image, BitmapScalingMode.HighQuality);
 
             if (Network == Network.TestNet)
             {
