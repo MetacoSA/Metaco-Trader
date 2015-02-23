@@ -13,6 +13,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using Autofac;
 using GalaSoft.MvvmLight.Messaging;
+using System.Windows.Media.Imaging;
+using System.Windows.Controls;
+using System.Windows.Media;
+using PowerWallet.Controls;
+using System.Diagnostics;
 
 namespace PowerWallet
 {
@@ -23,9 +28,14 @@ namespace PowerWallet
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            var network = e.Args.Contains("-testnet") ? Network.TestNet : Network.Main;
+            var network = e.Args.Contains("-testnet") ? Network.TestNet : null;
+            network = network ?? (e.Args.Contains("-mainnet") ? Network.Main : null);
+            network = network ?? GetDefaultNetwork();
+            
             _Network = network;
+
             var window = new MainWindow();
+            SetLogo(window);
             MainWindow = window;
 
             AssemblyCatalog catalog = new AssemblyCatalog(System.Reflection.Assembly.GetExecutingAssembly());
@@ -42,6 +52,71 @@ namespace PowerWallet
             window.LoadLayout();
             window.Show();
             base.OnStartup(e);
+        }
+
+        private Network GetDefaultNetwork()
+        {
+            var storage = new LocalStorage("App");
+            var network = storage.Get<string>("DefaultNetwork").Result;
+            if (network == "mainnet")
+                return Network.Main;
+            if (network == "testnet")
+                return Network.TestNet;
+            return Network.Main;
+        }
+
+        internal static void Restart(Network network)
+        {
+            App.Current.MainWindow.Close();
+
+            var storage = new LocalStorage("App");
+            string networkStr = network == Network.Main ? "mainnest" : "testnet";
+            storage.Put("DefaultNetwork", networkStr).Wait();
+            Process.Start(Application.ResourceAssembly.Location);
+            Application.Current.Shutdown();
+        }
+
+        private void SetLogo(MainWindow window)
+        {
+            Image image = new Image();
+            BitmapImage logo = new BitmapImage();
+            logo.BeginInit();
+            logo.UriSource = new Uri("pack://application:,,,/PowerWallet;component/Images/BC_Logo_.png");
+            logo.EndInit();
+            image.Source = logo;
+
+            image.Width = 32;
+            image.Height = image.Width;
+
+            if (Network == Network.TestNet)
+            {
+                image.Effect = new ChangeHueEffect()
+                {
+                    HueShift = 0.2
+                };
+            }
+            window.Icon = CreateBitmap(image, false);
+        }
+
+        //http://www.nerdparadise.com/tech/csharp/rendercontrolasbitmap/
+        public BitmapSource CreateBitmap(FrameworkElement element, bool isInUiTree)
+        {
+            if (!isInUiTree)
+            {
+                element.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                element.Arrange(new Rect(new Point(0, 0), element.DesiredSize));
+            }
+
+            int width = (int)Math.Ceiling(element.ActualWidth);
+            int height = (int)Math.Ceiling(element.ActualHeight);
+
+            width = width == 0 ? 1 : width;
+            height = height == 0 ? 1 : height;
+
+            RenderTargetBitmap rtbmp = new RenderTargetBitmap(
+                width, height, 96, 96, PixelFormats.Default);
+            rtbmp.Render(element);
+            return rtbmp;
         }
 
         [ImportMany]

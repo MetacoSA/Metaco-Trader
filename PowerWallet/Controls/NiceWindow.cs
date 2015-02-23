@@ -43,6 +43,7 @@ namespace PowerWallet.Controls
             ((Grid)GetTemplateChild("PART_Top")).MouseDown += NiceWindow_MouseDown;
         }
 
+        
 
 
         public string Caption

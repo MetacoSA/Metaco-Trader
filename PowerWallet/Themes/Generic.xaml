@@ -37,7 +37,10 @@
                 </Grid.RowDefinitions>
                 <Grid x:Name="PART_Top" shell:WindowChrome.IsHitTestVisibleInChrome="True">
                     <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                        <TextBlock TextWrapping="Wrap" Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Title}" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="35"/>
+                        <Image Source="{TemplateBinding Icon}" Margin="10" VerticalAlignment="Center"></Image>
+                        <TextBlock TextWrapping="Wrap" 
+                                   VerticalAlignment="Center"
+                                   Foreground="{TemplateBinding Foreground}" Text="{TemplateBinding Title}" FontFamily="Segoe UI" FontWeight="ExtraLight" FontSize="35"/>
                         <TextBlock TextWrapping="Wrap" 
                                    Margin="10,0,0,3"
                                    VerticalAlignment="Bottom" Text="{TemplateBinding Caption}" Foreground="#FFD3D3D3" FontFamily="Segoe UI" FontWeight="Normal" FontSize="13"/>

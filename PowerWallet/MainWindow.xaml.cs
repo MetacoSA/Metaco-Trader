@@ -1,6 +1,7 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Editing;
+using NBitcoin;
 using PowerWallet.Controls;
 using PowerWallet.Messages;
 using PowerWallet.ViewModel;
@@ -43,6 +44,15 @@ namespace PowerWallet
         internal void ModuleInitialized()
         {
             statusBar.DataContext = App.Locator.Resolve<StatusMainViewModel>();
+            var network = App.Locator.Resolve<Network>();
+            restart.Header = "Restart on " + (network == Network.TestNet ? "Mainnet" : "Testnet");
+            restart.Click += restart_Click;
+        }
+
+        void restart_Click(object sender, RoutedEventArgs e)
+        {
+            var network = App.Locator.Resolve<Network>();
+            App.Restart(network == Network.TestNet ? Network.Main : Network.TestNet);
         }
 
         public MenuItem ViewMenu

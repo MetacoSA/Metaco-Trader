@@ -13,8 +13,8 @@
             xmlns:gif="http://wpfanimatedgif.codeplex.com"
              xmlns:local="clr-namespace:PowerWallet"
              Width="200"
-                       Command="{Binding}"
-                     Caption="New Keyset">
+            Command="{Binding}"
+            Caption="New Keyset">
     <StackPanel>
         <StackPanel>
             <controls:Field Label="Name">

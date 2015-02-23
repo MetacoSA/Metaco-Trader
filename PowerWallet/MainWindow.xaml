@@ -25,6 +25,7 @@
                         </MenuItem>
                         <MenuItem Header="_Transaction"></MenuItem>
                     </MenuItem>
+                    <MenuItem x:Name="restart"></MenuItem>
                 </MenuItem>
                 <MenuItem Header="_View" x:Name="viewMenu">
                 </MenuItem>
