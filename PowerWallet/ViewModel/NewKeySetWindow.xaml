@@ -18,7 +18,7 @@
     <StackPanel>
         <StackPanel>
             <controls:Field Label="Name">
-                <toolkit:WatermarkTextBox x:Name="FocusBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Watermark="Enter wallet name"></toolkit:WatermarkTextBox>
+                <toolkit:WatermarkTextBox x:Name="FocusBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Watermark="Enter keyset name"></toolkit:WatermarkTextBox>
             </controls:Field>
             <controls:Field Label="Signatures">
                 <toolkit:IntegerUpDown Minimum="1" Maximum="20" Value="{Binding SignatureCount}"></toolkit:IntegerUpDown>

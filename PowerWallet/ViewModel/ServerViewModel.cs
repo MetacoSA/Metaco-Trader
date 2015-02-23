@@ -111,6 +111,7 @@ namespace PowerWallet.ViewModel
 
         private DateTime _Time;
         [Editor(typeof(ReadOnlyTextEditor), typeof(ReadOnlyTextEditor))]
+        [DisplayName("Time (local)")]
         public DateTime Time
         {
             get
