@@ -64,7 +64,12 @@ namespace PowerWallet
 
         public bool CanExecute(object parameter)
         {
-            return !IsExecuting;
+            return !IsExecuting && CanExecuteCore(parameter);
+        }
+
+        protected virtual bool CanExecuteCore(object parameter)
+        {
+            return true;
         }
 
         protected void OnCanExecuteChanged()

@@ -86,5 +86,24 @@ namespace PowerWallet.ViewModel
             }
         }
 
+        private void NewAddress_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (ViewModel != null && ViewModel.SelectedWallet != null)
+            {
+                var win = (MainWindow)App.Current.MainWindow;
+                win.Show(new NewAddressWindow()
+                {
+                    DataContext = ViewModel.SelectedWallet.CreateNewAddressCommand()
+                });
+            }
+            e.Handled = true;
+        }
+
+        private void NewAddress_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+            e.Handled = true;
+        }
+
     }
 }

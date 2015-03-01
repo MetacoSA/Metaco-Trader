@@ -1,4 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
+using NBitcoin;
 using PowerWallet.Controls;
 using PowerWallet.Messages;
 using RapidBase.Models;
@@ -169,6 +170,14 @@ namespace PowerWallet.ViewModel
                 }
             }
         }
+
+        public Network Network
+        {
+            get
+            {
+                return _ClientFactory.Network;
+            }
+        }
     }
     public class OpenWalletCommand : AsyncCommand
     {
@@ -308,6 +317,59 @@ namespace PowerWallet.ViewModel
         public NewKeySetViewModel CreateNewKeysetCommand()
         {
             return (NewKeySetViewModel)new NewKeySetViewModel(this, _Parent.ClientFactory.Network).Notify(MessengerInstance);
+        }
+
+
+        public class NewAddressCommand : AsyncCommand
+        {
+            private WalletViewModel _Parent;
+
+            public NewAddressCommand(WalletViewModel parent)
+            {
+                this._Parent = parent;
+            }
+
+            private BitcoinAddress _Address;
+            public string Address
+            {
+                get
+                {
+                    return _Address == null ? null : _Address.ToString();
+                }
+                set
+                {
+                    var address = BitcoinAddress.Create(value, _Parent._Parent.Network);
+                    if (address != _Address)
+                    {
+                        _Address = address;
+                        OnPropertyChanged(() => this.Address);
+                        OnCanExecuteChanged();
+                    }
+                }
+            }
+            protected override bool CanExecuteCore(object parameter)
+            {
+                return Address != null;
+            }
+
+            protected override async Task CreateTask(System.Threading.CancellationToken cancelation)
+            {
+                var rb = _Parent._Parent.ClientFactory.CreateClient();
+                await rb.CreateAddress(_Parent.Name, new InsertWalletAddress()
+                {
+                    Address = new WalletAddress()
+                    {
+                        Address = _Address
+                    },
+                    MergePast = true
+                });
+                _Parent.RefreshAddresses.Execute(false);
+            }
+        }
+
+        public ICommand CreateNewAddressCommand()
+        {
+            return new NewAddressCommand(this);
         }
     }
 

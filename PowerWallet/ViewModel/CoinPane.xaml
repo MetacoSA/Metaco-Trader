@@ -54,10 +54,25 @@
                     </grid:Column.CellContentTemplate>
                 </grid:Column>
                 <grid:Column Title="Value" Width="80" FieldName="Value">
+                    <grid:Column.CellContentTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding}"></TextBlock>
+                        </DataTemplate>
+                    </grid:Column.CellContentTemplate>
                 </grid:Column>
                 <grid:Column Title="Confirmations" Width="50" FieldName="Confirmations">
+                    <grid:Column.CellContentTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding}"></TextBlock>
+                        </DataTemplate>
+                    </grid:Column.CellContentTemplate>
                 </grid:Column>
                 <grid:Column Title="Owner" FieldName="Owner">
+                    <grid:Column.CellContentTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding}"></TextBlock>
+                        </DataTemplate>
+                    </grid:Column.CellContentTemplate>
                 </grid:Column>
             </grid:DataGridControl.Columns>
         </grid:DataGridControl>

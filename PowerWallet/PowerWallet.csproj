@@ -198,6 +198,9 @@
       <DependentUpon>Donation.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\NewKeySetViewModel.cs" />
+    <Compile Include="ViewModel\NewAddressWindow.xaml.cs">
+      <DependentUpon>NewAddressWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\NewKeySetWindow.xaml.cs">
       <DependentUpon>NewKeySetWindow.xaml</DependentUpon>
     </Compile>
@@ -261,6 +264,10 @@
     <Page Include="ViewModel\Donation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewModel\NewAddressWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewModel\NewKeySetWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
