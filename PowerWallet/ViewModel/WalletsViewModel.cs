@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using GalaSoft.MvvmLight.Messaging;
 using NBitcoin;
 using PowerWallet.Controls;
 using PowerWallet.Messages;
@@ -147,10 +148,15 @@ namespace PowerWallet.ViewModel
                 this.Wallets.Add(wallet);
                 if (save)
                 {
-                    var unused = _Storage.Put(WALLETS_KEY, Wallets.Select(w => w.Name).ToArray());
+                    Save();
                 }
             }
             this.Refresh.Execute();
+        }
+
+        internal void Save()
+        {
+            var unused = _Storage.Put(WALLETS_KEY, Wallets.Select(w => w.Name).ToArray());
         }
 
 
@@ -272,6 +278,23 @@ namespace PowerWallet.ViewModel
                     .Notify(MessengerInstance);
                 }
                 return _Refresh;
+            }
+        }
+
+        ICommand _Remove;
+        public ICommand Remove
+        {
+            get
+            {
+                if (_Remove == null)
+                {
+                    _Remove = new RelayCommand(() =>
+                    {
+                        _Parent.Wallets.Remove(this);
+                        _Parent.Save();
+                    });
+                }
+                return _Remove;
             }
         }
 

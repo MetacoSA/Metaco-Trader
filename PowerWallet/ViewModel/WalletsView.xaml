@@ -49,6 +49,7 @@
                         <Setter.Value>
                             <ContextMenu>
                                 <MenuItem Header="Add keyset" Command="local:PowerCommands.AddKeySet" CommandParameter="{Binding}"></MenuItem>
+                                <MenuItem Header="Remove" Command="{Binding Remove}" CommandParameter="{Binding}"></MenuItem>
                             </ContextMenu>
                         </Setter.Value>
                     </Setter>
