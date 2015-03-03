@@ -256,9 +256,13 @@ namespace PowerWallet.ViewModel
                 Value = colored.Asset.Quantity.ToString() + " Assets";
                 Type = colored.Asset.Id.GetWif(network).ToString();
             }
-            Confirmations = op.Confirmations;
+            if (op != null)
+            {
+                Confirmations = op.Confirmations;
+                Op = op;
+            }
             Coin = coin;
-            Op = op;
+
             var address = coin.TxOut.ScriptPubKey.GetDestinationAddress(network);
             if (address != null)
                 Owner = address.ToString();
@@ -345,6 +349,11 @@ namespace PowerWallet.ViewModel
             }
         }
 
+
+        internal void Selected()
+        {
+            MessengerInstance.Send(new SelectedCoinMessage(this));
+        }
     }
 
 

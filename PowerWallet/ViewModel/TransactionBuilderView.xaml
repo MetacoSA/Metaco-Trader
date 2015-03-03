@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="PowerWallet.ViewModel.TransactionBuilderView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             
+                 xmlns:controls="clr-namespace:PowerWallet.Controls"
+            xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
+            xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+            xmlns:edit="http://icsharpcode.net/sharpdevelop/avalonedit"
+            xmlns:grid="http://schemas.xceed.com/wpf/xaml/datagrid"
+            xmlns:gif="http://wpfanimatedgif.codeplex.com"
+            xmlns:local="clr-namespace:PowerWallet"
+             xmlns:mvvm="clr-namespace:PowerWallet.ViewModel"
+             
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid x:Name="root">
+        <Grid.RowDefinitions>
+            <RowDefinition>
+            </RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Inputs" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Center" FontSize="30" Foreground="LightGray" FontFamily="Segoe UI"></TextBlock>
+        <TextBlock Text="Outputs" Grid.Row="1" HorizontalAlignment="Right" Margin="0,0,20,0" VerticalAlignment="Center" FontSize="30" Foreground="LightGray" FontFamily="Segoe UI"></TextBlock>
+        <grid:DataGridControl 
+            x:Name="grid"
+                             AutoCreateColumns="False"
+                              ReadOnly="True"
+                              Background="Transparent"
+                              ItemsSource="{Binding InputCoins}">
+            <grid:DataGridControl.View>
+                <grid:TableView  
+                    UseDefaultHeadersFooters="False"
+                    ColumnStretchMode="Last"
+                    ShowRowSelectorPane="False">
+                    <grid:TableView.FixedHeaders>
+                        <DataTemplate>
+                                <grid:ColumnManagerRow/>
+                        </DataTemplate>
+                    </grid:TableView.FixedHeaders>
+                </grid:TableView>
+            </grid:DataGridControl.View>
+            <grid:DataGridControl.Columns>
+                <grid:Column FieldName="." Title="Type" Width="24">
+                    <grid:Column.GroupDescription>
+                        <PropertyGroupDescription PropertyName="Type"></PropertyGroupDescription>
+                    </grid:Column.GroupDescription>
+                    <grid:Column.CellContentTemplate>
+                        <DataTemplate>
+                            <mvvm:CoinView></mvvm:CoinView>
+                        </DataTemplate>
+                    </grid:Column.CellContentTemplate>
+                </grid:Column>
+                <grid:Column Title="Value" Width="80" FieldName="Value">
+                    <grid:Column.CellContentTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding}"></TextBlock>
+                        </DataTemplate>
+                    </grid:Column.CellContentTemplate>
+                </grid:Column>
+                <grid:Column Title="Owner" FieldName="Owner">
+                    <grid:Column.CellContentTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding}"></TextBlock>
+                        </DataTemplate>
+                    </grid:Column.CellContentTemplate>
+                </grid:Column>
+            </grid:DataGridControl.Columns>
+        </grid:DataGridControl>
+        <grid:DataGridControl Grid.Row="1"
+                              AutoCreateColumns="False"
+                              ReadOnly="True"
+                              Background="Transparent"
+                              ItemsSource="{Binding InputCoins}">
+            <grid:DataGridControl.View>
+                <grid:TableView  
+                    UseDefaultHeadersFooters="False"
+                    ColumnStretchMode="Last"
+                    ShowRowSelectorPane="False">
+                    <grid:TableView.FixedHeaders>
+                        <DataTemplate>
+                            <grid:ColumnManagerRow/>
+                        </DataTemplate>
+                    </grid:TableView.FixedHeaders>
+                </grid:TableView>
+            </grid:DataGridControl.View>
+            <grid:DataGridControl.Columns>
+                <grid:Column FieldName="." Title="Type" Width="24">
+                    <grid:Column.GroupDescription>
+                        <PropertyGroupDescription PropertyName="Type"></PropertyGroupDescription>
+                    </grid:Column.GroupDescription>
+                    <grid:Column.CellContentTemplate>
+                        <DataTemplate>
+                            <mvvm:CoinView></mvvm:CoinView>
+                        </DataTemplate>
+                    </grid:Column.CellContentTemplate>
+                </grid:Column>
+                <grid:Column Title="Value" Width="80" FieldName="Value">
+                    <grid:Column.CellContentTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding}"></TextBlock>
+                        </DataTemplate>
+                    </grid:Column.CellContentTemplate>
+                </grid:Column>
+                <grid:Column Title="Owner" FieldName="Owner">
+                    <grid:Column.CellContentTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding}"></TextBlock>
+                        </DataTemplate>
+                    </grid:Column.CellContentTemplate>
+                </grid:Column>
+            </grid:DataGridControl.Columns>
+        </grid:DataGridControl>
+        <GridSplitter Grid.Row="1" VerticalAlignment="Top" Height="2" Background="Transparent" HorizontalAlignment="Stretch"></GridSplitter>
+    </Grid>
+</UserControl>

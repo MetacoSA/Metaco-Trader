@@ -32,6 +32,11 @@
                             ItemsSource="{Binding Coins}"
                             DockPanel.Dock="Bottom"
                             ReadOnly="True" AutoCreateColumns="False">
+            <grid:DataGridControl.Resources>
+                <ContextMenu x:Key="ContextMenu">
+                    <MenuItem Header="Add coins to transaction" Click="MenuItem_Click"></MenuItem>
+                </ContextMenu>
+            </grid:DataGridControl.Resources>
             <grid:DataGridControl.InputBindings>
                 <KeyBinding Command="NavigationCommands.Refresh" Gesture="F5"></KeyBinding>
             </grid:DataGridControl.InputBindings>
@@ -42,6 +47,12 @@
                     ShowRowSelectorPane="False">
                 </grid:TableView>
             </grid:DataGridControl.View>
+            <grid:DataGridControl.ItemContainerStyle>
+                <Style TargetType="grid:DataRow">
+                    <Setter Property="ContextMenu" Value="{StaticResource ContextMenu}"></Setter>
+                    <EventSetter Event="Control.MouseDoubleClick" Handler="DataRow_MouseDoubleClick"></EventSetter>
+                </Style>
+            </grid:DataGridControl.ItemContainerStyle>
             <grid:DataGridControl.Columns>
                 <grid:Column FieldName="." Title="Type" Width="24">
                     <grid:Column.GroupDescription>

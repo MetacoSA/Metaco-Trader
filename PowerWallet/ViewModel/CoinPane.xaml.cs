@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xceed.Wpf.DataGrid;
 
 namespace PowerWallet.ViewModel
 {
@@ -45,6 +46,11 @@ namespace PowerWallet.ViewModel
 
         void grid_SelectionChanged(object sender, Xceed.Wpf.DataGrid.DataGridSelectionChangedEventArgs e)
         {
+            CoinSelectionChanged(grid);
+        }
+
+        public static void CoinSelectionChanged(DataGridControl grid)
+        {
             if (grid.SelectedItems.Count == 1)
             {
 
@@ -71,5 +77,21 @@ namespace PowerWallet.ViewModel
             
         }
 
+        protected void DataRow_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var coin = ((CoinViewModel)((DataRow)sender).DataContext);
+            coin.Selected();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var popupCoin = ((FrameworkElement)sender).DataContext as CoinViewModel;
+            if (popupCoin != null)
+                popupCoin.Selected();
+            foreach (var coin in grid.SelectedItems.OfType<CoinViewModel>())
+            {
+                coin.Selected();
+            }
+        }
     }
 }

@@ -67,6 +67,9 @@ namespace PowerWallet.Modules
                     DataContext = command
                 });
             }));
+
+            context.Container.RegisterType<TransactionBuilderViewModel>().SingleInstance();
+            context.Main.RegisterDocument<TransactionBuilderView>("Transaction Builder");
         }
 
         private void InitializeSearch(InitializationContext context)

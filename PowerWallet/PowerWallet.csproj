@@ -174,6 +174,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Messages\ExposePropertiesMessage.cs" />
     <Compile Include="Messages\SearchMessage.cs" />
+    <Compile Include="Messages\SelectedCoinMessage.cs" />
     <Compile Include="Messages\ShowCoinsMessage.cs" />
     <Compile Include="Messages\StatusMessage.cs" />
     <Compile Include="Modules\IModule.cs" />
@@ -227,6 +228,10 @@
     <Compile Include="ViewModel\AddressesView.xaml.cs">
       <DependentUpon>AddressesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\TransactionBuilderView.xaml.cs">
+      <DependentUpon>TransactionBuilderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\TransactionBuilderViewModel.cs" />
     <Compile Include="ViewModel\WalletsView.xaml.cs">
       <DependentUpon>WalletsView.xaml</DependentUpon>
     </Compile>
@@ -294,6 +299,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ViewModel\ServerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewModel\TransactionBuilderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
