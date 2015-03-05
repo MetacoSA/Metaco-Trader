@@ -4,6 +4,7 @@ using PowerWallet.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -175,7 +176,7 @@ namespace PowerWallet
                 if (task.Exception != null || ErrorMessage != "")
                 {
                     if (task.Exception != null)
-                        Error(task.Exception.InnerException.Message);
+                        Error(GetMessage(task.Exception.InnerException));
                 }
                 else
                     Notify(StatusState.Success, null);
@@ -185,6 +186,13 @@ namespace PowerWallet
                     Executed(this, EventArgs.Empty);
             });
             return task;
+        }
+
+        private string GetMessage(Exception exception)
+        {
+            if (exception is HttpRequestException && exception.InnerException != null)
+                return exception.InnerException.Message;
+            return exception.Message;
         }
 
         public event EventHandler Executed;

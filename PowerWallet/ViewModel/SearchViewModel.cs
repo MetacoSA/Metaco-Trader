@@ -11,8 +11,9 @@ namespace PowerWallet.ViewModel
 {
     public class SearchViewModel : PWViewModelBase
     {
-        public SearchViewModel()
+        public SearchViewModel(RapidBaseClientFactory factory)
         {
+            _RapidbaseClientFactory = factory;
             MessengerInstance.Register<SearchMessage>(this, m =>
             {
                 if (SearchedTerm != m.Term)
@@ -21,6 +22,14 @@ namespace PowerWallet.ViewModel
                     Search.Execute();
                 }
             });
+        }
+        private readonly RapidBaseClientFactory _RapidbaseClientFactory;
+        public RapidBaseClientFactory RapidbaseClientFactory
+        {
+            get
+            {
+                return _RapidbaseClientFactory;
+            }
         }
         private string _SearchedTerm;
         public string SearchedTerm
@@ -54,7 +63,7 @@ namespace PowerWallet.ViewModel
                                Content = "";
                                return;
                            }
-                           var client = App.Locator.Resolve<RapidBaseClientFactory>().CreateClient();
+                           var client = _RapidbaseClientFactory.CreateClient();
                            try
                            {
                                if (search.Length < 520 * 2)
