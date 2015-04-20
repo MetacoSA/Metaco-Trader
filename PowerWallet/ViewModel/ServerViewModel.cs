@@ -1,6 +1,6 @@
 ﻿using NBitcoin;
 using PowerWallet.Controls;
-using RapidBase.Models;
+using QBitNinja.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,16 +13,16 @@ namespace PowerWallet.ViewModel
 {
     public class ServerViewModel : INotifyPropertyChanged
     {
-        private readonly RapidBaseClientFactory _Factory;
+        private readonly QBitNinjaClientFactory _Factory;
         [System.ComponentModel.Browsable(false)]
-        public RapidBaseClientFactory Factory
+        public QBitNinjaClientFactory Factory
         {
             get
             {
                 return _Factory;
             }
         }
-        public ServerViewModel(RapidBaseClientFactory factory)
+        public ServerViewModel(QBitNinjaClientFactory factory)
         {
             if (factory == null)
                 throw new ArgumentNullException("factory");
@@ -46,7 +46,7 @@ namespace PowerWallet.ViewModel
             }
             catch (Exception ex)
             {
-                PWTrace.Error("Error while updating rapidbase server information", ex);
+                PWTrace.Error("Error while updating QBitNinja server information", ex);
             }
         }
 

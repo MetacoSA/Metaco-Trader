@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using RapidBase.Client;
+using QBitNinja.Client;
 using NBitcoin;
 using System.Collections.ObjectModel;
-using RapidBase.Models;
+using QBitNinja.Models;
 using System.Threading;
 using System.ComponentModel;
 using PowerWallet.Controls;
@@ -18,17 +18,17 @@ using System.Net;
 using NBitcoin.OpenAsset;
 using Newtonsoft.Json;
 using System.Net.Http;
-using RapidBase;
+using QBitNinja;
 using System.Net.Security;
 
 namespace PowerWallet.ViewModel
 {
     public class CoinsViewModel : PWViewModelBase
     {
-        RapidBaseClientFactory _Factory;
+        QBitNinjaClientFactory _Factory;
         IStorage _LocalStorage;
 
-        public CoinsViewModel(RapidBaseClientFactory factory, IStorage localStorage)
+        public CoinsViewModel(QBitNinjaClientFactory factory, IStorage localStorage)
         {
             if (factory == null)
                 throw new ArgumentNullException("factory");

@@ -27,7 +27,7 @@ namespace PowerWallet.Modules
             context.Container.Register<IStorage>((ctx) => new LocalStorage(ctx.Resolve<Network>() == Network.Main ? "main" : "test")).SingleInstance();
             context.Container.Register<IMessenger>(ctx => GalaSoft.MvvmLight.Messaging.Messenger.Default).SingleInstance();
 
-            context.Container.RegisterType<RapidBaseClientFactory>().SingleInstance();
+            context.Container.RegisterType<QBitNinjaClientFactory>().SingleInstance();
 
             context.Container.RegisterType<WalletsViewModel>().SingleInstance();
             context.Main.RegisterAnchorable<WalletsView>("Wallets");

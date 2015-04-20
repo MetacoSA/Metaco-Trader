@@ -5,7 +5,7 @@ using NBitcoin;
 using PowerWallet.Controls;
 using PowerWallet.Messages;
 using PowerWallet.ViewModel;
-using RapidBase.Client;
+using QBitNinja.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;

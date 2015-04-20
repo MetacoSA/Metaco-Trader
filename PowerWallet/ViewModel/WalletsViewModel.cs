@@ -3,7 +3,7 @@ using GalaSoft.MvvmLight.Messaging;
 using NBitcoin;
 using PowerWallet.Controls;
 using PowerWallet.Messages;
-using RapidBase.Models;
+using QBitNinja.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,7 +21,7 @@ namespace PowerWallet.ViewModel
         private IStorage _Storage;
         const string WALLETS_KEY = "Opened-Wallets";
 
-        public WalletsViewModel(RapidBaseClientFactory factory, IStorage storage)
+        public WalletsViewModel(QBitNinjaClientFactory factory, IStorage storage)
         {
             _ClientFactory = factory;
             _Storage = storage;
@@ -56,8 +56,8 @@ namespace PowerWallet.ViewModel
 
 
 
-        private readonly RapidBaseClientFactory _ClientFactory;
-        public RapidBaseClientFactory ClientFactory
+        private readonly QBitNinjaClientFactory _ClientFactory;
+        public QBitNinjaClientFactory ClientFactory
         {
             get
             {
@@ -380,10 +380,7 @@ namespace PowerWallet.ViewModel
                 var rb = _Parent._Parent.ClientFactory.CreateClient();
                 await rb.CreateAddress(_Parent.Name, new InsertWalletAddress()
                 {
-                    Address = new WalletAddress()
-                    {
-                        Address = _Address
-                    },
+                    Address = _Address,
                     MergePast = true
                 });
                 _Parent.RefreshAddresses.Execute(false);

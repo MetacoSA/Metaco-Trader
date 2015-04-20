@@ -11,9 +11,9 @@ namespace PowerWallet.ViewModel
 {
     public class SearchViewModel : PWViewModelBase
     {
-        public SearchViewModel(RapidBaseClientFactory factory)
+        public SearchViewModel(QBitNinjaClientFactory factory)
         {
-            _RapidbaseClientFactory = factory;
+            _QBitNinjaClientFactory = factory;
             MessengerInstance.Register<SearchMessage>(this, m =>
             {
                 if (SearchedTerm != m.Term)
@@ -23,12 +23,12 @@ namespace PowerWallet.ViewModel
                 }
             });
         }
-        private readonly RapidBaseClientFactory _RapidbaseClientFactory;
-        public RapidBaseClientFactory RapidbaseClientFactory
+        private readonly QBitNinjaClientFactory _QBitNinjaClientFactory;
+        public QBitNinjaClientFactory QBitNinjaClientFactory
         {
             get
             {
-                return _RapidbaseClientFactory;
+                return _QBitNinjaClientFactory;
             }
         }
         private string _SearchedTerm;
@@ -63,7 +63,7 @@ namespace PowerWallet.ViewModel
                                Content = "";
                                return;
                            }
-                           var client = _RapidbaseClientFactory.CreateClient();
+                           var client = _QBitNinjaClientFactory.CreateClient();
                            try
                            {
                                if (search.Length < 520 * 2)

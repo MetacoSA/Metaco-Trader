@@ -1,5 +1,5 @@
 ﻿using NBitcoin;
-using RapidBase.Client;
+using QBitNinja.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,26 +8,26 @@ using System.Threading.Tasks;
 
 namespace PowerWallet
 {
-    public class RapidBaseClientFactory
+    public class QBitNinjaClientFactory
     {
         IStorage _Storage;
         Network _Network;
-        public RapidBaseClientFactory(IStorage storage, Network network)
+        public QBitNinjaClientFactory(IStorage storage, Network network)
         {
             _Storage = storage;
-            var rapidbase = "http://rapidbase-test.azurewebsites.net/";
+            var QBitNinja = "http://api.qbit.ninja/";
             if (network == Network.TestNet)
-                rapidbase = "http://testnet-rapidbase.azurewebsites.net/";
+                QBitNinja = "http://tapi.qbit.ninja/";
             _Network = network;
-            var server = storage.Get<string>("Rapidbase-Server").Result;
-            server = server ?? rapidbase;
+            var server = storage.Get<string>("QBitNinja-Server").Result;
+            server = server ?? QBitNinja;
             try
             {
                 Uri = new Uri(server);
             }
             catch
             {
-                Uri = new Uri(rapidbase);
+                Uri = new Uri(QBitNinja);
             }
         }
         private Uri _Uri;
@@ -40,12 +40,12 @@ namespace PowerWallet
             set
             {
                 _Uri = value;
-                var notrack = _Storage.Put("Rapidbase-Server", value.AbsoluteUri);
+                var notrack = _Storage.Put("QBitNinja-Server", value.AbsoluteUri);
             }
         }
-        public RapidBaseClient CreateClient()
+        public QBitNinjaClient CreateClient()
         {
-            return new RapidBaseClient(Uri)
+            return new QBitNinjaClient(Uri)
             {
                 Network = _Network
             };
