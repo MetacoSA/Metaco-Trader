@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PowerWallet", "PowerWallet\PowerWallet.csproj", "{5D73DAD4-55F6-4A22-AB12-048022AE425A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Metaco.Trader", "Metaco.Trader\Metaco.Trader.csproj", "{5D73DAD4-55F6-4A22-AB12-048022AE425A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
