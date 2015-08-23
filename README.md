@@ -1,4 +1,4 @@
-# PowerWallet
+# Metaco Trader
 This is Metaco Trading desktop app for advanced user based on a NBitcoin.Server.
 
 This tool is for advanced users, the ergonomy is inspired on visual studio and does not target average Joe.
