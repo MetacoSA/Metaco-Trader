@@ -10,7 +10,7 @@ Roadmap:
 * Splitting/Consolidating coins
 * Wallet management and tracking (mixing BIP38, BIP32, Stealth Address, normal address, colored or not, multi sig or not)
 
-Metaco Trader does not require any synchronization to work, but depends on a QBit Ninja Server.
+Metaco Trader does not require any synchronization to work, but depends on a NBitcoin.Server Server.
 
 NBitcoin.Server is a simple JSON API on the top of NBitcoin.Indexer.
 NBitcoin.Indexer is a blockchain indexer that depends on Azure Storage of Microsoft.
