@@ -180,7 +180,7 @@
     <Compile Include="Modules\IModule.cs" />
     <Compile Include="Modules\InitializationContext.cs" />
     <Compile Include="Modules\CoreModule.cs" />
-    <Compile Include="PowerCommands.cs" />
+    <Compile Include="MetacoCommands.cs" />
     <Compile Include="PWTrace.cs" />
     <Compile Include="RapidBaseClientFactory.cs" />
     <Compile Include="Store.cs" />

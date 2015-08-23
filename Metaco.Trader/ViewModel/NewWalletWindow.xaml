@@ -26,7 +26,7 @@
         </StackPanel>
         <Button HorizontalAlignment="Stretch" 
                 Style="{StaticResource IconButton}"
-                Command="local:PowerCommands.Execute"
+                Command="local:MetacoCommands.Execute"
                 >
             <Image Source="/Metaco.Trader;component/Images/112_Tick_Green_32x32_72.png" Height="18" Width="18"/>
         </Button>

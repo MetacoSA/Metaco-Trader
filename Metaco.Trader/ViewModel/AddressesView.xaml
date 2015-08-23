@@ -14,13 +14,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.CommandBindings>
-        <CommandBinding Command="{x:Static local:PowerCommands.NewAddress}" Executed="NewAddress_Executed" CanExecute="NewAddress_CanExecute"></CommandBinding>
+        <CommandBinding Command="{x:Static local:MetacoCommands.NewAddress}" Executed="NewAddress_Executed" CanExecute="NewAddress_CanExecute"></CommandBinding>
     </UserControl.CommandBindings>
     <DockPanel x:Name="root" LastChildFill="True">
         <StackPanel 
             DockPanel.Dock="Top"
             Orientation="Horizontal">
-            <Button Style="{StaticResource IconButton}" Command="{x:Static local:PowerCommands.NewAddress}">
+            <Button Style="{StaticResource IconButton}" Command="{x:Static local:MetacoCommands.NewAddress}">
                 <Image Source="/Metaco.Trader;component/Images/Add.png" Height="18" Width="18"></Image>
             </Button>
         </StackPanel>

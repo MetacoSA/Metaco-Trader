@@ -14,17 +14,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.CommandBindings>
-        <CommandBinding Command="local:PowerCommands.AddKeySet" Executed="AddKeySet_Executed"></CommandBinding>
+        <CommandBinding Command="local:MetacoCommands.AddKeySet" Executed="AddKeySet_Executed"></CommandBinding>
     </UserControl.CommandBindings>
     <DockPanel x:Name="root" LastChildFill="True">
         <StackPanel 
             DockPanel.Dock="Top"
             Orientation="Horizontal">
             <Button 
-                Style="{StaticResource IconButton}" Command="{x:Static local:PowerCommands.OpenWallet}">
+                Style="{StaticResource IconButton}" Command="{x:Static local:MetacoCommands.OpenWallet}">
                 <Image Source="/Metaco.Trader;component/Images/Open_6529.png" Height="18" Width="18"></Image>
             </Button>
-            <Button Style="{StaticResource IconButton}" Command="{x:Static local:PowerCommands.NewWallet}">
+            <Button Style="{StaticResource IconButton}" Command="{x:Static local:MetacoCommands.NewWallet}">
                 <Image Source="/Metaco.Trader;component/Images/Add.png" Height="18" Width="18"></Image>
             </Button>
             <Button 
@@ -48,7 +48,7 @@
                     <Setter Property="ContextMenu">
                         <Setter.Value>
                             <ContextMenu>
-                                <MenuItem Header="Add keyset" Command="local:PowerCommands.AddKeySet" CommandParameter="{Binding}"></MenuItem>
+                                <MenuItem Header="Add keyset" Command="local:MetacoCommands.AddKeySet" CommandParameter="{Binding}"></MenuItem>
                                 <MenuItem Header="Remove" Command="{Binding Remove}" CommandParameter="{Binding}"></MenuItem>
                             </ContextMenu>
                         </Setter.Value>

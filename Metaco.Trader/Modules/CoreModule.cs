@@ -50,7 +50,7 @@ namespace Metaco.Trader.Modules
             context.Container.RegisterType<AddressDesignerViewModel>().SingleInstance();
             context.Main.RegisterDocument<AddressDesigner>("Address designer");
 
-            context.Main.CommandBindings.Add(new CommandBinding(PowerCommands.NewWallet, (s, e) =>
+            context.Main.CommandBindings.Add(new CommandBinding(MetacoCommands.NewWallet, (s, e) =>
             {
                 var command = App.Locator.Resolve<WalletsViewModel>().CreateNewWalletCommand();
                 context.Main.Show(new NewWalletWindow()
@@ -59,7 +59,7 @@ namespace Metaco.Trader.Modules
                 });
             }));
 
-            context.Main.CommandBindings.Add(new CommandBinding(PowerCommands.OpenWallet, (s, e) =>
+            context.Main.CommandBindings.Add(new CommandBinding(MetacoCommands.OpenWallet, (s, e) =>
             {
                 var command = App.Locator.Resolve<WalletsViewModel>().CreateOpenWalletCommand();
                 context.Main.Show(new OpenWalletWindow()

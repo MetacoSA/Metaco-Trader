@@ -15,12 +15,12 @@ namespace Metaco.Trader.Controls
         public ActionWindow()
         {
             Style = this.FindResource(typeof(ChildWindow)) as Style;
-            this.CreateCommandBinding(PowerCommands.Execute, new Binding()
+            this.CreateCommandBinding(MetacoCommands.Execute, new Binding()
             {
                 Source = this,
                 Path = new PropertyPath("Command")
             });
-            this.InputBindings.Add(new InputBinding(PowerCommands.Execute,new KeyGesture(Key.Enter)));
+            this.InputBindings.Add(new InputBinding(MetacoCommands.Execute,new KeyGesture(Key.Enter)));
             this.KeyDown += (s, e) =>
             {
                 if (e.Key == Key.Escape)

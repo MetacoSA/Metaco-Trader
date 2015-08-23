@@ -137,7 +137,7 @@ namespace Metaco.Trader
         {
             get
             {
-                return typeof(App).Assembly.GetName().Version.ToString() + " by Nicolas Dorier (" + (Network == Network.TestNet ? "Testnet" : "Mainnet") + ")";
+                return typeof(App).Assembly.GetName().Version.ToString() + " by Metaco (" + (Network == Network.TestNet ? "Testnet" : "Mainnet") + ")";
             }
         }
         static Network _Network;
