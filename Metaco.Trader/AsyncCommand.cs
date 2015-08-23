@@ -1,6 +1,6 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using PowerWallet.Messages;
-using PowerWallet.ViewModel;
+using Metaco.Trader.Messages;
+using Metaco.Trader.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace PowerWallet
+namespace Metaco.Trader
 {
     public class AsyncCommand : PWViewModelBase, ICommand
     {

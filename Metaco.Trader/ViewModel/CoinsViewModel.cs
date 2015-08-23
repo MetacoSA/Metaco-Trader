@@ -11,8 +11,8 @@ using System.Collections.ObjectModel;
 using QBitNinja.Models;
 using System.Threading;
 using System.ComponentModel;
-using PowerWallet.Controls;
-using PowerWallet.Messages;
+using Metaco.Trader.Controls;
+using Metaco.Trader.Messages;
 using System.Windows.Input;
 using System.Net;
 using NBitcoin.OpenAsset;
@@ -21,7 +21,7 @@ using System.Net.Http;
 using QBitNinja;
 using System.Net.Security;
 
-namespace PowerWallet.ViewModel
+namespace Metaco.Trader.ViewModel
 {
     public class CoinsViewModel : PWViewModelBase
     {

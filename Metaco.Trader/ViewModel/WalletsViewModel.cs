@@ -1,8 +1,8 @@
 ﻿using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 using NBitcoin;
-using PowerWallet.Controls;
-using PowerWallet.Messages;
+using Metaco.Trader.Controls;
+using Metaco.Trader.Messages;
 using QBitNinja.Models;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace PowerWallet.ViewModel
+namespace Metaco.Trader.ViewModel
 {
     public class WalletsViewModel : PWViewModelBase
     {

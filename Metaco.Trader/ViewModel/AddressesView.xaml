@@ -1,14 +1,14 @@
-﻿<UserControl x:Class="PowerWallet.ViewModel.AddressesView"
+﻿<UserControl x:Class="Metaco.Trader.ViewModel.AddressesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:controls="clr-namespace:PowerWallet.Controls"
-            xmlns:mvvm="clr-namespace:PowerWallet.ViewModel"
+             xmlns:controls="clr-namespace:Metaco.Trader.Controls"
+            xmlns:mvvm="clr-namespace:Metaco.Trader.ViewModel"
             xmlns:ad="http://schemas.xceed.com/wpf/xaml/avalondock"
             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
             xmlns:edit="http://icsharpcode.net/sharpdevelop/avalonedit"
             xmlns:grid="http://schemas.xceed.com/wpf/xaml/datagrid"
             xmlns:gif="http://wpfanimatedgif.codeplex.com"
-            xmlns:local="clr-namespace:PowerWallet"
+            xmlns:local="clr-namespace:Metaco.Trader"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
@@ -21,7 +21,7 @@
             DockPanel.Dock="Top"
             Orientation="Horizontal">
             <Button Style="{StaticResource IconButton}" Command="{x:Static local:PowerCommands.NewAddress}">
-                <Image Source="/PowerWallet;component/Images/Add.png" Height="18" Width="18"></Image>
+                <Image Source="/Metaco.Trader;component/Images/Add.png" Height="18" Width="18"></Image>
             </Button>
         </StackPanel>
         <grid:DataGridControl x:Name="grid" 

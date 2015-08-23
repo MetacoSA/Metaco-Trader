@@ -10,7 +10,7 @@ using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
-namespace PowerWallet.Controls
+namespace Metaco.Trader.Controls
 {
     public class ReadOnlyTextEditor : TypeEditor<AutoSelectTextBox>
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerWallet.Messages
+namespace Metaco.Trader.Messages
 {
     public class SearchMessage
     {

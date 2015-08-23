@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerWallet.Modules
+namespace Metaco.Trader.Modules
 {
     public class InitializationContext
     {

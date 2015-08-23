@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using PowerWallet.ViewModel;
+using Metaco.Trader.ViewModel;
 using System.ComponentModel.Composition;
 using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Input;
@@ -13,9 +13,9 @@ using ICSharpCode.AvalonEdit.Editing;
 using ICSharpCode.AvalonEdit;
 using System.Windows;
 using NBitcoin;
-using PowerWallet.Messages;
+using Metaco.Trader.Messages;
 
-namespace PowerWallet.Modules
+namespace Metaco.Trader.Modules
 {
     [Export(typeof(IModule))]
     public class CoreModule : IModule

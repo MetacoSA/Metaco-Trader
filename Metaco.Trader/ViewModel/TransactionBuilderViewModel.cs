@@ -1,5 +1,5 @@
 ﻿using NBitcoin;
-using PowerWallet.Messages;
+using Metaco.Trader.Messages;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 
-namespace PowerWallet.ViewModel
+namespace Metaco.Trader.ViewModel
 {
     public class TransactionBuilderViewModel : PWViewModelBase
     {

@@ -8,7 +8,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerWallet.ViewModel
+namespace Metaco.Trader.ViewModel
 {
     public class PWViewModelBase : ViewModelBase
     {

@@ -1,13 +1,13 @@
 ﻿using NBitcoin;
 using NBitcoin.DataEncoders;
-using PowerWallet.Messages;
+using Metaco.Trader.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerWallet.ViewModel
+namespace Metaco.Trader.ViewModel
 {
     public class SearchViewModel : PWViewModelBase
     {

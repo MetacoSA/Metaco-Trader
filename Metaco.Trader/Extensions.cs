@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Data;
 using System.Reflection;
 
-namespace PowerWallet
+namespace Metaco.Trader
 {
     public static class Extensions
     {

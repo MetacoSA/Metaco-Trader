@@ -8,7 +8,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using Xceed.Wpf.Toolkit;
 
-namespace PowerWallet.Controls
+namespace Metaco.Trader.Controls
 {
     public class ActionWindow : ChildWindow
     {

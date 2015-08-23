@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace PowerWallet.Controls
+namespace Metaco.Trader.Controls
 {
     public class Interop
     {

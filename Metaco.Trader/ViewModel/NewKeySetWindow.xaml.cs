@@ -1,4 +1,4 @@
-﻿using PowerWallet.Controls;
+﻿using Metaco.Trader.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit;
 
-namespace PowerWallet.ViewModel
+namespace Metaco.Trader.ViewModel
 {
     /// <summary>
     /// Interaction logic for NewKeySetWindow.xaml

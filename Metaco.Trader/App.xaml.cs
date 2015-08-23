@@ -1,6 +1,6 @@
 ﻿using NBitcoin;
-using PowerWallet.Modules;
-using PowerWallet.ViewModel;
+using Metaco.Trader.Modules;
+using Metaco.Trader.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
@@ -16,10 +16,10 @@ using GalaSoft.MvvmLight.Messaging;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Windows.Media;
-using PowerWallet.Controls;
+using Metaco.Trader.Controls;
 using System.Diagnostics;
 
-namespace PowerWallet
+namespace Metaco.Trader
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -81,7 +81,7 @@ namespace PowerWallet
             Image image = new Image();
             BitmapImage logo = new BitmapImage();
             logo.BeginInit();
-            logo.UriSource = new Uri("pack://application:,,,/PowerWallet;component/Images/BC_Logo_.png");
+            logo.UriSource = new Uri("pack://application:,,,/Metaco.Trader;component/Images/BC_Logo_.png");
             logo.EndInit();
             image.Source = logo;
 

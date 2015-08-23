@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Threading.Tasks;
-using PowerWallet.Controls;
+using Metaco.Trader.Controls;
 
-namespace PowerWallet.ViewModel
+namespace Metaco.Trader.ViewModel
 {
     public class PropertyBuilder
     {

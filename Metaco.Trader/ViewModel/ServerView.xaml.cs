@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PowerWallet.ViewModel
+namespace Metaco.Trader.ViewModel
 {
     /// <summary>
     /// Interaction logic for ServerView.xaml

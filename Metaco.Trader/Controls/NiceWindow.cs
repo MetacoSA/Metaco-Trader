@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PowerWallet.Controls
+namespace Metaco.Trader.Controls
 {
     public class NiceWindow : Window
     {

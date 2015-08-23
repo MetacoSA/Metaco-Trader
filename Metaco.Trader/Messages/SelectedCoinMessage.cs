@@ -1,12 +1,12 @@
 ﻿using NBitcoin;
-using PowerWallet.ViewModel;
+using Metaco.Trader.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerWallet.Messages
+namespace Metaco.Trader.Messages
 {
     public class SelectedCoinMessage
     {

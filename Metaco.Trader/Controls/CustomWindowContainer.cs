@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Primitives;
 
-namespace PowerWallet.Controls
+namespace Metaco.Trader.Controls
 {
     public class CustomWindowContainer : WindowContainer
     {

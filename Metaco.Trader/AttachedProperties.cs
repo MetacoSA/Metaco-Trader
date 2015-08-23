@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace PowerWallet
+namespace Metaco.Trader
 {
     public static class AttachedProperties
     {

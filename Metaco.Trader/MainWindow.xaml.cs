@@ -2,9 +2,9 @@
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Editing;
 using NBitcoin;
-using PowerWallet.Controls;
-using PowerWallet.Messages;
-using PowerWallet.ViewModel;
+using Metaco.Trader.Controls;
+using Metaco.Trader.Messages;
+using Metaco.Trader.ViewModel;
 using QBitNinja.Client;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ using Xceed.Wpf.Toolkit;
 using Xceed.Wpf.Toolkit.Primitives;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 
-namespace PowerWallet
+namespace Metaco.Trader
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -246,7 +246,7 @@ namespace PowerWallet
 
         private string GetDefaultLayout()
         {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("PowerWallet.DefaultLayout.xml"))
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Metaco.Trader.DefaultLayout.xml"))
             {
                 return new StreamReader(stream).ReadToEnd();
             }

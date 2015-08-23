@@ -15,7 +15,7 @@ using System.Windows.Media.Effects;
 using System.Windows.Media.Media3D;
 
 
-namespace PowerWallet.Controls
+namespace Metaco.Trader.Controls
 {
 
     public class ChangeHueEffect : ShaderEffect
@@ -25,7 +25,7 @@ namespace PowerWallet.Controls
         public ChangeHueEffect()
         {
             PixelShader pixelShader = new PixelShader();
-            pixelShader.UriSource = new Uri("/PowerWallet;component/Controls/ChangeHue.ps", UriKind.Relative);
+            pixelShader.UriSource = new Uri("/Metaco.Trader;component/Controls/ChangeHue.ps", UriKind.Relative);
             this.PixelShader = pixelShader;
 
             this.UpdateShaderValue(InputProperty);

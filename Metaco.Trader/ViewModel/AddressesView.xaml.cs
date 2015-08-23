@@ -1,5 +1,5 @@
 ﻿using GalaSoft.MvvmLight.Messaging;
-using PowerWallet.Messages;
+using Metaco.Trader.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Xceed.Wpf.DataGrid;
 
-namespace PowerWallet.ViewModel
+namespace Metaco.Trader.ViewModel
 {
     /// <summary>
     /// Interaction logic for AddressesView.xaml

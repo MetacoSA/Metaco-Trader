@@ -1,5 +1,5 @@
 ﻿using NBitcoin;
-using PowerWallet.Controls;
+using Metaco.Trader.Controls;
 using QBitNinja.Models;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PowerWallet.ViewModel
+namespace Metaco.Trader.ViewModel
 {
     public class ServerViewModel : INotifyPropertyChanged
     {

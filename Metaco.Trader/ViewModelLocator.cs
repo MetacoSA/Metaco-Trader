@@ -1,7 +1,7 @@
 /*
   In App.xaml:
   <Application.Resources>
-      <vm:ViewModelLocator xmlns:vm="clr-namespace:PowerWallet"
+      <vm:ViewModelLocator xmlns:vm="clr-namespace:Metaco.Trader"
                            x:Key="Locator" />
   </Application.Resources>
   
@@ -19,7 +19,7 @@ using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
 using System;
 
-namespace PowerWallet.ViewModel
+namespace Metaco.Trader.ViewModel
 {
     public class ViewModelLocator
     {
